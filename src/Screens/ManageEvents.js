@@ -10,7 +10,9 @@ import EventCardsMa3 from './EventCardsMa3'
 
 
 export default class MainScreen extends React.Component {
-
+    static navigationOptions = {
+        header: null
+    }
     constructor(props) {
         super(props);
         this.state = {
@@ -44,10 +46,24 @@ export default class MainScreen extends React.Component {
                 <View style={styles.divider}></View>
                 <ScrollView style={{ marginBottom: 50 }}>
                     {this.state.actScr == 1 ? <View style={{ padding: 10 }}>
+                        <TouchableOpacity onPress={()=>{this.props.navigation.navigate('EventDetails')}}>
                         <EventCardsMa1 />
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={()=>{this.props.navigation.navigate('EventDetails')}}>
                         <EventCardsMa1 />
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={()=>{this.props.navigation.navigate('EventDetails')}}>
                         <EventCardsMa1 />
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={()=>{this.props.navigation.navigate('EventDetails')}}>
                         <EventCardsMa1 />
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={()=>{this.props.navigation.navigate('EventDetails')}}>
+                        <EventCardsMa1 />
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={()=>{this.props.navigation.navigate('EventDetails')}}>
+                        <EventCardsMa1 />
+                        </TouchableOpacity>
 
                     </View> : null}
                     {this.state.actScr == 2 ? <View style={{ padding: 10 }}>

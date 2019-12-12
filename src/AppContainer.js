@@ -9,11 +9,31 @@ import MainScreen from './Screens/MainScreen'
 import CustomSidebarMenu from './CustomSidebarMenu'
 import HomePage from './Screens/HomePage'
 import ManageEvents from './Screens/ManageEvents'
+import EventDetails from './Screens/EventDetails'
+import EventSummary from './Screens/EventSummary'
 
+const ManageEventsStack = createStackNavigator(
+    {
+        ManageEvents: ManageEvents,
+        EventDetails: EventDetails,
+    },
+    {
+        initialRouteName: 'ManageEvents',
+    }
+);
+const MainScreenStack = createStackNavigator(
+    {
+        MainScreen: MainScreen,
+        EventSummary: EventSummary,
+    },
+    {
+        initialRouteName: 'MainScreen',
+    }
+);
 const DrawerNavigator = createDrawerNavigator({
     HomePage,
-    MainScreen,
-    ManageEvents
+    MainScreenStack,
+    ManageEventsStack
 },
 {
     headerMode: 'float',
@@ -25,7 +45,7 @@ const DrawerNavigator = createDrawerNavigator({
                 <Image style={{ width: 35, height: 35, marginLeft: 10 }} source={require('../assets/navigation.png')} />
             </TouchableHighlight >
     }),
-    initialRouteName: 'MainScreen',
+    initialRouteName: 'MainScreenStack',
     contentComponent: CustomSidebarMenu,
     drawerOpenRoute: 'drawerOpen',
     drawerCloseRoute: 'drawerClose',
@@ -41,7 +61,6 @@ const RootStack = createStackNavigator(
     {
         initialRouteName: 'SignUp',
     }
-
 );
 const AppContainer = createAppContainer(RootStack);
 export default AppContainer

@@ -78,14 +78,12 @@ export default class HomePage extends React.Component {
                     <Image style={{ padding: 10,width:20,height:20}} source={require('../../assets/Path100.png')} />
                 </View>
                 <View style={{height:1,backgroundColor:'gray',marginTop:10,marginBottom:10}}/>
-              
                     <EventCardsMa2/>
                     <EventCardsMa2/>
                     <EventCardsMa2/>
                     <EventCardsMa2/>
                     <EventCardsMa2/>
                     <EventCardsMa2/>
-
                 </ScrollView>
             </View>
         );

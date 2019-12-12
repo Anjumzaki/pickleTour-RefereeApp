@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "NewtonAPp",
-    "slug": "newtonApp",
+    "name": "PickleTour-Referee",
+    "slug": "PickleReferee",
     "privacy": "public",
     "sdkVersion": "36.0.0",
     "platforms": [

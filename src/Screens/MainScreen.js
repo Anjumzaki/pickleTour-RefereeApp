@@ -6,7 +6,9 @@ import { NavigationActions, StackActions } from 'react-navigation';
 import EventCards from './EventCards'
 
 export default class MainScreen extends React.Component {
-
+    static navigationOptions = {
+        header: null
+    }
     constructor(props) {
         super(props);
         this.state = {
@@ -40,7 +42,9 @@ export default class MainScreen extends React.Component {
                 <View style={styles.divider}></View>
                 <ScrollView style={{  marginBottom: 50 }}>
                     {this.state.actScr == 1 ? <View style={{ padding: 10 }}>
+                        <TouchableOpacity onPress={()=>this.props.navigation.navigate('EventSummary')}>
                         <EventCards />
+                        </TouchableOpacity>
                         <EventCards />
                         <EventCards />
                         <EventCards />
