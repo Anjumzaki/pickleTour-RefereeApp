@@ -16,7 +16,6 @@ export default class MainScreen extends React.Component {
         };
     }
     login() {
-
         this.props.navigation.navigate('MainTabs')
         this.props.navigation.dispatch(StackActions.reset({
             index: 0,

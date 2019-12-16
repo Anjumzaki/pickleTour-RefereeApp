@@ -36,10 +36,12 @@ export default class EventCardsMa1 extends React.Component {
                     <Text style={styles.inHead}>Street 4, California Stadium USA</Text>
                 </View>
                 <View style={{ flexDirection: 'row', marginTop: 10 }}>
-                    <View style={{ flexDirection: 'row', width: '50%' }} >
+                    <View style={{ flexDirection: 'row', width: '100%' }} >
                         <Text style={styles.head}>Event Type : </Text>
                         <Text style={styles.inHead}>Tournament</Text>
                     </View>
+                </View>
+                <View style={{ flexDirection: 'row', width: '100%' }} >
                     <View style={{ flexDirection: 'row', width: '50%' }} >
                         <Text style={styles.head}>Division : </Text>
                         <Text style={styles.inHead}>Men's Single</Text>
@@ -64,18 +66,18 @@ const styles = StyleSheet.create({
         shadowRadius: 2.62,
 
         elevation: 4,
-        marginBottom:10
+        marginBottom: 10
     },
     head: {
         color: 'white',
         fontFamily: 'open-sans-bold',
         fontWeight: 'bold',
-        fontSize: 16
+        fontSize: 15
     },
     inHead: {
         color: '#DCDCDC',
         fontFamily: 'open-sans-bold',
-        fontSize: 16
+        fontSize: 14
     },
     mySBtn: {
         backgroundColor: 'white',

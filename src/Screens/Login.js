@@ -15,7 +15,6 @@ export default class Login extends React.Component {
             userName: '',
             Password: '',
             msg: "",
-
         };
     }
     login() {
@@ -51,12 +50,15 @@ export default class Login extends React.Component {
     render() {
         console.log("state", this.state)
         return (
-            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor:'#86d6b9' }}>
+            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#86d6b9' }}>
                 <KeyboardAwareScrollView enableOnAndroid={true}>
                     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', height: Dimensions.get('window').height - 70 }}>
                         <View style={styles.SectionStyle}>
+                           <Image style={{ height:50,marginBottom:100, width: Dimensions.get('window').width - 70}} source={require('../../assets/Logo.png')}/>
+                        </View>
+                        <View style={styles.SectionStyle}>
                             <TextInput
-                                style={styles.forms }
+                                style={styles.forms}
                                 placeholderTextColor={'gray'}
                                 onChangeText={userName => this.setState({ userName })}
                                 value={this.state.userName}
@@ -143,37 +145,40 @@ const styles = StyleSheet.create({
     forms: {
         fontSize: 19,
         padding: 8,
+        paddingLeft: 20,
         width: Dimensions.get('window').width - 105,
-        borderBottomWidth: 1,
-        borderColor: 'white',
+        borderWidth: 1,
+        borderColor: '#48A080',
+        borderRadius: 50,
+        backgroundColor: 'white',
         height: 50,
         fontFamily: 'open-sans-bold',
         color: 'black'
     },
-    regButton1: { 
-        fontSize: 22, 
+    regButton1: {
+        fontSize: 22,
         fontFamily: 'open-sans-simple',
-        color:'white'
+        color: 'white'
     },
-    regButton: { 
+    regButton: {
         fontFamily: 'open-sans-simple',
         width: Dimensions.get('window').width - 105,
-        alignItems:'center',
-        backgroundColor:'#48A080',
-        padding:10,
-        borderRadius:100,
-        marginTop:60,
+        alignItems: 'center',
+        backgroundColor: '#48A080',
+        padding: 10,
+        borderRadius: 100,
+        marginTop: 60,
     },
-    reg:{ 
-        textDecorationLine: 'underline', 
+    reg: {
+        textDecorationLine: 'underline',
         color: '#48A080',
-        fontWeight:'bold',
-        fontFamily:'open-sans-simple',
-        fontSize:20
-     },
-     reg1:{
-        fontFamily:'open-sans-simple',
-        color:'white',
-        fontSize:20
-     }
+        fontWeight: 'bold',
+        fontFamily: 'open-sans-simple',
+        fontSize: 20
+    },
+    reg1: {
+        fontFamily: 'open-sans-simple',
+        color: 'white',
+        fontSize: 20
+    }
 });

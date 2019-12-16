@@ -42,11 +42,12 @@ export default class EventCards extends React.Component {
                         <Text style={styles.head}>Event Type : </Text>
                         <Text style={styles.inHead}>Tournament</Text>
                     </View>
-                    <View style={{ flexDirection: 'row', width: '40%', marginLeft: 10 }} >
+                   
+                </View>
+                <View style={{ flexDirection: 'row', width: '100%'}} >
                         <Text style={styles.head}>Matches Refereed : </Text>
                         <Text style={styles.inHead}>8/8</Text>
                     </View>
-                </View>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                     <View style={{ flexDirection: 'row', width: '50%' }} >
                         <Text style={styles.head}>Division : </Text>
@@ -83,12 +84,12 @@ const styles = StyleSheet.create({
         color: 'white',
         fontFamily: 'open-sans-bold',
         fontWeight: 'bold',
-        fontSize: 16
+        fontSize: 15
     },
     inHead: {
         color: '#DCDCDC',
         fontFamily: 'open-sans-bold',
-        fontSize: 16
+        fontSize: 14
     },
     mySBtn: {
         backgroundColor: 'white',

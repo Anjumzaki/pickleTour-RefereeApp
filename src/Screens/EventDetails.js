@@ -5,8 +5,10 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { NavigationActions, StackActions } from 'react-navigation';
 import MatchCards from './MatchCards';
 
-export default class EventCards extends React.Component {
-
+export default class EventDetails extends React.Component {
+    static navigationOptions = {
+        header: null
+    }
     constructor(props) {
         super(props);
         this.state = {

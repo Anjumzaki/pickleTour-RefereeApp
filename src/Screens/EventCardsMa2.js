@@ -76,12 +76,12 @@ const styles = StyleSheet.create({
         color: 'white',
         fontFamily: 'open-sans-bold',
         fontWeight: 'bold',
-        fontSize: 16
+        fontSize: 15
     },
     inHead: {
         color: '#DCDCDC',
         fontFamily: 'open-sans-bold',
-        fontSize: 16
+        fontSize: 14
     },
     mySBtn: {
         backgroundColor: 'white',

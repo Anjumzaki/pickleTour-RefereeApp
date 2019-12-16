@@ -19,7 +19,6 @@ export default class Login extends React.Component {
             confirmPass: '',
             msg: "",
             dob: '',
-            fontLoaded: false,
         };
     }
 
@@ -125,7 +124,7 @@ export default class Login extends React.Component {
                                 style={styles.forms
                                 }
                                 placeholderTextColor={'gray'}
-                                onChangeText={dob => this.setState({ dob })}
+                                onChangeText={confirmPass => this.setState({ confirmPass })}
                                 value={this.state.confirmPass}
                                 placeholder="Confirm Password"
                                 keyboardType="default"
@@ -136,16 +135,15 @@ export default class Login extends React.Component {
                         </View>
                         <View style={styles.SectionStyle}>
                             <DatePicker
-                                 style={styles.forms}
+                                 style={styles.forms1}
                                 date={this.state.dob} //initial date from state
                                 mode="date" //The enum of date, datetime and time
                                 placeholder="Date of Birth"
-                                placeholderTextColor={'black'}
                                 allowFontScaling={false}
-                                placeholderTextColor={'gray'}
                                 format="DD-MM-YYYY"
                                 confirmBtnText="Confirm"
                                 cancelBtnText="Cancel"
+                                showIcon={false}
                                 customStyles={{
                                     dateIcon: {
                                         position: 'absolute',
@@ -155,14 +153,24 @@ export default class Login extends React.Component {
                                     },
                                     dateText: {
                                         fontSize: 19,
-                                        color: 'white'
+                                        color: 'black'
                                     },
                                     dateInput: {
-                                        marginLeft: 36,
                                         borderWidth:0,
                                         placeholderTextColor:'black',
-                                    alignItems:'flex-start'
+                                    alignItems:'flex-start',
+                                    color: 'black',
+                                    position:'relative',
+                                    paddingBottom:8
                                     },
+                                    dateTouchBody:{
+                                        color:'black',
+                                        
+                                    },
+                                    placeholderText: {
+                                        fontSize: 19,
+                                        color: 'gray'
+                                    }
                                 }}
                                 onDateChange={dob => {
                                     this.setState({ dob });
@@ -232,11 +240,26 @@ const styles = StyleSheet.create({
     forms: {
         fontSize: 19,
         padding: 8,
+        paddingLeft:20,
         width: Dimensions.get('window').width - 105,
-        borderBottomWidth: 1,
-        borderColor: 'white',
+        borderWidth: 1,
+        borderColor: '#48A080',
+        borderRadius:50,
+        backgroundColor:'white',
         height: 50,
         fontFamily: 'open-sans-bold',
+        color: 'black'
+    },
+    forms1: {
+        fontSize: 19,
+        padding: 8,
+        paddingLeft:20,
+        width: Dimensions.get('window').width - 105,
+        borderWidth: 1,
+        borderColor: '#48A080',
+        borderRadius:50,
+        backgroundColor:'white',
+        height: 50,
         color: 'black'
     },
     regButton1: {

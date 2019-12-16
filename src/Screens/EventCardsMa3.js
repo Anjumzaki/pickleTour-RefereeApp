@@ -40,16 +40,19 @@ export default class EventCardsMa3 extends React.Component {
                         <Text style={styles.head}>Event Type : </Text>
                         <Text style={styles.inHead}>Tournament</Text>
                     </View>
-                   
+
                 </View>
-                <View style={{ flexDirection: 'row', marginTop: 10,justifyContent:'space-between'}}>
+                <View style={{ flexDirection: 'row', marginTop: 10, justifyContent: 'space-between' }}>
                     <View style={{ flexDirection: 'row', width: '40%' }} >
                         <Text style={styles.head}>Division : </Text>
                         <Text style={styles.inHead}>Men's Single</Text>
                     </View>
-                    <View style={{ flexDirection: 'row',justifyContent:'space-between' }} >
-                      <TouchableOpacity><Text style={styles.bt1}>Accept </Text></TouchableOpacity> 
-                       <TouchableOpacity><Text style={styles.bt2}>Reject </Text></TouchableOpacity> 
+
+                </View>
+                <View style={{ flexDirection: 'row', width: '100%' ,justifyContent:"flex-end"}} >
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }} >
+                        <TouchableOpacity><Text style={styles.bt1}>Accept </Text></TouchableOpacity>
+                        <TouchableOpacity><Text style={styles.bt2}>Reject </Text></TouchableOpacity>
                     </View>
                 </View>
             </View>
@@ -71,44 +74,44 @@ const styles = StyleSheet.create({
         shadowRadius: 2.62,
 
         elevation: 4,
-        marginBottom:10
+        marginBottom: 10
     },
-    bt1:{
-        backgroundColor:'#489535',
-        paddingTop:5,
-        paddingBottom:5,
-        paddingLeft:20,
-        paddingRight:15,
-        borderRadius:50,
-        marginRight:10,
-        color:'white',
-        fontWeight:'bold',
-        borderColor:'white',
-        borderWidth:1
+    bt1: {
+        backgroundColor: '#489535',
+        paddingTop: 5,
+        paddingBottom: 5,
+        paddingLeft: 20,
+        paddingRight: 15,
+        borderRadius: 50,
+        marginRight: 10,
+        color: 'white',
+        fontWeight: 'bold',
+        borderColor: 'white',
+        borderWidth: 1
     },
-    bt2:{
-        backgroundColor:'#924741',
-        paddingTop:5,
-        paddingBottom:5,
-        paddingLeft:20,
-        paddingRight:15,
-        borderRadius:50,
-        marginRight:10,
-        color:'white',
-        fontWeight:'bold',
-        borderColor:'white',
-        borderWidth:1
+    bt2: {
+        backgroundColor: '#924741',
+        paddingTop: 5,
+        paddingBottom: 5,
+        paddingLeft: 20,
+        paddingRight: 15,
+        borderRadius: 50,
+        marginRight: 10,
+        color: 'white',
+        fontWeight: 'bold',
+        borderColor: 'white',
+        borderWidth: 1
     },
     head: {
         color: 'white',
         fontFamily: 'open-sans-bold',
         fontWeight: 'bold',
-        fontSize: 16
+        fontSize: 15
     },
     inHead: {
         color: '#DCDCDC',
         fontFamily: 'open-sans-bold',
-        fontSize: 16
+        fontSize: 14
     },
     mySBtn: {
         backgroundColor: 'white',
