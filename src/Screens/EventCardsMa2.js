@@ -19,33 +19,38 @@ export default class EventCardsMa2 extends React.Component {
     }
 
     render() {
+        const tournament = this.props.data
         return (
             <View style={styles.cardStyles}>
-                <View style={{ flexDirection: 'row' }}>
-                    <View style={{ flexDirection: 'row', width: '60%' }} >
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                    <View style={{ flexDirection: 'row', width: '50%' }} >
                         <Text style={styles.head}>Name: </Text>
-                        <Text style={styles.inHead}>Grand Transver Bay</Text>
+                        <Text style={styles.inHead}>{tournament.tournamentName}</Text>
                     </View>
-                    <View style={{ flexDirection: 'row', width: '30%', marginLeft: 10 }} >
+                    <View style={{ flexDirection: 'row', width: '30%', marginRight: 20 }} >
                         <Text style={styles.head}>Date: </Text>
                         <Text style={styles.inHead}>12-10-2019</Text>
                     </View>
                 </View>
                 <View style={{ flexDirection: 'row', width: '100%' }} >
                     <Text style={styles.head}>Address : </Text>
-                    <Text style={styles.inHead}>Street 4, California Stadium USA</Text>
+                    <Text style={styles.inHead}>{tournament.address}</Text>
                 </View>
                 <View style={{ flexDirection: 'row', marginTop: 10 }}>
                     <View style={{ flexDirection: 'row', width: '50%' }} >
                         <Text style={styles.head}>Event Type : </Text>
-                        <Text style={styles.inHead}>Tournament</Text>
+                        <Text style={styles.inHead}>{tournament.type}</Text>
                     </View>
-                   
+
                 </View>
-                <View style={{ flexDirection: 'row', marginTop: 10,justifyContent:'space-between'}}>
+                <View style={{ flexDirection: 'row', marginTop: 10, justifyContent: 'space-between' }}>
                     <View style={{ flexDirection: 'row', width: '50%' }} >
                         <Text style={styles.head}>Division : </Text>
-                        <Text style={styles.inHead}>Men's Single</Text>
+                        <Text style={styles.inHead}>
+                            {tournament.division ? tournament.division.map((item) => {
+                                <Text>{item.nameOfDivision}</Text>
+                            }) : null}
+                        </Text>
                     </View>
                     <View style={{ flexDirection: 'row' }} >
                         <Text style={styles.head}>REQUESTED </Text>
@@ -70,7 +75,7 @@ const styles = StyleSheet.create({
         shadowRadius: 2.62,
 
         elevation: 4,
-        marginBottom:10
+        marginBottom: 10
     },
     head: {
         color: 'white',
