@@ -268,7 +268,6 @@ const styles = StyleSheet.create({
         color: 'white'
     },
     regButton: {
-        fontFamily: 'open-sans-simple',
         width: Dimensions.get('window').width - 105,
         alignItems: 'center',
         backgroundColor: '#48A080',
