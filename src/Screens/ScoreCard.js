@@ -479,7 +479,7 @@ class ScoreCard extends Component {
 
 
         {/* Modal Settings-`--`-------------------- */}
-        <ImageBackground style={{width: '100%', height: '100%', flexDirection:'row'}} source={require('./assets/images/Background.png')}>
+        <ImageBackground style={{width: '100%', height: '100%', flexDirection:'row'}} source={require('../../assets/Background.png')}>
           
         <View style={{width:'50%', flex:1, flexDirection:'row' }}>
           <View style={{flex:0.7, flexDirection:'column'}}>
@@ -491,7 +491,7 @@ class ScoreCard extends Component {
             <View style={{flex:0.5, flexDirection:'row', justifyContent:'space-between', paddingLeft:Responsive.width(70), alignItems:'center'}}> 
 
               <View>
-                {this.state.ballpos2?<Image style={{marginLeft:Responsive.width(10)}} source={require('./assets/images/ball.png')}/>:<View></View>}
+                {this.state.ballpos2?<Image style={{marginLeft:Responsive.width(10)}} source={require('../../assets/ball.png')}/>:<View></View>}
               </View>
 
 
@@ -508,7 +508,7 @@ class ScoreCard extends Component {
             {/* Player 1 Name and Ball*/}
             <View style={{flex:0.5, flexDirection:'row',justifyContent:'space-between',  paddingLeft:Responsive.width(70), alignItems:'center', marginBottom:Responsive.height(40)}}>
             <View>
-               {this.state.ballpos1? <Image style={{marginLeft:Responsive.width(10)}}source={require('./assets/images/ball.png')}/>:<View></View>}
+               {this.state.ballpos1? <Image style={{marginLeft:Responsive.width(10)}}source={require('../../assets/ball.png')}/>:<View></View>}
               </View>
 
 
@@ -550,7 +550,7 @@ class ScoreCard extends Component {
               </View>
 
               <View>
-                {this.state.ballpos3?<Image style={{marginRight:Responsive.width(10)}} source={require('./assets/images/ball.png')}/>:<View></View>}
+                {this.state.ballpos3?<Image style={{marginRight:Responsive.width(10)}} source={require('../../assets/ball.png')}/>:<View></View>}
               </View>
 
               </View>
@@ -566,7 +566,7 @@ class ScoreCard extends Component {
                 <Text style={{color:'white',fontSize:Responsive.font(16)}}>{this.state.Section4}</Text>
               </View>
               <View>
-                {this.state.ballpos4?<Image style={{marginRight:Responsive.width(10)}}source={require('./assets/images/ball.png')}/>:<View></View>}
+                {this.state.ballpos4?<Image style={{marginRight:Responsive.width(10)}}source={require('../../assets/ball.png')}/>:<View></View>}
               </View>
             </View>
 
