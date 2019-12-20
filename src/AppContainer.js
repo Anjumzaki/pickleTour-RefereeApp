@@ -19,12 +19,19 @@ const ManageEventsStack = createStackNavigator(
         ManageEvents: ManageEvents,
         EventDetails: EventDetails,
         MatchCards:MatchCards,
-        ScoreCard: {screen:ScoreCard, navigationOptions: {header: null}}
+        
     },
     {
         initialRouteName: 'ManageEvents',
     }
 );
+
+const ScoreCardStack = createStackNavigator({
+    ScoreCard: {screen:ScoreCard, navigationOptions: {header: null}}
+},
+{
+    initialRouteName: 'ScoreCard',
+})
 const MainScreenStack = createStackNavigator(
     {
         MainScreen: MainScreen,
@@ -61,7 +68,8 @@ const RootStack = createStackNavigator(
     {
         Login: Login,
         SignUp: SignUp,
-        MainTabs: DrawerNavigator
+        MainTabs: DrawerNavigator,
+        ScoreCard:{screen:ScoreCardStack, navigationOptions: {header: null}}
     },
     {
         initialRouteName: 'SignUp',

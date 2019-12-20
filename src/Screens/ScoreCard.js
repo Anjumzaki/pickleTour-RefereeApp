@@ -471,7 +471,7 @@ class ScoreCard extends Component {
                 <TouchableOpacity onPress={()=>this.resettingGame()}style={{ height:'50%',paddingHorizontal:20,marginTop:10,backgroundColor:'#91c549', justifyContent:'center',borderRadius:12}}>
                 <Text style={{alignSelf:'center', color:'#515151',fontSize:Responsive.font(15)}}>Reset</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={()=>this.showingAlert()} style={{ height:'50%',paddingHorizontal:20,marginTop:10,backgroundColor:'#91c549', justifyContent:'center',borderRadius:12}}>
+                <TouchableOpacity onPress={()=>this.props.navigation.navigate('ManageEventsStack')} style={{ height:'50%',paddingHorizontal:20,marginTop:10,backgroundColor:'#91c549', justifyContent:'center',borderRadius:12}}>
                 <Text style={{alignSelf:'center', color:'#515151',fontSize:Responsive.font(15)}}>Exit</Text>
                 </TouchableOpacity>
             </View>

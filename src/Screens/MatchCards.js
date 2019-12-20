@@ -13,7 +13,7 @@ export default class MatchCards extends React.Component {
         };
     }
     login() {
-        this.props.navigation.navigate('MainTabs')
+        // this.props.navigation.navigate('MainTabs')
         this.props.navigation.dispatch(StackActions.reset({
             index: 0,
             actions: [NavigationActions.navigate({ routeName: 'MainTabs' })],
