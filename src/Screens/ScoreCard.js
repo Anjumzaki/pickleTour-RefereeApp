@@ -479,7 +479,7 @@ class ScoreCard extends Component {
 
 
         {/* Modal Settings-`--`-------------------- */}
-        <ImageBackground style={{width: '100%', height: '100%', flexDirection:'row'}} source={require('../../assets/Background.png')}>
+        <ImageBackground style={{width: '100%', height: '100%', flexDirection:'row'}} source={require('../../assets/background.png')}>
           
         <View style={{width:'50%', flex:1, flexDirection:'row' }}>
           <View style={{flex:0.7, flexDirection:'column'}}>

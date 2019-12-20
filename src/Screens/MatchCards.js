@@ -19,7 +19,6 @@ export default class MatchCards extends React.Component {
             actions: [NavigationActions.navigate({ routeName: 'MainTabs' })],
         }))
     }
-
     render() {
         return (
             <View style={styles.cardStyles}>
@@ -64,7 +63,7 @@ export default class MatchCards extends React.Component {
 
                     
                     <View style={{ flexDirection: 'row', width: '100%', marginRight: 10 ,justifyContent:'flex-end'}} >
-                        <TouchableOpacity onPress={() => { this.props.navigation.navigate('ScoreCard') }}style={styles.mySBtn}>
+                        <TouchableOpacity onPress={() =>  this.props.navigation.navigate('ScoreCard') }style={styles.mySBtn}>
                             <Text style={styles.myStext}> Start Match</Text>
                         </TouchableOpacity>
                     </View>

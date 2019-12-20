@@ -217,6 +217,7 @@ export default class HomePage extends React.Component {
 
                                 <View style={{ height: 1, backgroundColor: 'gray', marginTop: 10, marginBottom: 10 }} />
                                 {this.state.loading ? <ActivityIndicator size="large" color="#48A080" /> : null}
+
                             </View>
                         )}
                         keyExtractor={(item, index) => index}

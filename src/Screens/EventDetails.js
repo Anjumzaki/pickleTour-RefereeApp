@@ -68,9 +68,9 @@ export default class EventDetails extends React.Component {
                     <View style={{ height: 1, backgroundColor: 'gray', marginBottom: 10 }} />
 
                     <View style={{ padding: 10 }}>
-                        <MatchCards />
-                        <MatchCards />
-                        <MatchCards />
+                        <MatchCards navigation={this.props.navigation}/>
+                        <MatchCards navigation={this.props.navigation}/>
+                        <MatchCards navigation={this.props.navigation}/>
                     </View>
                 </ScrollView>
 
