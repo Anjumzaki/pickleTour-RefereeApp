@@ -64,7 +64,7 @@ export default class MatchCards extends React.Component {
 
                     
                     <View style={{ flexDirection: 'row', width: '100%', marginRight: 10 ,justifyContent:'flex-end'}} >
-                        <TouchableOpacity style={styles.mySBtn}>
+                        <TouchableOpacity onPress={()=>this.props.navigation.navigate('ScoreCard')}style={styles.mySBtn}>
                             <Text style={styles.myStext}> Start Match</Text>
                         </TouchableOpacity>
                     </View>

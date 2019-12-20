@@ -11,11 +11,13 @@ import HomePage from './Screens/HomePage'
 import ManageEvents from './Screens/ManageEvents'
 import EventDetails from './Screens/EventDetails'
 import EventSummary from './Screens/EventSummary'
+import ScoreCard from './Screens/ScoreCard'
 
 const ManageEventsStack = createStackNavigator(
     {
         ManageEvents: ManageEvents,
         EventDetails: EventDetails,
+        ScoreCard: ScoreCard
     },
     {
         initialRouteName: 'ManageEvents',
