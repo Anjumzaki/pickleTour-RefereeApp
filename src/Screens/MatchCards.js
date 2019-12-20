@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, Button, ImageBackground, Image, TextInput, Dimensions, StyleSheet, ScrollView } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { NavigationActions, StackActions } from 'react-navigation';
+import { NavigationActions, StackActions,withNavigation  } from 'react-navigation';
 
 export default class MatchCards extends React.Component {
 

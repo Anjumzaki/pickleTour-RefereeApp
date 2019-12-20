@@ -27,6 +27,7 @@ const MainScreenStack = createStackNavigator(
     {
         MainScreen: MainScreen,
         EventSummary: EventSummary,
+        ScoreCard: ScoreCard
     },
     {
         initialRouteName: 'MainScreen',
