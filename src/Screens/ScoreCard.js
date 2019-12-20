@@ -90,6 +90,9 @@ class ScoreCard extends Component {
     await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE_LEFT);
   }
 
+  async exitScreenOrientation(){
+    await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_DOWN)
+  }
   // balltesting(){
   //   this.setState({ballpos1:false, ballpos2:false})
   // }
@@ -280,6 +283,7 @@ class ScoreCard extends Component {
     // }
   }
   componentWillUnmount() {
+    this.exitScreenOrientation()
     this.backHandler.remove()
   }
 

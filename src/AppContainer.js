@@ -19,7 +19,7 @@ const ManageEventsStack = createStackNavigator(
         ManageEvents: ManageEvents,
         EventDetails: EventDetails,
         MatchCards:MatchCards,
-        ScoreCard: ScoreCard,
+        ScoreCard: {screen:ScoreCard, navigationOptions: {header: null}}
     },
     {
         initialRouteName: 'ManageEvents',
