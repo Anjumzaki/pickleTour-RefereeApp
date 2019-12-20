@@ -12,12 +12,14 @@ import ManageEvents from './Screens/ManageEvents'
 import EventDetails from './Screens/EventDetails'
 import EventSummary from './Screens/EventSummary'
 import ScoreCard from './Screens/ScoreCard'
+import MatchCards from './Screens/MatchCards'
 
 const ManageEventsStack = createStackNavigator(
     {
         ManageEvents: ManageEvents,
         EventDetails: EventDetails,
-        ScoreCard: ScoreCard
+        ScoreCard: ScoreCard,
+        MatchCards:MatchCards
     },
     {
         initialRouteName: 'ManageEvents',
@@ -27,7 +29,7 @@ const MainScreenStack = createStackNavigator(
     {
         MainScreen: MainScreen,
         EventSummary: EventSummary,
-        ScoreCard: ScoreCard
+        
     },
     {
         initialRouteName: 'MainScreen',
