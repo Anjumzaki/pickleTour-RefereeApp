@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Image, Text, Button } from 'react-native';
+import { View, StyleSheet, Image, Text, Button , AsyncStorage} from 'react-native';
 import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import firebase from 'firebase';
 
 export default class CustomSidebarMenu extends Component {
   constructor() {
     super();
+    this.itemDeleted=false
     this.state = {
       modalVisible: false,
     }
@@ -47,6 +49,23 @@ export default class CustomSidebarMenu extends Component {
     this.props.navigation.navigate('Login')
     this.props.navigation.closeDrawer()
   }
+
+  UserLogout(){
+    firebase.auth().signOut().then(function() {
+      this.props.navigation.navigate('Login')
+    }).catch(function(error) {
+      // An error happened.
+    });
+  }
+
+  // async deleteItem(){
+  //   try{
+  //     // await AsyncStorage.removeItem('userId');
+  //     this.UserLogout()
+  //   }catch(error){
+
+  //   }
+  // }
   render() {
     return (
       <View style={styles.sideMenuContainer}>
@@ -102,7 +121,7 @@ export default class CustomSidebarMenu extends Component {
               </View>
             </TouchableOpacity>
           ))}
-          <TouchableOpacity onPress={() => this.openModal()}>
+          <TouchableOpacity onPress={() => this.UserLogout()}>
             <View
               style={{
                 flexDirection: 'row',
@@ -116,7 +135,7 @@ export default class CustomSidebarMenu extends Component {
               <View style={{ paddingRight: 10, paddingLeft: 20 }}>
                 <Image source={require('../assets/logout_Gray.png')} style={{ width: 30, height: 30 }}  />
               </View>
-              <Text
+              <Text 
                 style={{
                   fontSize: 15,
                   color: 'black',

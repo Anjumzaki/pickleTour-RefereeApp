@@ -13,6 +13,8 @@ import EventDetails from './Screens/EventDetails'
 import EventSummary from './Screens/EventSummary'
 import ScoreCard from './Screens/ScoreCard'
 import MatchCards from './Screens/MatchCards'
+import LoadingScreen from './Screens/Loading';
+
 
 const ManageEventsStack = createStackNavigator(
     {
@@ -65,14 +67,15 @@ const DrawerNavigator = createDrawerNavigator({
 });
 
 const RootStack = createStackNavigator(
-    {
+    {   
+        Loading:{screen:LoadingScreen, navigationOptions: {header: null}},
         Login: Login,
         SignUp: SignUp,
         MainTabs: DrawerNavigator,
         ScoreCard:{screen:ScoreCardStack, navigationOptions: {header: null}}
     },
     {
-        initialRouteName: 'SignUp',
+        initialRouteName: 'Loading',
     }
 );
 const AppContainer = createAppContainer(RootStack);

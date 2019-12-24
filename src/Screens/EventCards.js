@@ -1,26 +1,42 @@
 import React from 'react';
-import { View, Text, Button, ImageBackground, Image, TextInput, Dimensions, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, Button, ImageBackground, Image, TextInput, Dimensions, StyleSheet, ScrollView, AsyncStorage } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { NavigationActions, StackActions } from 'react-navigation';
-
+import axios from 'axios'
 export default class EventCards extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            actScr: '1'
         };
     }
-    login() {
-        this.props.navigation.navigate('MainTabs')
-        this.props.navigation.dispatch(StackActions.reset({
-            index: 0,
-            actions: [NavigationActions.navigate({ routeName: 'MainTabs' })],
-        }))
+    // async getItem(){
+    //     try{
+    //         this.userId =await AsyncStorage.getItem('userId')
+    //         this.getAllData()
+    //         // console.log('User ID:  ',this.userId)
+    //     }catch (error){
+    //         console.log('error')
+    //     }
+    // }
+    componentDidMount(){
+        
+        // this.getItem()
+        // this.getAllData()
     }
+    // login() {
+    //     this.props.navigation.navigate('MainTabs')
+    //     this.props.navigation.dispatch(StackActions.reset({
+    //         index: 0,
+    //         actions: [NavigationActions.navigate({ routeName: 'MainTabs' })],
+    //     }))
+    // }
+
+    
 
     render() {
+        const data = this.props.data
         return (
             <View style={styles.cardStyles}>
                 <View style={{ flexDirection: 'row' }}>

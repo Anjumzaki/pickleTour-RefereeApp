@@ -1,30 +1,164 @@
 import React from 'react';
-import { View, Text, Button, ImageBackground, Image, TextInput, Dimensions, StyleSheet, SafeAreaView, ScrollView } from 'react-native';
+import { View, Text, Button, ImageBackground, Image, TextInput, Dimensions, StyleSheet, ActivityIndicator,SafeAreaView, ScrollView, AsyncStorage, FlatList } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { NavigationActions, StackActions } from 'react-navigation';
 import EventCards from './EventCards'
-
+import axios from 'axios'
 export default class MainScreen extends React.Component {
     static navigationOptions = {
         header: null
     }
     constructor(props) {
         super(props);
+        this.userId=''
         this.state = {
-            actScr: 1
+            actScr: 1,
+            seLoc: '',
+            compData: [],
+            upData:[],
+            onData:[],
+            dataOneLoaded:false,
+            dataTwoLoaded:false,
+            dataThreeLoaded:false,
+            loading: true,
+            dataFound: false,
         };
     }
-    login() {
-        this.props.navigation.navigate('MainTabs')
-        this.props.navigation.dispatch(StackActions.reset({
-            index: 0,
-            actions: [NavigationActions.navigate({ routeName: 'MainTabs' })],
-        }))
+    componentDidMount(){
+        this.getItem()
+    }
+    
+    async getItem(){
+        try{
+            this.userId =await AsyncStorage.getItem('userId')
+            // this.getAllData(this.userId)
+            this.getOneData(this.userId)
+            this.getTwoData(this.userId)
+            this.getThreeData(this.userId)
+            // console.log('User ID:  ',this.userId)
+        }catch (error){
+            console.log('error')
+        }
+    }
+
+    getOneData= (userId)=>{
+
+        // var prevData = []
+        // var con = this.state.counter
+        // if(this.state.dropChanged){
+        //     this.setState({
+        //         dataOneLoaded
+        //         // loading:true,
+        //         // dataFound:false,
+        //         // counter:0,
+        //         // dropChanged:false
+
+        //     })
+        //     con = 0
+        // }
+        // else{
+        //     prevData = this.state.tourData
+        // }
+
+        var newData = [];
+       //var gettingUrl = 'https://pickletour.appspot.com/api/get/completed/Events/'+this.userId
+        var gettingUrl = 'http://pickletour.com/api/get/league/page/0'
+        
+        axios.get(gettingUrl)
+        .then((response)=>{
+            newData = response.data
+            // console.log(newData)
+            var allData = [...newData]
+            // var con = this.state.counter
+            if (newData.length > 0) {
+                this.setState({
+                    compData: allData,
+                    // loading: false,
+                    dataOneLoaded:true,
+                    // counter: con + 1
+                })
+            }
+            else {
+                this.setState({
+                    // tourData: allData,
+                    // loading: false,
+                    dataOneLoaded:false,
+                })
+            }
+        }).catch((error)=>{
+            console.log(error)
+        })
+    }
+
+
+    getTwoData= (userId)=>{
+       
+
+        var newData = [];
+       
+        var gettingUrl = 'http://pickletour.com/api/get/tournament/page/0'
+        
+        axios.get(gettingUrl)
+        .then((response)=>{
+            newData = response.data
+            // console.log(newData)
+            var allData = [...newData]
+            // var con = this.state.counter
+            if (newData.length > 0) {
+                this.setState({
+                    onData: allData,
+                    // loading: false,
+                    dataTwoLoaded:true,
+                    // counter: con + 1
+                })
+            }
+            else {
+                this.setState({
+                    // tourData: allData,
+                    // loading: false,
+                    dataTwoLoaded:false,
+                })
+            }
+        }).catch((error)=>{
+            console.log(error)
+        })
+    }
+    getThreeData= (userId)=>{
+       
+
+        var newData = [];
+       
+        var gettingUrl = 'http://pickletour.com/api/get/recreational/page/0'
+        
+        axios.get(gettingUrl)
+        .then((response)=>{
+            newData = response.data
+            // console.log(newData)
+            var allData = [...newData]
+            // var con = this.state.counter
+            if (newData.length > 0) {
+                this.setState({
+                    upData: allData,
+                    // loading: false,
+                    dataThreeLoaded:true,
+                    // counter: con + 1
+                })
+            }
+            else {
+                this.setState({
+                    // tourData: allData,
+                    // loading: false,
+                    dataThreeLoaded:false,
+                })
+            }
+        }).catch((error)=>{
+            console.log(error)
+        })
     }
 
     render() {
-        console.log("state", this.state)
+        // console.log("state", this.state)
         return (
             <View>
                 <View style={styles.wrapTopSty}>
@@ -39,29 +173,48 @@ export default class MainScreen extends React.Component {
                     </TouchableOpacity>
                 </View>
                 <View style={styles.divider}></View>
-                <ScrollView style={{  marginBottom: 50 }}>
-                    {this.state.actScr == 1 ? <View style={{ padding: 10 }}>
-                        <TouchableOpacity onPress={()=>this.props.navigation.navigate('EventSummary')}>
-                        <EventCards />
-                        </TouchableOpacity>
-                        <EventCards />
-                        <EventCards />
-                        <EventCards />
-                    </View> : null}
+                {/* <ScrollView style={{  marginBottom: 50 }}> */}
+                    {this.state.actScr == 1 ? 
+                        <View style={{ padding: 10 }}>
+                            {this.state.dataOneLoaded?<FlatList
+                                style={{marginBottom:100}}
+                                data ={this.state.compData}
+                                renderItem={({item})=>(
+                                    <TouchableOpacity onPress={()=>this.props.navigation.navigate('EventSummary',item)}>
+                                    <EventCards key={item._id} data={item}/>
+                                    </TouchableOpacity>
+                                )}
+                            />:<ActivityIndicator/>}
+                               
+                            
+                            
+                            {/* <EventCards />
+                            <EventCards />
+                            <EventCards /> */}
+                        </View> : null}
                     {this.state.actScr == 2 ? <View style={{ padding: 10 }}>
-                        <EventCards />
-                        <EventCards />
-                        <EventCards />
-                        <EventCards />
-                        <EventCards />
-                        <EventCards />
-                        <EventCards />
-                        <EventCards />
+                    {this.state.dataTwoLoaded?<FlatList
+                                style={{marginBottom:100}}
+                                data ={this.state.onData}
+                                renderItem={({item})=>(
+                                    <TouchableOpacity onPress={()=>this.props.navigation.navigate('EventSummary')}>
+                                    <EventCards key={item._id} data={item}/>
+                                    </TouchableOpacity>
+                                )}
+                            />:<ActivityIndicator/>}
                     </View> : null}
                     {this.state.actScr == 3 ? <View style={{ padding: 10 }}>
-                        <EventCards />
+                    {this.state.dataThreeLoaded?<FlatList
+                                style={{marginBottom:100}}
+                                data ={this.state.upData}
+                                renderItem={({item})=>(
+                                    <TouchableOpacity onPress={()=>this.props.navigation.navigate('EventSummary')}>
+                                    <EventCards key={item._id} data={item}/>
+                                    </TouchableOpacity>
+                                )}
+                            />:<ActivityIndicator/>}
                     </View> : null}
-                </ScrollView>
+                {/* </ScrollView> */}
             </View>
 
         );

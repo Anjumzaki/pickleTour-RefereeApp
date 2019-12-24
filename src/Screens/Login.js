@@ -1,9 +1,10 @@
 import React from 'react';
-import { View, Text, Button, ImageBackground, Image, TextInput, Dimensions, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, Button, ImageBackground, Image, TextInput, Dimensions, StyleSheet, ScrollView, ActivityIndicator,AsyncStorage } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { NavigationActions, StackActions } from 'react-navigation';
-import * as Font from 'expo-font';
+import firebase from 'firebase';
+import axios from 'axios'
 
 export default class Login extends React.Component {
     static navigationOptions = {
@@ -12,11 +13,46 @@ export default class Login extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            userName: '',
-            Password: '',
+            isFetching:false,
+            userName: 'masaeedi@gmail.com',
+            Password: '123456',
             msg: "",
+            userId:''
         };
     }
+
+    handleLogin = () => {
+        this.setState({isFetching:true})
+        // TODO: Firebase stuff...
+        const {userName, Password}= this.state
+        firebase.auth().signInWithEmailAndPassword(userName,Password)
+        .then((data)=>{
+            // console.log(data.user.uid)
+            this.setState({ userId:data.user.uid})
+            axios.get('https://pickletour.appspot.com/api/get/refereeData/'+data.user.uid)
+            .then((data)=>{
+                // console.log(data)
+                this.props.navigation.navigate('MainTabs')
+                this.setState({isFetching:false})
+                
+                const saveUserId = async userId=>{
+                    try{
+                        await AsyncStorage.setItem('userId', this.state.userId)
+                    }
+                    catch(error){
+                        console.log(error)
+                    }
+                }
+                saveUserId()
+            })
+        // axios.get('https://pickletour.appspot.com/api/user/profile/'+user.user.uid).then(resp => {
+        //         console.log("agyaaaaaaa")
+        //         console.log(resp.data);
+        //         dispatch(uidsave(resp.data)
+        })
+        .catch(error=>{this.setState({isFetching:false, msg:'Incorrect credentials, please try again'})})
+        
+      }
     login() {
         // console.log("login")
         // axios
@@ -48,7 +84,7 @@ export default class Login extends React.Component {
     }
 
     render() {
-        console.log("state", this.state)
+        // console.log("state", this.state)
         return (
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#86d6b9' }}>
                 <KeyboardAwareScrollView enableOnAndroid={true}>
@@ -83,12 +119,16 @@ export default class Login extends React.Component {
                             />
                         </View>
 
-
-                        <TouchableOpacity onPress={() =>
-                            this.login()
-                        } style={styles.regButton} >
-                            <Text style={styles.regButton1} >LOGIN  </Text>
-                        </TouchableOpacity>
+                        {
+                            this.state.isFetching? <ActivityIndicator size='large'/>:
+                            <TouchableOpacity onPress={() =>
+                                this.handleLogin()
+                            } style={styles.regButton} >
+                                <Text style={styles.regButton1} >LOGIN  </Text>
+                            </TouchableOpacity>
+                        
+                        }
+                        
                         <View>
                             <Text>
                                 {this.state.msg}

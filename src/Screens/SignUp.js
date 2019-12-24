@@ -5,6 +5,8 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { NavigationActions, StackActions } from 'react-navigation';
 import * as Font from 'expo-font';
 import DatePicker from 'react-native-datepicker'
+import * as firebase from 'firebase';
+import axios from 'axios';
 
 export default class Login extends React.Component {
     static navigationOptions = {
@@ -13,13 +15,36 @@ export default class Login extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            email: '',
-            userName: '',
-            Password: '',
-            confirmPass: '',
+            email: 'masaeedi@gmail.com',
+            userName: 'masaeedi',
+            Password: '1234',
+            confirmPass: '1234',
             msg: "",
             dob: '',
         };
+    }
+
+    
+    handleSignUp=()=>{
+        firebase
+            .auth()
+            .createUserWithEmailAndPassword(this.state.email, this.state.Password)
+            .then((data)=>{
+                const newUser ={
+                    id: data.user.uid,
+                    dateOfBirth: this.state.dob,
+                    email: this.state.email,
+                    password: this.state.confirmPass,
+                }
+                axios.post('http://pickletour.appspot.com/api/user/add',newUser)
+                    .then(this.props.navigation.navigate('Login'))
+                    
+            }
+            
+            )
+            .catch((error)=>{
+                console.log('Error')
+            })
     }
 
     login() {
@@ -69,7 +94,7 @@ export default class Login extends React.Component {
         }
     };
     render() {
-        console.log("state", this.state)
+        // console.log("state", this.state)
         return (
 
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#86d6b9' }}>
@@ -179,7 +204,7 @@ export default class Login extends React.Component {
 
                         </View>
                         <TouchableOpacity onPress={() =>
-                            this.login()
+                            this.handleSignUp()
                         } style={styles.regButton} >
                             <Text style={styles.regButton1} >REGISTER  </Text>
                         </TouchableOpacity>

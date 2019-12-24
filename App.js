@@ -2,8 +2,10 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import AppContainer from './src/AppContainer';
 import * as Font from 'expo-font';
+import firebase from 'firebase';
+import { firebaseConfig } from './src/Configurations/config';
 
-
+firebase.initializeApp(firebaseConfig)
 export default class App extends React.Component {
   state={
     fontLoaded:false

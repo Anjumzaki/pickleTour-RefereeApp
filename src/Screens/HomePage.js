@@ -9,6 +9,7 @@ import ListView from 'deprecated-react-native-listview'
 export default class HomePage extends React.Component {
     constructor(props) {
         super(props);
+        
         this.state = {
             eventType: '',
             seLoc: '',
@@ -148,7 +149,10 @@ export default class HomePage extends React.Component {
     }
     componentDidMount() {
         this.getAlldata()
+
     }
+
+   
     render() {
         return (
             <View style={{ padding: 10 }}>

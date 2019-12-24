@@ -4,6 +4,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { NavigationActions, StackActions } from 'react-navigation';
 import MatchCardsRes from './MatchCardsRes';
+import { Item } from 'native-base';
 
 export default class EventSummary extends React.Component {
     static navigationOptions = {
@@ -15,15 +16,10 @@ export default class EventSummary extends React.Component {
             actScr: '1'
         };
     }
-    login() {
-        this.props.navigation.navigate('MainTabs')
-        this.props.navigation.dispatch(StackActions.reset({
-            index: 0,
-            actions: [NavigationActions.navigate({ routeName: 'MainTabs' })],
-        }))
-    }
+   
 
     render() {
+        console.log(this.props.navigation.getParam(item))
         return (
             <View>
                 <ScrollView style={{ marginBottom: 10 }}>
