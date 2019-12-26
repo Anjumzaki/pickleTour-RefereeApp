@@ -12,14 +12,16 @@ export default class MatchCards extends React.Component {
             actScr: '1'
         };
     }
-    login() {
-        // this.props.navigation.navigate('MainTabs')
-        this.props.navigation.dispatch(StackActions.reset({
-            index: 0,
-            actions: [NavigationActions.navigate({ routeName: 'MainTabs' })],
-        }))
-    }
+    // login() {
+    //     // this.props.navigation.navigate('MainTabs')
+    //     this.props.navigation.dispatch(StackActions.reset({
+    //         index: 0,
+    //         actions: [NavigationActions.navigate({ routeName: 'MainTabs' })],
+    //     }))
+    // }
     render() {
+        // console.log('saeedi')
+        // console.log(this.props.navigation.state.params.item)
         return (
             <View style={styles.cardStyles}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
@@ -63,7 +65,7 @@ export default class MatchCards extends React.Component {
 
                     
                     <View style={{ flexDirection: 'row', width: '100%', marginRight: 10 ,justifyContent:'flex-end'}} >
-                        <TouchableOpacity onPress={() =>  this.props.navigation.navigate('ScoreCard') }style={styles.mySBtn}>
+                        <TouchableOpacity onPress={() =>  this.props.navigation.navigate('ScoreCard',this.props.navigation.state.params.item) }style={styles.mySBtn}>
                             <Text style={styles.myStext}> Start Match</Text>
                         </TouchableOpacity>
                     </View>

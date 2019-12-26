@@ -19,7 +19,7 @@ export default class EventSummary extends React.Component {
    
 
     render() {
-        console.log(this.props.navigation.getParam(item))
+        console.log(this.props.navigation.state.params.item)
         return (
             <View>
                 <ScrollView style={{ marginBottom: 10 }}>

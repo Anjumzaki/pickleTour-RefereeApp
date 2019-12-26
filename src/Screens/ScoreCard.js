@@ -347,7 +347,9 @@ class ScoreCard extends Component {
   
 
 
-  render() {  
+  render() { 
+    console.log(this.props.navigation.state.params)
+    
     let selectedItem = this.state.radioButtons.find(e=>e.checked == true)
     selectedItem = selectedItem? selectedItem.value: this.state.radioButtons[0].value
     this.playingSide=selectedItem

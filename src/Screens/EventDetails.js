@@ -1,10 +1,12 @@
 import React from 'react';
-import { View, Text, Button, ImageBackground, Image, TextInput, Dimensions, StyleSheet, ScrollView } from 'react-native';
+import { ActivityIndicator, View, Text, Button, ImageBackground, Image, TextInput, Dimensions, StyleSheet, ScrollView, FlatList } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { NavigationActions, StackActions } from 'react-navigation';
 import MatchCards from './MatchCards';
+import axios from 'axios'
 
+// tournament details and schedule----------------------------------------------
 export default class EventDetails extends React.Component {
     static navigationOptions = {
         header: null
@@ -12,18 +14,45 @@ export default class EventDetails extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            actScr: '1'
+            actScr: '1',
+            tourData:[],
+            dataLoaded:false
         };
     }
-    login() {
-        this.props.navigation.navigate('MainTabs')
-        this.props.navigation.dispatch(StackActions.reset({
-            index: 0,
-            actions: [NavigationActions.navigate({ routeName: 'MainTabs' })],
-        }))
+  
+    componentDidMount(){
+        this.getData()
+    }
+
+    getData= (userId)=>{
+       
+
+        var newData = [];
+       
+        var gettingUrl = 'http://pickletour.com/api/get/tournament/page/0'
+        
+        axios.get(gettingUrl)
+        .then((response)=>{
+            newData = response.data
+            var allData = [...newData]
+            if (newData.length > 0) {
+                this.setState({
+                    tourData: allData,
+                    dataLoaded:true,
+                })
+            }
+            else {
+                this.setState({
+                    dataLoaded:false,
+                })
+            }
+        }).catch((error)=>{
+            console.log(error)
+        })
     }
 
     render() {
+        // console.log(this.props.navigation.getParam('item'))
         return (
             <View>
                 <ScrollView style={{ marginBottom: 10 }}>
@@ -68,9 +97,18 @@ export default class EventDetails extends React.Component {
                     <View style={{ height: 1, backgroundColor: 'gray', marginBottom: 10 }} />
 
                     <View style={{ padding: 10 }}>
-                        <MatchCards navigation={this.props.navigation}/>
-                        <MatchCards navigation={this.props.navigation}/>
-                        <MatchCards navigation={this.props.navigation}/>
+                        {this.state.dataLoaded  ? <FlatList
+                            
+                            data ={this.state.tourData}
+                            extraData={this.props}
+
+                            renderItem={({item})=>(
+
+                                
+                                <MatchCards navigation={this.props.navigation} {...item} />
+                            
+                            )}
+                        />:<ActivityIndicator/>}
                     </View>
                 </ScrollView>
 

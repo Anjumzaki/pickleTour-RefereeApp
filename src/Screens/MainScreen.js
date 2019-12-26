@@ -178,10 +178,11 @@ export default class MainScreen extends React.Component {
                         <View style={{ padding: 10 }}>
                             {this.state.dataOneLoaded?<FlatList
                                 style={{marginBottom:100}}
+                                keyExtractor={item => item._id}
                                 data ={this.state.compData}
                                 renderItem={({item})=>(
-                                    <TouchableOpacity onPress={()=>this.props.navigation.navigate('EventSummary',item)}>
-                                    <EventCards key={item._id} data={item}/>
+                                    <TouchableOpacity onPress={()=>this.props.navigation.navigate('EventSummary')}>
+                                    <EventCards {...item}/>
                                     </TouchableOpacity>
                                 )}
                             />:<ActivityIndicator/>}
@@ -195,10 +196,11 @@ export default class MainScreen extends React.Component {
                     {this.state.actScr == 2 ? <View style={{ padding: 10 }}>
                     {this.state.dataTwoLoaded?<FlatList
                                 style={{marginBottom:100}}
+                                keyExtractor={item => item._id}
                                 data ={this.state.onData}
                                 renderItem={({item})=>(
                                     <TouchableOpacity onPress={()=>this.props.navigation.navigate('EventSummary')}>
-                                    <EventCards key={item._id} data={item}/>
+                                    <EventCards {...item}/>
                                     </TouchableOpacity>
                                 )}
                             />:<ActivityIndicator/>}
@@ -206,10 +208,11 @@ export default class MainScreen extends React.Component {
                     {this.state.actScr == 3 ? <View style={{ padding: 10 }}>
                     {this.state.dataThreeLoaded?<FlatList
                                 style={{marginBottom:100}}
+                                keyExtractor={item => item._id}
                                 data ={this.state.upData}
                                 renderItem={({item})=>(
                                     <TouchableOpacity onPress={()=>this.props.navigation.navigate('EventSummary')}>
-                                    <EventCards key={item._id} data={item}/>
+                                    <EventCards {...item}/>
                                     </TouchableOpacity>
                                 )}
                             />:<ActivityIndicator/>}
