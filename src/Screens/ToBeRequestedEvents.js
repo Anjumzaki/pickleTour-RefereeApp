@@ -42,15 +42,15 @@ export default class ToBeRequestedEvents extends React.Component {
         //     isPaid: false
         // }
 
-        const refereeData={
+        // const refereeData={
 
-        }
-        var postingUrl = ''
+        // }
+        // var postingUrl = ''
 
-        axios.post(postingUrl,refereeData)
-        .then(()=>{
+        // axios.post(postingUrl,refereeData)
+        // .then(()=>{
 
-        })
+        // })
         // getData= (userId)=>{
        
 
@@ -117,7 +117,7 @@ export default class ToBeRequestedEvents extends React.Component {
                         </Text>
                     </View>
                     <View style={{ flexDirection: 'row' }} >
-                        <TouchableOpacity onPress={()=>this.request()} style={{backgroundColor:'green', borderRadius:10, borderWidth:1, borderColor:'white', paddingHorizontal:6}}>
+                        <TouchableOpacity onPress={()=>this.request()} style={{backgroundColor:'#2E8465', borderRadius:10, borderWidth:1, borderColor:'white', paddingHorizontal:6}}>
                             <Text style={styles.buttonText}>Request</Text>
                         </TouchableOpacity>
                     </View>

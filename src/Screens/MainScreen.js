@@ -3,6 +3,7 @@ import { View, Text, Button, ImageBackground, Image, TextInput, Dimensions, Styl
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { NavigationActions, StackActions } from 'react-navigation';
+import Responsive from 'react-native-lightweight-responsive';
 import EventCards from './EventCards'
 import axios from 'axios'
 export default class MainScreen extends React.Component {
@@ -163,13 +164,13 @@ export default class MainScreen extends React.Component {
             <View>
                 <View style={styles.wrapTopSty}>
                     <TouchableOpacity onPress={() => this.setState({ actScr: 1 })} style={this.state.actScr == 1 ? styles.topBarStyAct : styles.topBarSty}>
-                        <Text style={styles.topBarText}>  Completed Events</Text>
+                        <Text style={this.state.actScr==1?styles.selectedtopBarText:styles.topBarText}>Completed Events</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => this.setState({ actScr: 2 })} style={this.state.actScr == 2 ? styles.topBarStyAct : styles.topBarSty}>
-                        <Text style={styles.topBarText}>  Ongoing Events</Text>
+                        <Text style={this.state.actScr==2?styles.selectedtopBarText:styles.topBarText}>Ongoing Events</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => this.setState({ actScr: 3 })} style={this.state.actScr == 3 ? styles.topBarStyAct : styles.topBarSty}>
-                        <Text style={styles.topBarText}>  Upcoming Events </Text>
+                        <Text style={this.state.actScr==3?styles.selectedtopBarText:styles.topBarText}>Upcoming Events </Text>
                     </TouchableOpacity>
                 </View>
                 <View style={styles.divider}></View>
@@ -238,13 +239,20 @@ const styles = StyleSheet.create({
     topBarText: {
         color: 'white',
         fontFamily: 'open-sans-bold',
+        fontSize:Responsive.font(12)
+    },
+    selectedtopBarText:{
+        color:'#8ACCB4',
+        fontFamily: 'open-sans-bold',
+        textDecorationLine:'underline',
+        fontSize:Responsive.font(12)
     },
     topBarStyAct: {
         height: 40,
         width: Dimensions.get('window').width / 3,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#48A080'
+        // backgroundColor: '#48A080',
     },
     divider: { width: '100%', height: 10, backgroundColor: 'white' }
 });

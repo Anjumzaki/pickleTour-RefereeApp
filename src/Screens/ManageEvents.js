@@ -5,13 +5,15 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { NavigationActions, StackActions } from 'react-navigation';
 import EventCardsMa1 from './EventCardsMa1'
 import EventCardsMa2 from './EventCardsMa2'
+import Responsive from 'react-native-lightweight-responsive';
 import EventCardsMa3 from './EventCardsMa3'
 import axios from 'axios';
 
 
 export default class MainScreen extends React.Component {
     static navigationOptions = {
-        header: null
+        header: null,
+        
     }
     constructor(props) {
         super(props);
@@ -51,7 +53,7 @@ export default class MainScreen extends React.Component {
     }
 
     getOneData= (userId)=>{
-        console.log('here')
+        // console.log('here')
         var newData = [];
         var gettingUrl = 'http://pickletour.com/api/get/league/page/0'
         
@@ -142,13 +144,13 @@ export default class MainScreen extends React.Component {
             <View>
                 <View style={styles.wrapTopSty}>
                     <TouchableOpacity onPress={() => this.setState({ actScr: 1 })} style={this.state.actScr == 1 ? styles.topBarStyAct : styles.topBarSty}>
-                        <Text style={styles.topBarText}>  My Events</Text>
+                        <Text style={this.state.actScr==1?styles.selectedtopBarText:styles.topBarText}>  My Events</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => this.setState({ actScr: 2 })} style={this.state.actScr == 2 ? styles.topBarStyAct : styles.topBarSty}>
-                        <Text style={styles.topBarText}>  Requested Events</Text>
+                        <Text style={this.state.actScr==2?styles.selectedtopBarText:styles.topBarText}>  Requested Events</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => this.setState({ actScr: 3 })} style={this.state.actScr == 3 ? styles.topBarStyAct : styles.topBarSty}>
-                        <Text style={styles.topBarText}>  My Invitatios </Text>
+                        <Text style={this.state.actScr==3?styles.selectedtopBarText:styles.topBarText}>  My Invitatios </Text>
                     </TouchableOpacity>
                 </View>
                 <View style={styles.divider}></View>
@@ -209,13 +211,20 @@ const styles = StyleSheet.create({
     topBarText: {
         color: 'white',
         fontFamily: 'open-sans-bold',
+        fontSize:Responsive.font(12)
+    },
+    selectedtopBarText:{
+        color:'#8ACCB4',
+        fontFamily: 'open-sans-bold',
+        textDecorationLine:'underline',
+        fontSize:Responsive.font(12)
     },
     topBarStyAct: {
         height: 40,
         width: Dimensions.get('window').width / 3,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#48A080'
+        
     },
     divider: { width: '100%', height: 10, backgroundColor: 'white' }
 });

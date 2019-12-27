@@ -14,6 +14,7 @@ import EventSummary from './Screens/EventSummary'
 import ScoreCard from './Screens/ScoreCard'
 import MatchCards from './Screens/MatchCards'
 import LoadingScreen from './Screens/Loading';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 
 const ManageEventsStack = createStackNavigator(
@@ -52,12 +53,14 @@ const DrawerNavigator = createDrawerNavigator({
 {
     headerMode: 'float',
     navigationOptions: ({ navigation }) => ({
-        headerStyle: { backgroundColor: '#86d6b9' },
+        headerStyle: { backgroundColor: '#48A080' },
         headerTintColor: 'white',
+        headerTitle:navigation.state.routes[navigation.state.index].key=='HomePage'?'Find Events':navigation.state.routes[navigation.state.index].key=='MainScreenStack'?'Dashboard':navigation.state.routes[navigation.state.index].key=='ManageEventsStack'?'Manage Events':'Profile',
+        headerTitleStyle: { alignSelf: 'center' , textAlign:"center", flex:0.8 },
         headerLeft:
-            <TouchableHighlight onPress={() => navigation.openDrawer()}>
-                <Image style={{ width: 35, height: 35, marginLeft: 10 }} source={require('../assets/navigation.png')} />
-            </TouchableHighlight >
+            <TouchableOpacity onPress={() => navigation.openDrawer()}>
+                <Image style={{ width: 30, height: 30, marginLeft: 10 }} source={require('../assets/navigation.png')} />
+            </TouchableOpacity >
     }),
     initialRouteName: 'MainScreenStack',
     contentComponent: CustomSidebarMenu,

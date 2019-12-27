@@ -21,7 +21,7 @@ export default class EventCards extends React.Component {
     //     }
     // }
     componentDidMount(){
-        console.log(this.props.data)
+        // console.log(this.props.data)
         // this.getItem()
         // this.getAllData()
     }
