@@ -3,6 +3,7 @@ import { View, Text, Button, ImageBackground, Image, TextInput, Dimensions, Styl
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { NavigationActions, StackActions } from 'react-navigation';
+import Responsive from 'react-native-lightweight-responsive';
 
 export default class MatchCardsRes extends React.Component {
 
@@ -62,21 +63,46 @@ export default class MatchCardsRes extends React.Component {
                 </View>
                 <View style={{ height: 1, backgroundColor: '#99C5B5', marginBottom: 10, marginTop: 10 }} />
 
+                <View style={{ flex:1,flexDirection:'row', width:'100%'}}>
 
-                <View style={{ flexDirection: 'row', width: '100%', marginRight: 10 }} >
+                    <View style={{flex:0.5, flexDirection:'row'}}>
+                        <View style={{flex:0.7, justifyContent:'center'}}>
+                            <Text style={{color:'#EEE277',fontFamily: 'open-sans-bold',alignSelf:'flex-end', marginRight:10, fontSize:Responsive.font(16)}}></Text>
+                        </View>
+                        <View style={{flex:0.3, justifyContent:'center', alignItems:'center', alignSelf:'center'}}>
+                            <Text style={{color:'#7E7E7E',alignSelf:'flex-end', marginRight:10,backgroundColor:'white',fontFamily: 'open-sans-bold',paddingVertical:Responsive.height(4), fontSize:Responsive.font(22),paddingHorizontal:Responsive.width(5)}}>10</Text>
+                        </View>
+                    </View>
+
+
+                    <View style={{flex:0.5,flexDirection:'row'}}>
+                        <View style={{flex:0.3}}>
+                            <Text style={{color:'#7E7E7E',fontFamily: 'open-sans-bold',marginLeft:10,backgroundColor:'#EEE277',paddingVertical:Responsive.height(4), fontSize:Responsive.font(22),paddingHorizontal:Responsive.width(5)}}>11</Text>
+                        </View>
+                        <View style={{flex:0.7, justifyContent:'center'}}>
+                            <Text style={{color:'#EEE277',alignSelf:'flex-start', marginLeft:10, fontFamily: 'open-sans-bold',fontSize:Responsive.font(16)}}>Winner</Text>
+                        </View>
+                    </View>
+
+
+
+                </View>
+
+
+                {/* <View style={{ flexDirection: 'row', width: '100%', marginRight: 10 }} >
                     <View style={{ flexDirection: 'row', width: '50%', marginRight: 10 ,alignItems:'center'}} >
                         <View style={styles.winner}>
-                            <Text style={styles.tagWinner}> Winner</Text>
-                            <Text style={styles.scoreWinner}> 11</Text>
+                            <Text style={styles.tagWinner}>Winner</Text>
+                            <Text style={styles.scoreWinner}>11</Text>
                         </View>
                     </View>
                     <View style={{ flexDirection: 'row', width: '50%', marginRight: 10,alignItems:'center' }} >
                         <View style={styles.loser}>
-                            <Text style={styles.scoreLoser}> 9</Text>
+                            <Text style={styles.scoreLoser}>9</Text>
                         </View>
                     </View>
 
-                </View>
+                </View> */}
             </View>
 
         );
@@ -102,17 +128,17 @@ const styles = StyleSheet.create({
         color: 'white',
         fontFamily: 'open-sans-bold',
         fontWeight: 'bold',
-        fontSize: 16
+        fontSize: Responsive.font(12)
     },
     head1: {
         color: 'black',
         fontFamily: 'open-sans-bold',
-        fontSize: 17
+        fontSize: Responsive.font(12)
     },
     inHead: {
         color: '#DCDCDC',
         fontFamily: 'open-sans-bold',
-        fontSize: 16
+        fontSize: Responsive.font(12)
     },
     mySBtn: {
         backgroundColor: '#2E8465',
@@ -144,6 +170,7 @@ const styles = StyleSheet.create({
         marginRight: 10,
         fontWeight: 'bold',
         height: 28,
+        fontSize: Responsive.font(11)
     },
     teamName: {
         flexDirection: 'row',
@@ -160,35 +187,39 @@ const styles = StyleSheet.create({
     },
     myStext: {
         color: 'white',
-        fontSize: 17
+        fontSize: Responsive.font(12)
     },
     winner: {
         flexDirection: 'row',
     },
     scoreWinner: {
         color: '#7E7E7E',
-        fontSize: 24,
+        fontSize: Responsive.font(22),
         fontFamily: 'open-sans-bold',
-        padding: 5,
+        // padding: 5,
         backgroundColor: '#EEE277',
-        minHeight:50,
-        minWidth:50,
+        // minHeight:50,
+        // minWidth:50,
+        height:Responsive.height(36),
+        width:Responsive.width(36),
         justifyContent:'center'
     },
     tagWinner: {
         color: '#EEE277',
         fontFamily: 'open-sans-bold',
-        fontSize: 24,
+        fontSize: Responsive.font(16),
         margin: 10
     },
     scoreLoser:{
         color: '#7E7E7E',
-        fontSize: 24,
+        fontSize: Responsive.font(22),
         backgroundColor:'#ECECEC',
-        padding: 5,
+        // padding: 5,
         fontFamily: 'open-sans-bold',
-        minHeight:50,
-        minWidth:50,
+        // minHeight:50,
+        // minWidth:50,
+        height:Responsive.height(36),
+        width:Responsive.width(36),
         justifyContent:'center',
 
 

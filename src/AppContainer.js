@@ -45,9 +45,20 @@ const MainScreenStack = createStackNavigator(
         initialRouteName: 'MainScreen',
     }
 );
+
+const EventSummaryStack = createStackNavigator(
+    {
+        EventSummary: EventSummary,
+        
+    },
+    {
+        initialRouteName: 'EventSummary',
+    }
+);
 const DrawerNavigator = createDrawerNavigator({
     HomePage,
     MainScreenStack,
+    EventSummaryStack,
     ManageEventsStack
 },
 {
@@ -55,7 +66,7 @@ const DrawerNavigator = createDrawerNavigator({
     navigationOptions: ({ navigation }) => ({
         headerStyle: { backgroundColor: '#48A080' },
         headerTintColor: 'white',
-        headerTitle:navigation.state.routes[navigation.state.index].key=='HomePage'?'Find Events':navigation.state.routes[navigation.state.index].key=='MainScreenStack'?'Dashboard':navigation.state.routes[navigation.state.index].key=='ManageEventsStack'?'Manage Events':'Profile',
+        headerTitle:navigation.state.routes[navigation.state.index].key=='HomePage'?'Find Events':navigation.state.routes[navigation.state.index].key=='MainScreenStack'?'Dashboard':navigation.state.routes[navigation.state.index].key=='ManageEventsStack'?'Manage Events':navigation.state.routes[navigation.state.index].key=='EventSummaryStack'?'Match Summary':'Profile',
         headerTitleStyle: { alignSelf: 'center' , textAlign:"center", flex:0.8 },
         headerLeft:
             <TouchableOpacity onPress={() => navigation.openDrawer()}>
