@@ -101,6 +101,7 @@ export default class EventDetails extends React.Component {
                             
                             data ={this.state.tourData}
                             extraData={this.props}
+                            keyExtractor={item => item._id}
 
                             renderItem={({item})=>(
 

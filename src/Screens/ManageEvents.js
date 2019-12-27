@@ -166,21 +166,6 @@ export default class MainScreen extends React.Component {
                                 </TouchableOpacity>
                                 )}
                             />:<ActivityIndicator/>}
-                        {/* <TouchableOpacity onPress={() => { this.props.navigation.navigate('EventDetails') }}>
-                            <EventCardsMa1 />
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={() => { this.props.navigation.navigate('EventDetails') }}>
-                            <EventCardsMa1 />
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={() => { this.props.navigation.navigate('EventDetails') }}>
-                            <EventCardsMa1 />
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={() => { this.props.navigation.navigate('EventDetails') }}>
-                            <EventCardsMa1 />
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={() => { this.props.navigation.navigate('EventDetails') }}>
-                            <EventCardsMa1 />
-                        </TouchableOpacity> */}
 
                     </View> : null}
                     {this.state.actScr == 2 ? <View style={{ padding: 10 }}>
@@ -190,9 +175,6 @@ export default class MainScreen extends React.Component {
                                 keyExtractor={item => item._id}
                                 renderItem={({item})=>(
                                     <EventCardsMa2  />
-                                //     <TouchableOpacity onPress={() => { this.props.navigation.navigate('EventDetails') }}>
-                                   
-                                // </TouchableOpacity>
                                 )}
                             />:<ActivityIndicator/>}
                     </View> : null}
@@ -202,9 +184,7 @@ export default class MainScreen extends React.Component {
                                 keyExtractor={item => item._id}
                                 data ={this.state.inviData}
                                 renderItem={({item})=>(
-                                    
                                     <EventCardsMa3 />
- 
                                 )}
                             />:<ActivityIndicator/>}
                     </View> : null}

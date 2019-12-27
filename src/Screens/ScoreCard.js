@@ -273,6 +273,7 @@ class ScoreCard extends Component {
   }
 
   componentDidMount(){
+    console.log(this.props.navigation.state.params)
     this.changeScreenOrientation()
     this.backHandler = BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
     // if(this.state.TeamFormation=='Doubles'){
@@ -347,9 +348,7 @@ class ScoreCard extends Component {
   
 
 
-  render() { 
-    console.log(this.props.navigation.state.params)
-    
+  render() {     
     let selectedItem = this.state.radioButtons.find(e=>e.checked == true)
     selectedItem = selectedItem? selectedItem.value: this.state.radioButtons[0].value
     this.playingSide=selectedItem
