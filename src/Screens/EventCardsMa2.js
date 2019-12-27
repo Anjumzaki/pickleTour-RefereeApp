@@ -85,12 +85,12 @@ const styles = StyleSheet.create({
         color: 'white',
         fontFamily: 'open-sans-bold',
         fontWeight: 'bold',
-        fontSize: 15
+        fontSize: Responsive.font(12)
     },
     inHead: {
         color: '#DCDCDC',
         fontFamily: 'open-sans-bold',
-        fontSize: 14
+        fontSize: Responsive.font(12)
     },
     mySBtn: {
         backgroundColor: 'white',

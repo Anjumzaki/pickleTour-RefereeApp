@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, Button, ImageBackground, Image, TextInput, Dimensions, StyleSheet, ScrollView } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import Responsive from 'react-native-lightweight-responsive';
 import { NavigationActions, StackActions } from 'react-navigation';
 export default class EventCardsMa1 extends React.Component {
     constructor(props) {
@@ -72,12 +73,12 @@ const styles = StyleSheet.create({
         color: 'white',
         fontFamily: 'open-sans-bold',
         fontWeight: 'bold',
-        fontSize: 15
+        fontSize: Responsive.font(12)
     },
     inHead: {
         color: '#DCDCDC',
         fontFamily: 'open-sans-bold',
-        fontSize: 14
+        fontSize: Responsive.font(12)
     },
     mySBtn: {
         backgroundColor: 'white',

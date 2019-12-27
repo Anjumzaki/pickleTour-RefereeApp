@@ -6,6 +6,7 @@ import { NavigationActions, StackActions } from 'react-navigation';
 import MatchCardsRes from './MatchCardsRes';
 import { Item } from 'native-base';
 import axios from 'axios'
+import Responsive from 'react-native-lightweight-responsive';
 
 export default class EventSummary extends React.Component {
     static navigationOptions = {
@@ -109,7 +110,7 @@ export default class EventSummary extends React.Component {
                                 <Text style={styles.inHead}>Anjum Muneer</Text>
                             </View>
                         </View>
-                                <View style={{ height: 1, backgroundColor: 'gray', marginBottom: 10 }} />
+                                <View style={{ height: 1, backgroundColor: '#E2E2E2', marginVertical: 10 }} />
                                 </View>
                             )}
                             renderItem={({item})=>(
@@ -147,15 +148,15 @@ const styles = StyleSheet.create({
         marginBottom: 10
     },
     head: {
-        color: '#48A080',
+        color: '#145840',
         fontFamily: 'open-sans-bold',
         fontWeight: 'bold',
-        fontSize: 16
+        fontSize: Responsive.font(12)
     },
     inHead: {
         color: '#606060',
         fontFamily: 'open-sans-bold',
-        fontSize: 16
+        fontSize: Responsive.font(12)
     },
     mySBtn: {
         backgroundColor: 'white',

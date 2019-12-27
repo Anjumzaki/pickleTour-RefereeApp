@@ -5,6 +5,8 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { NavigationActions, StackActions } from 'react-navigation';
 import MatchCards from './MatchCards';
 import axios from 'axios'
+import Responsive from 'react-native-lightweight-responsive';
+
 
 // tournament details and schedule----------------------------------------------
 export default class EventDetails extends React.Component {
@@ -102,7 +104,7 @@ export default class EventDetails extends React.Component {
                                 <Text style={styles.inHead}>Anjum Muneer</Text>
                             </View>
                         </View>
-                                    <View style={{ height: 1, backgroundColor: 'gray', marginBottom: 10 }} />
+                                    <View style={{ height: 1, backgroundColor: '#E2E2E2', marginVertical: 10 }} />
                                 </View>
                     
                             )}
@@ -137,15 +139,15 @@ const styles = StyleSheet.create({
         marginBottom: 10
     },
     head: {
-        color: '#48A080',
+        color: '#145840',
         fontFamily: 'open-sans-bold',
         fontWeight: 'bold',
-        fontSize: 16
+        fontSize: Responsive.font(12)
     },
     inHead: {
         color: '#606060',
         fontFamily: 'open-sans-bold',
-        fontSize: 16
+        fontSize: Responsive.font(12)
     },
     mySBtn: {
         backgroundColor: 'white',

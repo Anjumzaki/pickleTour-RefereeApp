@@ -4,6 +4,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { NavigationActions, StackActions } from 'react-navigation';
 import axios from 'axios'
+import Responsive from 'react-native-lightweight-responsive';
 export default class EventCards extends React.Component {
 
     constructor(props) {
@@ -72,7 +73,7 @@ export default class EventCards extends React.Component {
                     <View style={{ flexDirection: 'row', width: '40%', marginLeft: 10 }} >
                     <TouchableOpacity style={styles.mySBtn} onPress={()=>this.props.navigation.navigate('EventSummary')}>
                                     {/* <EventCards {...item}/> */}
-                                    <Text style={styles.myStext}> See Details</Text>
+                                    <Text style={styles.myStext}>See Summary</Text>
                     </TouchableOpacity>
 
                         {/* <TouchableOpacity style={styles.mySBtn}>
@@ -105,12 +106,12 @@ const styles = StyleSheet.create({
         color: 'white',
         fontFamily: 'open-sans-bold',
         fontWeight: 'bold',
-        fontSize: 15
+        fontSize: Responsive.font(13)
     },
     inHead: {
         color: '#DCDCDC',
         fontFamily: 'open-sans-bold',
-        fontSize: 14
+        fontSize: Responsive.font(13)
     },
     mySBtn: {
         backgroundColor: 'white',
@@ -129,6 +130,9 @@ const styles = StyleSheet.create({
 
         elevation: 4,
     },
-
+    myStext:{
+        fontSize: Responsive.font(12),
+        color:'#7E7E7E'
+    }
 
 });

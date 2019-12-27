@@ -87,7 +87,8 @@ const styles = StyleSheet.create({
         color: 'white',
         fontWeight: 'bold',
         borderColor: 'white',
-        borderWidth: 1
+        borderWidth: 1,
+        fontSize: Responsive.font(10)
     },
     bt2: {
         backgroundColor: '#924741',
@@ -100,18 +101,19 @@ const styles = StyleSheet.create({
         color: 'white',
         fontWeight: 'bold',
         borderColor: 'white',
-        borderWidth: 1
+        borderWidth: 1,
+        fontSize: Responsive.font(10)
     },
     head: {
         color: 'white',
         fontFamily: 'open-sans-bold',
         fontWeight: 'bold',
-        fontSize: 15
+        fontSize: Responsive.font(12)
     },
     inHead: {
         color: '#DCDCDC',
         fontFamily: 'open-sans-bold',
-        fontSize: 14
+        fontSize: Responsive.font(12)
     },
     mySBtn: {
         backgroundColor: 'white',

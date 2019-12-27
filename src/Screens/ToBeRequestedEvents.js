@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, Button, ImageBackground, Image, TextInput, Dimensions, StyleSheet, ScrollView } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import Responsive from 'react-native-lightweight-responsive';
 import { NavigationActions, StackActions } from 'react-navigation';
 import axios from 'axios';
 export default class ToBeRequestedEvents extends React.Component {
@@ -117,7 +118,7 @@ export default class ToBeRequestedEvents extends React.Component {
                         </Text>
                     </View>
                     <View style={{ flexDirection: 'row' }} >
-                        <TouchableOpacity onPress={()=>this.request()} style={{backgroundColor:'#2E8465', borderRadius:10, borderWidth:1, borderColor:'white', paddingHorizontal:6}}>
+                        <TouchableOpacity onPress={()=>this.request()} style={{backgroundColor:'#2E8465', borderRadius:10, borderWidth:1, borderColor:'white', paddingHorizontal:15, paddingVertical:2}}>
                             <Text style={styles.buttonText}>Request</Text>
                         </TouchableOpacity>
                     </View>
@@ -147,17 +148,20 @@ const styles = StyleSheet.create({
         color: 'white',
         fontFamily: 'open-sans-bold',
         fontWeight: 'bold',
-        fontSize: 15
+        fontSize: Responsive.font(12)
+
     },
     buttonText:{
         color: 'white',
         fontFamily: 'open-sans-bold',
-        fontSize: 14
+        fontSize: Responsive.font(10)
+
     },
     inHead: {
         color: '#DCDCDC',
         fontFamily: 'open-sans-bold',
-        fontSize: 14
+        fontSize: Responsive.font(12)
+
     },
     mySBtn: {
         backgroundColor: 'white',

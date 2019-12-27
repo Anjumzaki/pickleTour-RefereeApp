@@ -3,6 +3,7 @@ import { View, Text, Button, ImageBackground, Image, TextInput, Dimensions, Styl
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { NavigationActions, StackActions,withNavigation  } from 'react-navigation';
+import Responsive from 'react-native-lightweight-responsive';
 
 export default class MatchCards extends React.Component {
 
@@ -96,17 +97,17 @@ const styles = StyleSheet.create({
         color: 'white',
         fontFamily: 'open-sans-bold',
         fontWeight: 'bold',
-        fontSize: 16
+        fontSize: Responsive.font(12)
     },
     head1: {
         color: 'black',
         fontFamily: 'open-sans-bold',
-        fontSize: 17
+        fontSize: Responsive.font(12)
     },
     inHead: {
         color: '#DCDCDC',
         fontFamily: 'open-sans-bold',
-        fontSize: 16
+        fontSize: Responsive.font(12)
     },
     mySBtn: {
         backgroundColor: '#2E8465',
@@ -138,6 +139,8 @@ const styles = StyleSheet.create({
         marginRight: 10,
         fontWeight: 'bold',
         height: 28,
+        
+        fontSize: Responsive.font(11)
     },
     teamName: {
         flexDirection: 'row',
@@ -154,7 +157,7 @@ const styles = StyleSheet.create({
     },
     myStext:{
         color:'white',
-        fontSize:17
+        fontSize: Responsive.font(12)
     }
 
 
