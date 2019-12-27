@@ -20,6 +20,8 @@ export default class MatchCards extends React.Component {
     //     }))
     // }
     render() {
+        console.log('----------------------------------------------------------------------------------------------------------')
+        console.log(this.props.data)
         // console.log('saeedi')
         // console.log(this.props.navigation.state.params.item)
         return (

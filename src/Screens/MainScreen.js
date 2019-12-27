@@ -181,9 +181,9 @@ export default class MainScreen extends React.Component {
                                 keyExtractor={item => item._id}
                                 data ={this.state.compData}
                                 renderItem={({item})=>(
-                                    <TouchableOpacity onPress={()=>this.props.navigation.navigate('EventSummary')}>
-                                    <EventCards {...item}/>
-                                    </TouchableOpacity>
+                                    // <TouchableOpacity onPress={()=>this.props.navigation.navigate('EventSummary')}>
+                                    <EventCards navigation={this.props.navigation} data={item}/>
+                                    // </TouchableOpacity>
                                 )}
                             />:<ActivityIndicator/>}
                                
@@ -199,9 +199,9 @@ export default class MainScreen extends React.Component {
                                 keyExtractor={item => item._id}
                                 data ={this.state.onData}
                                 renderItem={({item})=>(
-                                    <TouchableOpacity onPress={()=>this.props.navigation.navigate('EventSummary')}>
-                                    <EventCards {...item}/>
-                                    </TouchableOpacity>
+                                    // <TouchableOpacity onPress={()=>this.props.navigation.navigate('EventSummary')}>
+                                    <EventCards navigation={this.props.navigation} data={item}/>
+                                    // </TouchableOpacity>
                                 )}
                             />:<ActivityIndicator/>}
                     </View> : null}
@@ -211,9 +211,9 @@ export default class MainScreen extends React.Component {
                                 keyExtractor={item => item._id}
                                 data ={this.state.upData}
                                 renderItem={({item})=>(
-                                    <TouchableOpacity onPress={()=>this.props.navigation.navigate('EventSummary')}>
-                                    <EventCards {...item}/>
-                                    </TouchableOpacity>
+                                    // <TouchableOpacity onPress={()=>this.props.navigation.navigate('EventSummary')}>
+                                    <EventCards navigation={this.props.navigation} data={item}/>
+                                    // {/* </TouchableOpacity> */}
                                 )}
                             />:<ActivityIndicator/>}
                     </View> : null}

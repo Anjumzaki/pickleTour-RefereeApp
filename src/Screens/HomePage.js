@@ -4,6 +4,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { NavigationActions, StackActions } from 'react-navigation';
 import EventCardsMa2 from './EventCardsMa2';
+import ToBeRequestedEvents from './ToBeRequestedEvents'
 import axios from 'axios';
 import ListView from 'deprecated-react-native-listview'
 export default class HomePage extends React.Component {
@@ -160,7 +161,7 @@ export default class HomePage extends React.Component {
                     <FlatList
                         data={this.state.tourData}
                         renderItem={({ item }) => (
-                            <EventCardsMa2 key={item._id} data={item} />
+                            <ToBeRequestedEvents key={item._id} data={item} />
                         )}
                         ListHeaderComponent={() => (
                             <View>    

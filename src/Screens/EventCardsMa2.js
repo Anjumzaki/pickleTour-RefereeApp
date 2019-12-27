@@ -18,6 +18,10 @@ export default class EventCardsMa2 extends React.Component {
         }))
     }
 
+    request(){
+        
+    }
+
     render() {
         // const tournament = this.props.data
         return (

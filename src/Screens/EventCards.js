@@ -21,7 +21,7 @@ export default class EventCards extends React.Component {
     //     }
     // }
     componentDidMount(){
-        
+        console.log(this.props.data)
         // this.getItem()
         // this.getAllData()
     }
@@ -70,9 +70,14 @@ export default class EventCards extends React.Component {
                         <Text style={styles.inHead}>Men's Single</Text>
                     </View>
                     <View style={{ flexDirection: 'row', width: '40%', marginLeft: 10 }} >
-                        <TouchableOpacity style={styles.mySBtn}>
-                            <Text style={styles.myStext}> See Details</Text>
-                        </TouchableOpacity>
+                    <TouchableOpacity style={styles.mySBtn} onPress={()=>this.props.navigation.navigate('EventSummary')}>
+                                    {/* <EventCards {...item}/> */}
+                                    <Text style={styles.myStext}> See Details</Text>
+                    </TouchableOpacity>
+
+                        {/* <TouchableOpacity style={styles.mySBtn}>
+                            
+                        </TouchableOpacity> */}
                     </View>
                 </View>
             </View>
