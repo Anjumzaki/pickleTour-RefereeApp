@@ -167,7 +167,9 @@ export default class MainScreen extends React.Component {
                                     <EventCardsMa1 />
                                 </TouchableOpacity>
                                 )}
-                            />:<ActivityIndicator/>}
+                            />:<View style={{ paddingTop:"50%",flex: 1,justifyContent: 'center'}}>
+                            <ActivityIndicator size="large" color="#48A080" />
+                        </View>}
 
                     </View> : null}
                     {this.state.actScr == 2 ? <View style={{ padding: 10 }}>
@@ -178,7 +180,9 @@ export default class MainScreen extends React.Component {
                                 renderItem={({item})=>(
                                     <EventCardsMa2  />
                                 )}
-                            />:<ActivityIndicator/>}
+                            />:<View style={{ paddingTop:"50%",flex: 1,justifyContent: 'center'}}>
+                            <ActivityIndicator size="large" color="#48A080" />
+                        </View>}
                     </View> : null}
                     {this.state.actScr == 3 ? <View style={{ padding: 10 }}>
                     {this.state.dataOneLoaded?<FlatList
@@ -188,7 +192,9 @@ export default class MainScreen extends React.Component {
                                 renderItem={({item})=>(
                                     <EventCardsMa3 />
                                 )}
-                            />:<ActivityIndicator/>}
+                            />:<View style={{ paddingTop:"50%",flex: 1,justifyContent: 'center'}}>
+                            <ActivityIndicator size="large" color="#48A080" />
+                        </View>}
                     </View> : null}
                 {/* </ScrollView> */}
             </View>

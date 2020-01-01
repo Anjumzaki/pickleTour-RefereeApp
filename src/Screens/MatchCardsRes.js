@@ -77,7 +77,7 @@ export default class MatchCardsRes extends React.Component {
 
                     <View style={{flex:0.5,flexDirection:'row'}}>
                         <View style={{flex:0.3}}>
-                            <Text style={{color:'#7E7E7E',fontFamily: 'open-sans-bold',marginLeft:10,backgroundColor:'#EEE277',paddingVertical:Responsive.height(4), fontSize:Responsive.font(22),paddingHorizontal:Responsive.width(5)}}>11</Text>
+                            <Text style={{alignSelf:'flex-end', color:'#7E7E7E',fontFamily: 'open-sans-bold',marginLeft:10,backgroundColor:'#EEE277',paddingVertical:Responsive.height(4), fontSize:Responsive.font(22),paddingHorizontal:Responsive.width(5)}}>11</Text>
                         </View>
                         <View style={{flex:0.7, justifyContent:'center'}}>
                             <Text style={{color:'#EEE277',alignSelf:'flex-start', marginLeft:10, fontFamily: 'open-sans-bold',fontSize:Responsive.font(16)}}>Winner</Text>

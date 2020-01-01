@@ -119,7 +119,9 @@ export default class EventSummary extends React.Component {
                                 <MatchCardsRes navigation={this.props.navigation} data={item} />
                             
                             )}
-                        />:<ActivityIndicator/>}
+                        />:<View style={{ paddingTop:"50%",flex: 1,justifyContent: 'center'}}>
+                        <ActivityIndicator size="large" color="#48A080" />
+                    </View>}
                         
                         {/* <MatchCardsRes />
                         <MatchCardsRes />

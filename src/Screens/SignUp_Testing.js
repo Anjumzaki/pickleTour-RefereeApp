@@ -1,86 +1,88 @@
 import React from 'react';
-import { AsyncStorage, Picker,View, Text, Button, ImageBackground, Image, TextInput, Dimensions, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, Button, ImageBackground, Image, TextInput, Dimensions, StyleSheet, ScrollView, Platform } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { NavigationActions, StackActions } from 'react-navigation';
 import * as Font from 'expo-font';
-import DatePicker from 'react-native-datepicker'
+import DateTimePicker from '@react-native-community/datetimepicker';
 import * as firebase from 'firebase';
 import axios from 'axios';
-import { Assets } from 'react-navigation-stack';
 
-
-export default class SignUp extends React.Component {
+export default class Login extends React.Component {
     static navigationOptions = {
         header: null
     }
     constructor(props) {
         super(props);
         this.state = {
-            email: 'mahmedsaeedi@gmail.com',
-            firstName: 'Ahmed',
-            Password: '123456',
-            confirmPass: '123456',
+            email: 'masaeedi@gmail.com',
+            userName: 'masaeedi',
+            Password: '1234',
+            confirmPass: '1234',
             msg: "",
-            dob: '',
-            gender:'',
-            address:'abc',
-            stage1:true,
-            phoneNumber:'123'
+            date: new Date(),
+            show:false
         };
     }
 
-    verifyDataBefore=()=>{
-        if(this.state.address==='' || this.state.dob==='' || this.state.gender==='' || this.state.email ==='' || this.state.confirmPass==='' || this.state.email==='' || this.state.userName===''){
-            this.setState({msg: 'Incomplete form !'})
-        }
-        else{
-            this.handleSignUp()
-        }
-    }
     
     handleSignUp=()=>{
         firebase
             .auth()
             .createUserWithEmailAndPassword(this.state.email, this.state.Password)
             .then((data)=>{
-                // console.log(data.user.uid)
                 const newUser ={
-                    uid: data.user.uid,
-                    firstName:this.state.firstName,
+                    id: data.user.uid,
+                    dateOfBirth: this.state.dob,
                     email: this.state.email,
                     password: this.state.confirmPass,
-                    dateOfBirth: this.state.dob,
-                    gender:this.state.gender,
-                    address:this.state.address,
-                    phoneNumber:this.state.phoneNumber    
-                    
-                    
                 }
-                // console.log('newUser: ',newUser)
                 axios.post('http://pickletour.appspot.com/api/user/add',newUser)
-                    .then((data)=>{
-                        // console.log("Herereeeeeeeeee", data)
-                        // console.log(newUser)
-                        AsyncStorage.setItem('userProfileData', JSON.stringify(newUser))
-                        console.log(AsyncStorage.getItem('userProfileData'))
-                    })
+                    .then(this.props.navigation.navigate('Login'))
                     
             }
             
             )
             .catch((error)=>{
-                this.setState({msg:error.message})
+                console.log('Error')
             })
     }
 
     login() {
+        // console.log("login")
+        // axios
+        //     .post('https://blooming-ridge-94645.herokuapp.com/login',{
+        //         userName: this.state.userName,
+        //         password: this.state.Password
+        //     })
+        //     .then((response) => { 
+
+        //         console.log("resp1",response.data)
+        //         if(response.data === "match"){
+        //             this.props.navigation.navigate('MainTabs')
+        //             this.props.navigation.dispatch(StackActions.reset({
+        //                 index: 0,
+        //                 actions: [NavigationActions.navigate({ routeName: 'MainTabs' })],
+        //             }))
+        //         }else if(response.data === "wrong"){
+        //             this.setState({msg: "password is incorrect"})
+        //         }
+        //     }).catch((error) => { 
+        //     console.log("mongodb get register error",error)
+        //     this.setState({msg: "login info is incorrect"})
+        //     })
         this.props.navigation.navigate('MainTabs')
         this.props.navigation.dispatch(StackActions.reset({
             index: 0,
             actions: [NavigationActions.navigate({ routeName: 'MainTabs' })],
         }))
     }
+
+    // setDate = (event, date) =>{
+    //     this.setState({
+    //         date:date
+    //     })
+    // }
 
     showPicker = async (stateKey, options) => {
         try {
@@ -100,29 +102,22 @@ export default class SignUp extends React.Component {
     };
     render() {
         // console.log("state", this.state)
-
-        const { firstName, email, Password, confirmPass, dob, gender, address, phoneNumber } = this.state
-        const enabled = firstName.length >0 && email.length>0 && Password==confirmPass && dob.length>0 && Password.length>0 && confirmPass.length>0 
-        const enabled2 = gender.length>0 && address.length>0 && phoneNumber.length>0 
+        const {date, show} = this.state;
         return (
 
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#86d6b9' }}>
 
 
                 <KeyboardAwareScrollView enableOnAndroid={true}>
-                    {this.state.stage1? <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', height: Dimensions.get('window').height - 70 }}>
-                        <View style={{flexDirection: 'row',
-                                    justifyContent: 'center',
-                                    alignItems: 'center',
-                                    height: 50,
-                                    marginBottom:10, marginTop:80}}>
+                    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', height: Dimensions.get('window').height - 70 }}>
+                        <View style={styles.SectionStyle}>
                             <TextInput
                                 style={styles.forms
                                 }
                                 placeholderTextColor={'gray'}
-                                onChangeText={firstName => this.setState({ firstName })}
-                                value={this.state.firstName}
-                                placeholder="First Name"
+                                onChangeText={userName => this.setState({ userName })}
+                                value={this.state.userName}
+                                placeholder="User Name"
                                 keyboardType="default"
                                 returnKeyType="next"
                             />
@@ -172,9 +167,10 @@ export default class SignUp extends React.Component {
                             />
                         </View>
                         <View style={styles.SectionStyle}>
-                            <DatePicker
-                                 style={styles.forms1}
-                                date={this.state.dob} //initial date from state
+                            {show && <DateTimePicker
+                                style={styles.forms1}
+                                display="default"
+                                value={date} //initial date from state
                                 mode="date" //The enum of date, datetime and time
                                 placeholder="Date of Birth"
                                 allowFontScaling={false}
@@ -210,130 +206,37 @@ export default class SignUp extends React.Component {
                                         color: 'gray'
                                     }
                                 }}
-                                onDateChange={dob => {
-                                    this.setState({ dob });
-                                }}
-                            />
-
-                           
+                                onChange={date => this.setState({date})}
+                                
+                            />}
 
                         </View>
-
-                        <TouchableOpacity  disabled={!enabled} onPress={()=>this.setState({stage1:false})
-                } style={{ width: Dimensions.get('window').width - 105, alignItems: 'center', backgroundColor: enabled ? "#48A080" :'#BEBAC5', padding: 10, borderRadius: 100, marginTop: 20}} >
-                    <Text style={styles.regButton1} >Continue  </Text>
-                </TouchableOpacity>
-                        </View>:
-                        
-                        
-                        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', height: Dimensions.get('window').height - 70 }}>
-                        <View style={{borderWidth: 1,fontSize: 19, margin:10,
-                            borderColor: '#48A080',
-                            width: Dimensions.get('window').width - 105,
-                            borderRadius:20,
-                            backgroundColor:'white',
-                            // padding: 8,
-                            paddingLeft:10,height: 50,paddingRight:20, justifyContent:'center'}}>
-
-                
-                <Picker
-                        selectedValue={this.state.gender}
-                        style={{
-                            
-                           height:45,
-                            
-                            backgroundColor:'white',
-                            
-                            fontFamily: 'open-sans-bold',
-                            color: 'black'}}
-                        onValueChange={(itemValue, itemIndex) =>
-                            this.setState({ gender: itemValue})
-                        }>
-                        <Picker.Item label='Select Gender' value=""/>
-                        <Picker.Item label='Male' value="male"/>
-                        <Picker.Item label='Female' value="female"/>
-                    </Picker>
+                        <TouchableOpacity onPress={() =>
+                            this.handleSignUp()
+                        } style={styles.regButton} >
+                            <Text style={styles.regButton1} >REGISTER  </Text>
+                        </TouchableOpacity>
+                        <View>
+                            <Text>
+                                {this.state.msg}
+                            </Text>
+                        </View>
                     </View>
-                    <View style={styles.SectionStyle}>
-                    <TextInput
-                        style={styles.forms
-                        }
-                        placeholderTextColor={'gray'}
-
-                        onChangeText={address=> this.setState({ address })}
-                        value={this.state.address}
-                        placeholder="Address"
-                        keyboardType="email-address"
-                        returnKeyType="next"
-                    />
-                </View>
-
-                <View style={styles.SectionStyle}>
-                    <TextInput
-                        style={styles.forms
-                        }
-                        placeholderTextColor={'gray'}
-
-                        onChangeText={phoneNumber=> this.setState({ phoneNumber })}
-                        value={this.state.phoneNumber}
-                        placeholder="Phone Number"
-                        keyboardType="phone-pad"
-                        returnKeyType="done"
-                    />
-                </View>
-
-                <TouchableOpacity disabled={!enabled2} onPress={() =>
-                    this.handleSignUp()
-                } style={{width: Dimensions.get('window').width - 105,
-                        alignItems: 'center',
-                        backgroundColor: enabled2?'#48A080':'#BEBAC5',
-                        padding: 10,
-                        borderRadius: 100,
-                        marginTop: 20}} >
-                    <Text style={styles.regButton1} >REGISTER  </Text>
-                </TouchableOpacity>
-                <View style={{justifyContent:'center', alignItems:'center', alignSelf:'center'}}>
-                    <Text style={{color:'#E48D6A', fontFamily:'open-sans-bold', fontSize:19, padding:20, alignSelf:'center', textAlign:'center'}}>
-                        {this.state.msg}
-                    </Text>
-                </View>
-            </View>
-                        }
-                        
-
-                        
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    <View style={{ alignItems: 'center', marginTop:15 }}>
+                    <View style={{ alignItems: 'center' }}>
                         <View style={{ flexDirection: 'row' }}>
                             <Text style={styles.reg1}>  Already have an Account </Text>
                             <TouchableOpacity onPress={() => this.props.navigation.navigate('Login')}>
                                 <Text style={styles.reg} >LOGIN </Text>
                             </TouchableOpacity>
                         </View>
+
+                        <Button onPress={this.setState({show:true})} title="asas"/>
                     </View>
+
+                    {/* <Button
+                            title="Go to Sign up"
+                            onPress={() => this.props.navigation.navigate('SignUp')}
+                        /> */}
                 </KeyboardAwareScrollView>
 
             </View>
@@ -405,7 +308,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#48A080',
         padding: 10,
         borderRadius: 100,
-        marginTop: 20
+        marginTop: 60
 
     },
     reg: {

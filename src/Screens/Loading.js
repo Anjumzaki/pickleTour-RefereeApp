@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet,View, Text, ActivityIndicator, ImageBackground } from 'react-native';
+import { AsyncStorage, StyleSheet,View, Text, ActivityIndicator, ImageBackground } from 'react-native';
 import firebase from 'firebase';
 
 
@@ -11,8 +11,17 @@ class LoadingScreen extends Component {
   }
 
   componentDidMount(){
+      //AsyncStorage.clear()
       firebase.auth().onAuthStateChanged(user =>{
-          this.props.navigation.navigate(user? 'MainTabs':'Login')
+        if(user){
+          setTimeout(()=>{
+              this.props.navigation.navigate('MainTabs')
+          },3000)
+        }  
+        else{
+          this.props.navigation.navigate('Login')
+        }
+        //this.props.navigation.navigate(user? 'MainTabs':'Login')
           // console.log('USER',user.uid)
       })
   }
@@ -20,7 +29,7 @@ class LoadingScreen extends Component {
   render() {
     return (
      <ImageBackground style={{width: '100%', height: '100%', justifyContent:'center'}} source={require('../../assets/splash.png')}>
-            <ActivityIndicator size='large'/>
+            <ActivityIndicator size='large' style={{flex:1, alignSelf:'center'}}/>
      </ImageBackground>
     );
   }

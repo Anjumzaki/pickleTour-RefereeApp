@@ -114,7 +114,9 @@ export default class EventDetails extends React.Component {
                                 <MatchCards navigation={this.props.navigation} data={item} />
                             
                             )}
-                        />:<ActivityIndicator/>}
+                        />:<View style={{ paddingTop:"50%",flex: 1,justifyContent: 'center'}}>
+                        <ActivityIndicator size="large" color="#48A080" />
+                    </View>}
                     </View>
                 {/* </ScrollView> */}
 

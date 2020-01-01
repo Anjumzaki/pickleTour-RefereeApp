@@ -26,8 +26,23 @@ export default class MainScreen extends React.Component {
             dataFound: false,
         };
     }
-    componentDidMount(){
-        this.getItem()
+// componentDidUpdate(){
+//         this.forceUpdate()
+//     }
+    UNSAFE_componentWillMount(){
+        
+        this.getUserData()
+        // console.log() 
+    }
+    async getUserData(){
+        try{
+            let user = await AsyncStorage.getItem('userProfileData')
+            let parsed = JSON.parse(user)
+            this.getItem()
+            // console.log(parsed)
+        }catch(error){
+            console.log(error)
+        }
     }
     
     async getItem(){
@@ -186,7 +201,10 @@ export default class MainScreen extends React.Component {
                                     <EventCards navigation={this.props.navigation} data={item}/>
                                     // </TouchableOpacity>
                                 )}
-                            />:<ActivityIndicator/>}
+                            />:<View style={{ paddingTop:"50%",flex: 1,justifyContent: 'center'}}>
+                                    <ActivityIndicator size="large" color="#48A080" />
+                                </View>
+                            }
                                
                             
                             
@@ -204,7 +222,10 @@ export default class MainScreen extends React.Component {
                                     <EventCards navigation={this.props.navigation} data={item}/>
                                     // </TouchableOpacity>
                                 )}
-                            />:<ActivityIndicator/>}
+                            />:<View style={{ paddingTop:"50%",flex: 1,justifyContent: 'center'}}>
+                                <ActivityIndicator size="large" color="#48A080" />
+                            </View>
+                    }
                     </View> : null}
                     {this.state.actScr == 3 ? <View style={{ padding: 10 }}>
                     {this.state.dataThreeLoaded?<FlatList
@@ -216,7 +237,10 @@ export default class MainScreen extends React.Component {
                                     <EventCards navigation={this.props.navigation} data={item}/>
                                     // {/* </TouchableOpacity> */}
                                 )}
-                            />:<ActivityIndicator/>}
+                            />:<View style={{paddingTop:"50%", flex: 1,justifyContent: 'center'}}>
+                                    <ActivityIndicator size="large" color="#48A080" />
+                                </View>
+                    }
                     </View> : null}
                 {/* </ScrollView> */}
             </View>

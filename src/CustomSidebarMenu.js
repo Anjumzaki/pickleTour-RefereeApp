@@ -7,8 +7,10 @@ export default class CustomSidebarMenu extends Component {
   constructor() {
     super();
     this.itemDeleted=false
+    this.data=''
     this.state = {
       modalVisible: false,
+      parsedData:''
     }
     //Array of the sidebar navigation option with icon and screen to navigate
     //This screens can be any screen defined in Drawer Navigator in App.js
@@ -49,10 +51,26 @@ export default class CustomSidebarMenu extends Component {
     this.props.navigation.navigate('Login')
     this.props.navigation.closeDrawer()
   }
+  UNSAFE_componentWillMount(){
+    this.getUserData()
+  }
+
+  async getUserData(){
+    try{
+      let user = await AsyncStorage.getItem('userProfileData')
+      // console.log('Here',user)
+      this.data= JSON.parse(user)
+      // console.log(this.data)
+
+    }catch(error){
+      alert(error)
+    }
+  }
 
   UserLogout(){
     firebase.auth().signOut().then(function() {
-      this.props.navigation.navigate('Login')
+      AsyncStorage.removeItem('userProfileData')
+      this.props.navigation.navigate('Login',{loading:true})
     }).catch(function(error) {
       // An error happened.
     });
@@ -67,6 +85,7 @@ export default class CustomSidebarMenu extends Component {
   //   }
   // }
   render() {
+    // console.log(this.state.parsedData.address)
     return (
       <View style={styles.sideMenuContainer}>
         {/*Top Large Image */}
@@ -76,8 +95,8 @@ export default class CustomSidebarMenu extends Component {
             source={require('../assets/User_Icon.png')}
             style={{ width: 50, height: 50,borderRadius:100,marginTop:20 }}
           />
-          <Text style={{fontSize:23,color:'white',fontFamily: 'open-sans-bold'}}>Anjum Zaki</Text>
-          <Text style={{fontSize:17,color:'white',fontFamily: 'open-sans-bold'}}>zakianjummuneer@gmail.com</Text>
+          <Text style={{fontSize:23,color:'white',fontFamily: 'open-sans-bold'}}>{this.data.firstName}</Text>
+          <Text style={{fontSize:17,color:'white',fontFamily: 'open-sans-bold'}}>{this.data.email}</Text>
         </View>
        
         {/*Divider between Top Image and Sidebar Option*/}

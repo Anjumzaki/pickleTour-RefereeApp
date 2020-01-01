@@ -372,7 +372,7 @@ class ScoreCard extends Component {
 
               </View>
               <View style={{flex:0.8, justifyContent:'center'}}>
-                <Text style={{fontWeight:'bold', alignSelf:'center',fontSize:Responsive.font(20)}}>Settings</Text>
+              <Text style={{ fontFamily: 'open-sans-bold', alignSelf:'center',fontSize:Responsive.font(20)}}>Settings</Text>
               </View>
 
               <View style={{flex:0.1, justifyContent:'center'}}>
@@ -386,11 +386,11 @@ class ScoreCard extends Component {
 
               <View style={{flex:0.5, flexDirection:'row',alignItems:'center', }}>
                 <View style={{flex:0.5}}>
-                  <Text style={{paddingLeft:50,fontSize:Responsive.font(20)}}>Starting Side</Text>
+                  <Text style={{fontFamily: 'open-sans-simple',paddingLeft:50,fontSize:Responsive.font(20)}}>Starting Side</Text>
                 </View>
                 <View style={{flex:0.5}}>
                 <RadioGroup
-                  labelStyle={{fontSize:Responsive.font(16)}}
+                  labelStyle={{fontFamily: 'open-sans-simple',fontSize:Responsive.font(16)}}
                   color='#0277BD'
                   radioButtons={this.state.radioButtons}
                   onPress={radioButtons=>this.setState({radioButtons})}
@@ -404,15 +404,15 @@ class ScoreCard extends Component {
 
               <View style={{flex:0.5,flexDirection:'row',alignItems:'center',}}>
               <View style={{flex:0.5}}>
-                  <Text style={{paddingLeft:50,fontSize:Responsive.font(20)}}>Points to win</Text>
+                  <Text style={{fontFamily: 'open-sans-simple',paddingLeft:50,fontSize:Responsive.font(20)}}>Points to win</Text>
                 </View>
                 <View style={{flex:0.5}}>
                <RadioGroup
-                  labelStyle={{fontSize:Responsive.font(16)}}
+                  labelStyle={{fontFamily: 'open-sans-simple',fontSize:Responsive.font(16)}}
                   color='#0277BD'
                   radioButtons={this.state.pointsButton}
                   onPress={pointsButton=>this.setState({pointsButton})}
-                  style={{ flexDirection:'row'}}
+                  style={{ flexDirection:'row',}}
                 />
                 </View>
               </View>
@@ -421,7 +421,7 @@ class ScoreCard extends Component {
 
               <View style={{flex:0.5,flexDirection:'row',alignItems:'center',}}>
               <View style={{flex:0.5}}>
-                  <Text style={{paddingLeft:50,fontSize:Responsive.font(20)}}>Win By 2</Text>
+                  <Text style={{fontFamily: 'open-sans-simple',paddingLeft:50,fontSize:Responsive.font(20)}}>Win By 2</Text>
                 </View>
                 <View style={{flex:0.5}}>
                 <ListItem >
@@ -467,13 +467,13 @@ class ScoreCard extends Component {
             {/* Buttons */}
             <View style={{ flex:0.25, justifyContent:'space-around', flexDirection:'row'}}>
                 <TouchableOpacity  onPress={()=>this.startingGame()} style={{ height:'50%',paddingHorizontal:20,marginTop:10,backgroundColor:'#91c549', justifyContent:'center', borderRadius:12}}>
-                  <Text style={{alignSelf:'center', color:'#515151',fontSize:Responsive.font(15)}}>Start</Text>
+                  <Text style={{fontFamily: 'open-sans-bold',alignSelf:'center', color:'#515151',fontSize:Responsive.font(15)}}>Start</Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={()=>this.resettingGame()}style={{ height:'50%',paddingHorizontal:20,marginTop:10,backgroundColor:'#91c549', justifyContent:'center',borderRadius:12}}>
-                <Text style={{alignSelf:'center', color:'#515151',fontSize:Responsive.font(15)}}>Reset</Text>
+                <Text style={{fontFamily: 'open-sans-bold',alignSelf:'center', color:'#515151',fontSize:Responsive.font(15)}}>Reset</Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={()=>this.props.navigation.navigate('ManageEventsStack')} style={{ height:'50%',paddingHorizontal:20,marginTop:10,backgroundColor:'#91c549', justifyContent:'center',borderRadius:12}}>
-                <Text style={{alignSelf:'center', color:'#515151',fontSize:Responsive.font(15)}}>Exit</Text>
+                <Text style={{fontFamily: 'open-sans-bold',alignSelf:'center', color:'#515151',fontSize:Responsive.font(15)}}>Exit</Text>
                 </TouchableOpacity>
             </View>
 
@@ -489,7 +489,7 @@ class ScoreCard extends Component {
         <View style={{width:'50%', flex:1, flexDirection:'row' }}>
           <View style={{flex:0.7, flexDirection:'column'}}>
             {this.state.Team1Serving?<View style={{backgroundColor:'#91c549', width:Responsive.width(100), height:Responsive.height(30), alignSelf:'flex-end', borderColor:'#707070', borderWidth:1,marginTop:'1%'}}>
-              <Text style={{color:'#515151', alignSelf:'center', fontSize:Responsive.font(20)}}>{'Serve '+this.state.Serve}</Text>
+              <Text style={{fontFamily: 'open-sans-simple',color:'#515151', alignSelf:'center', fontSize:Responsive.font(20)}}>{'Serve '+this.state.Serve}</Text>
             </View>:<View style={{ height:Responsive.height(30)}}></View>}
             {/* Player 2 Name and Ball */}
             
@@ -501,7 +501,7 @@ class ScoreCard extends Component {
 
 
               <View>
-                <Text style={{color:'white', fontSize:Responsive.font(16)}}>{this.state.Section2}</Text>
+                <Text style={{fontFamily: 'open-sans-simple',color:'white', fontSize:Responsive.font(16)}}>{this.state.Section2}</Text>
               </View>
 
               
@@ -518,14 +518,14 @@ class ScoreCard extends Component {
 
 
               <View>
-                <Text style={{color:'white',fontSize:Responsive.font(16)}}>{this.state.Section1}</Text>
+                <Text style={{fontFamily: 'open-sans-simple',color:'white',fontSize:Responsive.font(16)}}>{this.state.Section1}</Text>
               </View> 
             </View>
           </View> 
         {/* ------------------------------ */}
           <View style={{ flex:0.3}}>
             <View style={{height:Responsive.height(40),width:Responsive.width(50),backgroundColor:this.state.Team1Serving?'#91c549':'white', alignSelf:'center', justifyContent:'center', borderWidth:1,borderColor:'#707070'}}>
-              <Text style={{color:'#515151', alignSelf:'center', fontSize:Responsive.font(16)}}>{this.state.ScoreTeam1}</Text>
+              <Text style={{fontFamily: 'open-sans-simple',color:'#515151', alignSelf:'center', fontSize:Responsive.font(16)}}>{this.state.ScoreTeam1}</Text>
             </View>
           </View>
         </View>
@@ -537,13 +537,13 @@ class ScoreCard extends Component {
         <View style={{width:'50%',flex:1, flexDirection:'row'}}>
           <View style={{ flex:0.3}}>
             <View style={{height:Responsive.height(40),width:Responsive.width(50), backgroundColor:this.state.Team2Serving?'#91c549':'white', alignSelf:'center', justifyContent:'center', borderWidth:1, borderColor:'#707070'}}>
-              <Text style={{color:'#515151', alignSelf:'center', fontSize:Responsive.font(16)}}>{this.state.ScoreTeam2}</Text>
+              <Text style={{fontFamily: 'open-sans-simple',color:'#515151', alignSelf:'center', fontSize:Responsive.font(16)}}>{this.state.ScoreTeam2}</Text>
             </View>
           </View> 
         {/* ------------------------------ */}
           <View style={{ flex:0.7, flexDirection:'column'}}>
             {this.state.Team2Serving?<View style={{backgroundColor:'#91c549', width:Responsive.width(100), height:Responsive.height(30), borderColor:'#707070',borderWidth:1,alignSelf:'flex-start', marginTop:'1%'}}>
-            <Text style={{color:'#515151',alignSelf:'center', fontSize:Responsive.font(20)}}>{'Serve '+this.state.Serve}</Text>
+            <Text style={{fontFamily: 'open-sans-simple',color:'#515151',alignSelf:'center', fontSize:Responsive.font(20)}}>{'Serve '+this.state.Serve}</Text>
             </View>:<View style={{height:Responsive.height(30)}}></View>}
             <View style={{flex:0.5, flexDirection:'row', justifyContent:'space-between', paddingRight:Responsive.width(70), alignItems:'center'}}> 
 
@@ -551,7 +551,7 @@ class ScoreCard extends Component {
 
 
               <View>
-                <Text style={{color:'white', fontSize:Responsive.font(16)}}>{this.state.Section3}</Text>
+                <Text style={{fontFamily: 'open-sans-simple',color:'white', fontSize:Responsive.font(16)}}>{this.state.Section3}</Text>
               </View>
 
               <View>
@@ -568,7 +568,7 @@ class ScoreCard extends Component {
 
 
               <View>
-                <Text style={{color:'white',fontSize:Responsive.font(16)}}>{this.state.Section4}</Text>
+                <Text style={{fontFamily: 'open-sans-simple',color:'white',fontSize:Responsive.font(16)}}>{this.state.Section4}</Text>
               </View>
               <View>
                 {this.state.ballpos4?<Image style={{marginRight:Responsive.width(10)}}source={require('../../assets/ball.png')}/>:<View></View>}

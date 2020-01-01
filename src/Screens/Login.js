@@ -1,10 +1,12 @@
 import React from 'react';
-import { View, Text, Button, ImageBackground, Image, TextInput, Dimensions, StyleSheet, ScrollView, ActivityIndicator,AsyncStorage } from 'react-native';
+import { View, Text, Button, ImageBackground, Image, TextInput, Dimensions, StyleSheet, ScrollView, ActivityIndicator, AsyncStorage } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { TouchableOpacity, FlatList } from 'react-native-gesture-handler';
 import { NavigationActions, StackActions } from 'react-navigation';
 import firebase from 'firebase';
 import axios from 'axios'
+
+
 
 export default class Login extends React.Component {
     static navigationOptions = {
@@ -14,11 +16,60 @@ export default class Login extends React.Component {
         super(props);
         this.state = {
             isFetching:false,
-            userName: 'masaeedi@gmail.com',
-            Password: '123456',
+            userName: '',
+            Password: '',
             msg: "",
-            userId:''
+            userId:'',
+            backtoLogin:false
         };
+    }
+    componentDidMount(){
+        this.setState({
+            userName:'mahmedsaeedi14@gmail.com',
+            Password:'123456'
+        })
+    }
+    async letsHandleLogin(){
+        try{
+            // setTimeout(()=>{},5000)
+            this.setState({isFetching:true})
+            const {userName, Password}= this.state
+            let user = await firebase.auth().signInWithEmailAndPassword(userName,Password)
+            // let dum = await firebase.auth().signOut()
+            let url = 'https://pickletour.appspot.com/api/user/get/'+ user.user.uid
+            const res = await fetch(url)
+            const data = await res.json()
+            const newUser ={
+                uid: data.uid,
+                firstName:data.firstName,
+                email: data.email,
+                password: data.password,
+                dateOfBirth: data.dateOfBirth,
+                gender:data.gender,
+                address:'abc',
+                phoneNumber:'123'        
+            }
+            this.storingUserData(newUser)
+            
+        }catch(error){
+            this.setState({isFetching:false})
+        }
+    }
+    // componentDidUpdate(){
+    //     this.setState({isFetching:true})
+    // }
+
+    async storingUserData(user){
+        try{
+            // const {userName, Password}= this.state
+            await AsyncStorage.setItem('userProfileData', JSON.stringify(user))
+            // await firebase.auth().signInWithEmailAndPassword(userName,Password)
+            setTimeout(()=>{
+                this.setState({isFetching:false})
+            },3000)
+        }catch(error){
+            console.log(error)
+        }
     }
 
     handleLogin = () => {
@@ -27,23 +78,39 @@ export default class Login extends React.Component {
         const {userName, Password}= this.state
         firebase.auth().signInWithEmailAndPassword(userName,Password)
         .then((data)=>{
-            // console.log(data.user.uid)
+            console.log(data.user.uid)
             this.setState({ userId:data.user.uid})
-            axios.get('https://pickletour.appspot.com/api/get/refereeData/'+data.user.uid)
+            axios.get('https://pickletour.appspot.com/api/user/get/'+data.user.uid)
             .then((data)=>{
-                // console.log(data)
-                this.props.navigation.navigate('MainTabs')
+                const newUser ={
+                    uid: data.data.uid,
+                    firstName:data.data.firstName,
+                    email: data.data.email,
+                    password: data.data.password,
+                    dateOfBirth: data.data.dateOfBirth,
+                    gender:data.data.gender,
+                    address:data.data.address,
+                    phoneNumber:data.data.phoneNumber    
+                    
+                    
+                }
+
+
+                // console.log(data.data.gender)
+                AsyncStorage.setItem('userProfileData', JSON.stringify(newUser))
+                // console.log(AsyncStorage.getItem('userProfileData'))
+                // this.props.navigation.navigate('MainTabs')
                 this.setState({isFetching:false})
                 
-                const saveUserId = async userId=>{
-                    try{
-                        await AsyncStorage.setItem('userId', this.state.userId)
-                    }
-                    catch(error){
-                        console.log(error)
-                    }
-                }
-                saveUserId()
+                // const saveUserId = async userId=>{
+                //     try{
+                //         await AsyncStorage.setItem('userId', this.state.userId)
+                //     }
+                //     catch(error){
+                //         console.log(error)
+                //     }
+                // }
+                // saveUserId()
             })
         // axios.get('https://pickletour.appspot.com/api/user/profile/'+user.user.uid).then(resp => {
         //         console.log("agyaaaaaaa")
@@ -84,6 +151,7 @@ export default class Login extends React.Component {
     }
 
     render() {
+        
         // console.log("state", this.state)
         return (
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#86d6b9' }}>
@@ -122,7 +190,7 @@ export default class Login extends React.Component {
                         {
                             this.state.isFetching? <ActivityIndicator size='large'/>:
                             <TouchableOpacity onPress={() =>
-                                this.handleLogin()
+                                this.letsHandleLogin()
                             } style={styles.regButton} >
                                 <Text style={styles.regButton1} >LOGIN  </Text>
                             </TouchableOpacity>
