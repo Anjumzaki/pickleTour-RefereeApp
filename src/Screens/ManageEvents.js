@@ -17,6 +17,7 @@ export default class MainScreen extends React.Component {
     }
     constructor(props) {
         super(props);
+        this.data=''
         this.state = {
             actScr: 1,
             eventsData:[],
@@ -40,16 +41,54 @@ export default class MainScreen extends React.Component {
         this.getItem()
     }
     async getItem(){
-        try{
-            this.userId =await AsyncStorage.getItem('userId')
-            // this.getAllData(this.userId)
-            this.getOneData(this.userId)
-            this.getTwoData(this.userId)
-            this.getThreeData(this.userId)
-            // console.log('User ID:  ',this.userId)
-        }catch (error){
-            console.log('error')
-        }
+
+        
+            try{
+                let user = await AsyncStorage.getItem('userProfileData')
+                // console.log('Here',user)
+                this.data= JSON.parse(user)
+                // console.log(this.data)
+                this.getMyEvents(this.data.uid)
+          
+              }catch(error){
+                console.log(error)
+              }
+        
+        // try{
+        //     this.userId =await AsyncStorage.getItem('userId')
+        //     // this.getAllData(this.userId)
+        //     this.getOneData(this.userId)
+        //     this.getTwoData(this.userId)
+        //     this.getThreeData(this.userId)
+        //     // console.log('User ID:  ',this.userId)
+        // }catch (error){
+        //     console.log('error')
+        // }
+    }
+
+
+    getMyEvents(userId){
+        var myEvents=[]
+        var gettingUrl = 'http://pickletour.com/api/get/enroll/Events/'
+        axios.get(gettingUrl+userId)
+        .then((response)=>{
+            myEvents = response.data
+            console.log(myEvents)
+            if(myEvents.length>0){
+                this.setState({
+                    eventsData:myEvents,
+                    dataOneLoaded:true
+                })
+            }
+            else{
+                this.setState({
+                    dataOneLoaded:false
+                })
+            }
+        }).catch((error)=>{
+            console.log(error)
+        })
+
     }
 
     getOneData= (userId)=>{
@@ -144,13 +183,13 @@ export default class MainScreen extends React.Component {
             <View>
                 <View style={styles.wrapTopSty}>
                     <TouchableOpacity onPress={() => this.setState({ actScr: 1 })} style={this.state.actScr == 1 ? styles.topBarStyAct : styles.topBarSty}>
-                        <Text style={this.state.actScr==1?styles.selectedtopBarText:styles.topBarText}>  My Events</Text>
+                        <Text style={this.state.actScr==1?styles.selectedtopBarText:styles.topBarText}>My Events</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => this.setState({ actScr: 2 })} style={this.state.actScr == 2 ? styles.topBarStyAct : styles.topBarSty}>
-                        <Text style={this.state.actScr==2?styles.selectedtopBarText:styles.topBarText}>  Requested Events</Text>
+                        <Text style={this.state.actScr==2?styles.selectedtopBarText:styles.topBarText}>Requested Events</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => this.setState({ actScr: 3 })} style={this.state.actScr == 3 ? styles.topBarStyAct : styles.topBarSty}>
-                        <Text style={this.state.actScr==3?styles.selectedtopBarText:styles.topBarText}>  My Invitatios </Text>
+                        <Text style={this.state.actScr==3?styles.selectedtopBarText:styles.topBarText}>My Invitatios </Text>
                     </TouchableOpacity>
                 </View>
                 <View style={styles.divider}></View>
@@ -164,7 +203,7 @@ export default class MainScreen extends React.Component {
                                 keyExtractor={item => item._id}
                                 renderItem={({item})=>(
                                     <TouchableOpacity onPress={() => { this.props.navigation.navigate('EventDetails',{item}) }}>
-                                    <EventCardsMa1 />
+                                    <EventCardsMa1 data={item}/>
                                 </TouchableOpacity>
                                 )}
                             />:<View style={{ paddingTop:"50%",flex: 1,justifyContent: 'center'}}>

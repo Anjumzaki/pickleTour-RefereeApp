@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Picker, Button, ImageBackground, Image, TextInput, Dimensions, StyleSheet, ScrollView, ActivityIndicator, FlatList } from 'react-native';
+import { Modal, AsyncStorage, View, Text, Picker, Button, ImageBackground, Image, TextInput, Dimensions, StyleSheet, ScrollView, ActivityIndicator, FlatList } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { NavigationActions, StackActions } from 'react-navigation';
@@ -10,7 +10,7 @@ import ListView from 'deprecated-react-native-listview'
 export default class HomePage extends React.Component {
     constructor(props) {
         super(props);
-        
+        this.data=''
         this.state = {
             eventType: '',
             seLoc: '',
@@ -19,6 +19,7 @@ export default class HomePage extends React.Component {
             dataFound: false,
             counter: 0,
             dropChanged: false,
+            modalVisible:false,
             gettingUrl: 'http://pickletour.com/api/get/tournament/page/'
         };
         this.onEndReachedCalledDuringMomentum = true;
@@ -70,9 +71,23 @@ export default class HomePage extends React.Component {
     //             this.setState({ msg: "you are not connect to the internet" })
     //         })
     // }
+    async getUserData(){
+        try{
+            let user = await AsyncStorage.getItem('userProfileData')
+            // console.log('Here',user)
+            this.data= JSON.parse(user)
+            console.log(this.data)
+      
+          }catch(error){
+            console.log(error)
+          }
+    }
+    // UNSAFE_componentWillMount(){
+    //     this.getUserData()
+    //   }
 
     getAlldata = () => {
-        console.log('in grtAllDatsa')
+        // console.log('in grtAllDatsa')
         var prevData = []
         var con = this.state.counter
         if(this.state.dropChanged){
@@ -89,10 +104,10 @@ export default class HomePage extends React.Component {
         }
         var newData = [];
         var gettingUrl = 'http://pickletour.com/api/get/tournament/page/'
-        console.log(prevData, 'my prevData')
-        console.log(con, 'my counter')
-        console.log(this.state.dropChanged, 'drop Changes')
-        console.log(this.state.eventType, 'asd')
+        // console.log(prevData, 'my prevData')
+        // console.log(con, 'my counter')
+        // console.log(this.state.dropChanged, 'drop Changes')
+        // console.log(this.state.eventType, 'asd')
         if (this.state.eventType == 'Recreational') {
             gettingUrl = 'http://pickletour.com/api/get/recreational/page/'
         }
@@ -102,13 +117,13 @@ export default class HomePage extends React.Component {
         else if (this.state.eventType == 'Tournament') {
             gettingUrl = 'http://pickletour.com/api/get/tournament/page/'
         }
-        console.log(gettingUrl, 'my uRl')
-      console.log( gettingUrl + con) 
+    //     console.log(gettingUrl, 'my uRl')
+    //   console.log( gettingUrl + con) 
         axios
             .get(gettingUrl + con)
             .then((response) => {
                 newData = response.data
-                console.log(newData,'asdasd')
+                // console.log(newData,'asdasd')
                 var allData = [...prevData, ...newData]
                 var con = this.state.counter
                 if (newData.length > 0) {
@@ -150,18 +165,26 @@ export default class HomePage extends React.Component {
     }
     componentDidMount() {
         this.getAlldata()
+        this.data= this.props.navigation.state.params
+        console.log(this.data)
+        
+        
 
     }
 
    
     render() {
+        // console.log(this.props.navigation.state.params)
         return (
             <View style={{ padding: 10 }}>
+
+                {/* Modal---------------------------------------------------------------- */}
+                
                 {this.state.tourData.length > 0 ?
                     <FlatList
                         data={this.state.tourData}
                         renderItem={({ item }) => (
-                            <ToBeRequestedEvents key={item._id} data={item} />
+                            <ToBeRequestedEvents key={item._id} data={item} user={this.data} />
                         )}
                         ListHeaderComponent={() => (
                             <View>    

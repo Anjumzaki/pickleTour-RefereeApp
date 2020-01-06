@@ -73,7 +73,8 @@ const DrawerNavigator = createDrawerNavigator({
                 <Image style={{ width: 30, height: 30, marginLeft: 10 }} source={require('../assets/navigation.png')} />
             </TouchableOpacity >
     }),
-    initialRouteName: 'MainScreenStack',
+    // initialRouteName: 'MainScreenStack',
+    initialRouteName: 'ManageEventsStack',
     contentComponent: CustomSidebarMenu,
     drawerOpenRoute: 'drawerOpen',
     drawerCloseRoute: 'drawerClose',

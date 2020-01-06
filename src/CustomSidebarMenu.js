@@ -16,27 +16,27 @@ export default class CustomSidebarMenu extends Component {
     //This screens can be any screen defined in Drawer Navigator in App.js
     //You can find the Icons from here https://material.io/tools/icons/
     this.items = [
-      {
-        navOptionThumb: require('../assets/Blog_gray.png'),
-        navOptionName: 'Dashboard',
-        screenToNavigate: 'MainScreen',
-      },
-      {
-        navOptionThumb: require('../assets/Video_gray.png'),
-        navOptionName: 'Find Events',
-        screenToNavigate: 'HomePage',
-      },
+      // {
+      //   navOptionThumb: require('../assets/Blog_gray.png'),
+      //   navOptionName: 'Dashboard',
+      //   screenToNavigate: 'MainScreen',
+      // },
+      // {
+      //   navOptionThumb: require('../assets/Video_gray.png'),
+      //   navOptionName: 'Find Events',
+      //   screenToNavigate: 'HomePage',
+      // },
       {
         navOptionThumb: require('../assets/Contact_Us_gray.png'),
         navOptionName: 'Manage Events',
         screenToNavigate: 'ManageEvents',
       },
 
-      {
-        navOptionThumb: require('../assets/Blog_gray.png'),
-        navOptionName: 'My Profile',
-        screenToNavigate: 'BlogPosting',
-      },
+      // {
+      //   navOptionThumb: require('../assets/Blog_gray.png'),
+      //   navOptionName: 'My Profile',
+      //   screenToNavigate: 'BlogPosting',
+      // },
     ];
   }
   openModal() {
@@ -69,6 +69,7 @@ export default class CustomSidebarMenu extends Component {
 
   UserLogout(){
     firebase.auth().signOut().then(function() {
+      this.props.navigation.closeDrawer()
       AsyncStorage.removeItem('userProfileData')
       this.props.navigation.navigate('Login',{loading:true})
     }).catch(function(error) {
@@ -112,7 +113,7 @@ export default class CustomSidebarMenu extends Component {
           {this.items.map((item, key) => (
             <TouchableOpacity onPress={() => {
               global.currentScreenIndex = key;
-              this.props.navigation.navigate(item.screenToNavigate);
+              this.props.navigation.navigate(item.screenToNavigate,this.data);
             }}
               key={key}>
               <View

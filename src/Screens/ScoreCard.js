@@ -4,6 +4,9 @@ import { ScreenOrientation, } from 'expo';
 import { RadioGroup} from 'react-native-btr';
 import { CheckBox, ListItem, Icon } from 'native-base'
 import Responsive from 'react-native-lightweight-responsive';
+
+let padToTwo = (number) => (number <= 9 ? `0${number}`: number);
+
 class ScoreCard extends Component {
   
   constructor(props) {
@@ -11,6 +14,8 @@ class ScoreCard extends Component {
 
     super(props);
     this.playingSide=''
+    this.interval=null
+    // this.lapArr=[]
     //this.SideSelected='Left'
     this.TargetSelected = 11
     this.state = {
@@ -59,7 +64,10 @@ class ScoreCard extends Component {
       ], 
 
       startClicked:false,
-
+      start:false,
+      min:0,
+      sec:0,
+      msec:0,
       ballpos1:false,
       ballpos2:false,
       ballpos3:false,
@@ -85,6 +93,53 @@ class ScoreCard extends Component {
       
     };
   }
+
+  handleToggle = () =>{
+    this.setState(
+      {
+        start:!this.state.start
+      },
+      () =>this.handleStart()
+    )
+  }
+
+
+  handleStart = () =>{
+    if(this.state.start){
+      this.interval = setInterval(()=>{
+        if(this.state.msec !== 99){
+          this.setState({
+            msec:this.state.msec+1
+          })
+        } else if(this.state.sec!==59){
+            this.setState({
+              msec:0,
+              sec: ++ this.state.sec
+            })
+        } else {
+          this.setState({
+            msec:0,
+            sec:0,
+            min: ++this.state.min
+          })
+        }
+      }, 1)
+    } else{
+      clearInterval(this.interval)
+    }
+  }
+
+  handleReset =()=>{
+    this.setState({
+      min:0,
+      sec:0,
+      msec:0,
+      start: false
+    });
+    clearInterval(this.interval)
+
+  }
+
   async changeScreenOrientation() {
     
     await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE_LEFT);
@@ -511,7 +566,7 @@ class ScoreCard extends Component {
             </TouchableOpacity>
 
             {/* Player 1 Name and Ball*/}
-            <View style={{flex:0.5, flexDirection:'row',justifyContent:'space-between',  paddingLeft:Responsive.width(70), alignItems:'center', marginBottom:Responsive.height(40)}}>
+            <View style={{flex:0.3, flexDirection:'row',justifyContent:'space-between',  paddingLeft:Responsive.width(70), alignItems:'center', marginBottom:Responsive.height(40)}}>
             <View>
                {this.state.ballpos1? <Image style={{marginLeft:Responsive.width(10)}}source={require('../../assets/ball.png')}/>:<View></View>}
               </View>
@@ -520,6 +575,19 @@ class ScoreCard extends Component {
               <View>
                 <Text style={{fontFamily: 'open-sans-simple',color:'white',fontSize:Responsive.font(16)}}>{this.state.Section1}</Text>
               </View> 
+            </View>
+
+
+
+            {/* Timer------------------------------------------------------------------------ */}
+            <View style={{flex:0.2, backgroundColor:'white', flexDirection:'row', justifyContent:'center'}}>
+                  <Text style={{fontSize:Responsive.font(20), fontFamily:'open-sans-bold'}}>{'  '+padToTwo(this.state.min)+' : '}</Text>
+                  <Text style={{fontSize:Responsive.font(20), fontFamily:'open-sans-bold'}}>{padToTwo(this.state.sec)+' : '}</Text>
+                  <Text style={{fontSize:Responsive.font(20), fontFamily:'open-sans-bold'}}>{padToTwo(this.state.msec)}</Text>
+                  <TouchableOpacity onPress={this.handleToggle}>
+                    <Text>Start</Text>
+                  </TouchableOpacity>
+
             </View>
           </View> 
         {/* ------------------------------ */}
@@ -563,7 +631,7 @@ class ScoreCard extends Component {
 
               </TouchableOpacity>
 
-              <View style={{flex:0.5, flexDirection:'row',justifyContent:'space-between',  paddingRight:Responsive.width(70), alignItems:'center', marginBottom:Responsive.height(40)}}>
+              <View style={{flex:0.3, flexDirection:'row',justifyContent:'space-between',  paddingRight:Responsive.width(70), alignItems:'center', marginBottom:Responsive.height(40)}}>
            
 
 

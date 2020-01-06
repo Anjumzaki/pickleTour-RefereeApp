@@ -1,7 +1,7 @@
 import React from 'react';
-import { View, Text, Button, ImageBackground, Image, TextInput, Dimensions, StyleSheet, ScrollView } from 'react-native';
+import { Modal, View, Text, Button, ImageBackground, Image, TextInput, Dimensions, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { TouchableOpacity } from 'react-native-gesture-handler';
+//import { TouchableOpacity } from 'react-native-gesture-handler';
 import Responsive from 'react-native-lightweight-responsive';
 import { NavigationActions, StackActions } from 'react-navigation';
 import axios from 'axios';
@@ -9,7 +9,8 @@ export default class ToBeRequestedEvents extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            actScr: '1'
+            actScr: '1',
+            modalVisible:false
         };
     }
     // login() {
@@ -21,10 +22,13 @@ export default class ToBeRequestedEvents extends React.Component {
     // }
     componentDidMount(){
         // console.log(this.props)
-        console.log(this.props.data.division)
+        // console.log(this.props.data.division)
     }
-
+    closeModal(){
+        this.setState({modalVisible:false})
+    }
     request(){
+        this.setState({modalVisible:true})
         //for creating a request for registration
         // Object ={
         //     address:  this.state.address,
@@ -82,10 +86,42 @@ export default class ToBeRequestedEvents extends React.Component {
 
     }
 
+
     render() {
         const tournament = this.props.data
+        console.log(this.props.user)
         return (
             <View style={styles.cardStyles}>
+                <Modal animationType='slide'
+                       visible={this.state.modalVisible}>
+                           <View style={{flex:1, alignContent:'center', alignItems:'center',justifyContent:'center', backgroundColor: '#86d6b9' }}>
+                                <TextInput style={{backgroundColor:'white',borderRadius:10,paddingLeft:10, paddingVertical:5, borderColor:'#48A080',borderWidth:1,width:'90%', fontFamily:'open-sans-bold', marginBottom:20, fontSize:Responsive.font(20)}} placeholder="Name" placeholderTextColor={'gray'}/>
+                                <TextInput style={{backgroundColor:'white',borderRadius:10,paddingLeft:10, paddingVertical:5, borderColor:'#48A080',borderWidth:1,width:'90%', fontFamily:'open-sans-bold', marginBottom:20, fontSize:Responsive.font(20)}} placeholder="Email Address" placeholderTextColor={'gray'}/>
+                                <TextInput style={{backgroundColor:'white',borderRadius:10,paddingLeft:10, paddingVertical:5, borderColor:'#48A080',borderWidth:1,width:'90%', fontFamily:'open-sans-bold', marginBottom:20, fontSize:Responsive.font(20)}} placeholder="Phone Number" placeholderTextColor={'gray'}/>
+                                <TextInput style={{backgroundColor:'white',borderRadius:10,paddingLeft:10, paddingVertical:5, borderColor:'#48A080',borderWidth:1,width:'90%', fontFamily:'open-sans-bold', marginBottom:20, fontSize:Responsive.font(20)}} placeholder="Address" placeholderTextColor={'gray'}/>
+                                <TouchableOpacity onPress={()=>console.log('Pressed')} style={{fontFamily: 'open-sans-simple',
+                                                                                                width: Dimensions.get('window').width - 105,
+                                                                                                alignItems: 'center',
+                                                                                                backgroundColor: '#48A080',
+                                                                                                padding: 10,
+                                                                                                borderRadius: 100,
+                                                                                                marginTop: 60,}}>
+                                    <Text style={{color:'white',fontFamily:'open-sans-simple',fontSize:Responsive.font(22)}}>Confirm</Text>
+                                </TouchableOpacity>
+                                
+                                <TouchableOpacity onPress={()=>this.setState({modalVisible:false})} style={{fontFamily: 'open-sans-simple',
+                                                                                                            width: Dimensions.get('window').width - 105,
+                                                                                                            alignItems: 'center',
+                                                                                                            backgroundColor: '#48A080',
+                                                                                                            padding: 10,
+                                                                                                            borderRadius: 100,
+                                                                                                            marginTop: 20,}}>
+                                    <Text style={{color:'white',fontFamily:'open-sans-simple',fontSize:Responsive.font(22)}}>Close</Text>
+                                    </TouchableOpacity>
+                           </View>
+                        
+
+                </Modal>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                     <View style={{ flexDirection: 'row', width: '50%' }} >
                         <Text style={styles.head}>Name: </Text>

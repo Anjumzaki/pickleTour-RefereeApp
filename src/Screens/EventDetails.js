@@ -54,7 +54,11 @@ export default class EventDetails extends React.Component {
     }
 
     render() {
-        // console.log(this.props.navigation.getParam('item'))
+        
+        const tournamentInfo = this.props.navigation.getParam('item')
+        // console.log(tournamentInfo.tournamentName)
+        console.log('----------------------------------------------------------------------------------')
+        console.log(this.props.navigation.getParam('item'))
         return (
             <View>
                 {/* <ScrollView style={{ marginBottom: 10 }}> */}
@@ -71,21 +75,21 @@ export default class EventDetails extends React.Component {
                                     <View style={{ flexDirection: 'row' }}>
                             <View style={{ flexDirection: 'row', width: '60%' }} >
                                 <Text style={styles.head}>Name: </Text>
-                                <Text style={styles.inHead}>Grand Transver Bay</Text>
+                                <Text style={styles.inHead}>{tournamentInfo.tournamentName}</Text>
                             </View>
                             <View style={{ flexDirection: 'row', width: '30%', marginLeft: 10 }} >
                                 <Text style={styles.head}>Date: </Text>
                                 <Text style={styles.inHead}>12-10-2019</Text>
                             </View>
                         </View>
-                                    <View style={{ flexDirection: 'row', width: '100%', marginTop: 10 }} >
+                                    <View style={{ flexDirection: 'row', width: '80%', marginTop: 10 }} >
                                         <Text style={styles.head}>Address : </Text>
-                                        <Text style={styles.inHead}>Street 4, California Stadium USA</Text>
+                                        <Text style={styles.inHead}>{tournamentInfo.address}</Text>
                                     </View>
                                     <View style={{ flexDirection: 'row', marginTop: 10 }}>
                                         <View style={{ flexDirection: 'row', width: '50%' }} >
                                             <Text style={styles.head}>Event Type : </Text>
-                                            <Text style={styles.inHead}>Tournament</Text>
+                                            <Text style={styles.inHead}>{tournamentInfo.type}</Text>
                                         </View>
                                         <View style={{ flexDirection: 'row', width: '40%', marginLeft: 10, }} >
                                             <Text style={styles.head}>Matches Refereed : </Text>
@@ -95,7 +99,7 @@ export default class EventDetails extends React.Component {
                                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 }}>
                                         <View style={{ flexDirection: 'row', width: '100%' }} >
                                             <Text style={styles.head}>Division : </Text>
-                                            <Text style={styles.inHead}>Men's Single</Text>
+                                            <Text style={styles.inHead}>{tournamentInfo.divisionName}</Text>
                                         </View>
                                     </View>
                                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 }}>

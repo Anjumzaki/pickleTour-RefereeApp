@@ -32,6 +32,8 @@ export default class MainScreen extends React.Component {
     UNSAFE_componentWillMount(){
         
         this.getUserData()
+        this.props.navigation.closeDrawer()
+
         // console.log() 
     }
     async getUserData(){

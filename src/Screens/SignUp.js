@@ -52,8 +52,8 @@ export default class SignUp extends React.Component {
                     password: this.state.confirmPass,
                     dateOfBirth: this.state.dob,
                     gender:this.state.gender,
-                    address:this.state.address,
-                    phoneNumber:this.state.phoneNumber    
+                    // address:this.state.address,
+                    // phoneNumber:this.state.phoneNumber    
                     
                     
                 }
@@ -102,7 +102,7 @@ export default class SignUp extends React.Component {
         // console.log("state", this.state)
 
         const { firstName, email, Password, confirmPass, dob, gender, address, phoneNumber } = this.state
-        const enabled = firstName.length >0 && email.length>0 && Password==confirmPass && dob.length>0 && Password.length>0 && confirmPass.length>0 
+        const enabled = firstName.length >0 && email.length>0 && Password==confirmPass && dob.length>0 && Password.length>0 && confirmPass.length>0 && gender.length>0
         const enabled2 = gender.length>0 && address.length>0 && phoneNumber.length>0 
         return (
 
@@ -215,18 +215,12 @@ export default class SignUp extends React.Component {
                                 }}
                             />
 
+                            
+
                            
 
                         </View>
 
-                        <TouchableOpacity  disabled={!enabled} onPress={()=>this.setState({stage1:false})
-                } style={{ width: Dimensions.get('window').width - 105, alignItems: 'center', backgroundColor: enabled ? "#48A080" :'#BEBAC5', padding: 10, borderRadius: 100, marginTop: 20}} >
-                    <Text style={styles.regButton1} >Continue  </Text>
-                </TouchableOpacity>
-                        </View>:
-                        
-                        
-                        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', height: Dimensions.get('window').height - 70 }}>
                         <View style={{borderWidth: 1,fontSize: 19, margin:10,
                             borderColor: '#48A080',
                             width: Dimensions.get('window').width - 105,
@@ -254,6 +248,32 @@ export default class SignUp extends React.Component {
                         <Picker.Item label='Female' value="female"/>
                     </Picker>
                     </View>
+
+                    <TouchableOpacity disabled={!enabled} onPress={() =>
+                    this.handleSignUp()
+                } style={{width: Dimensions.get('window').width - 105,
+                        alignItems: 'center',
+                        backgroundColor: enabled?'#48A080':'#BEBAC5',
+                        padding: 10,
+                        borderRadius: 100,
+                        marginTop: 20}} >
+                    <Text style={styles.regButton1} >REGISTER  </Text>
+                </TouchableOpacity>
+
+                <View style={{justifyContent:'center', alignItems:'center', alignSelf:'center'}}>
+                    <Text style={{color:'#E48D6A', fontFamily:'open-sans-bold', fontSize:19, padding:20, alignSelf:'center', textAlign:'center'}}>
+                        {this.state.msg}
+                    </Text>
+                </View>
+                        {/* <TouchableOpacity  disabled={!enabled} onPress={()=>this.setState({stage1:false})
+                } style={{ width: Dimensions.get('window').width - 105, alignItems: 'center', backgroundColor: enabled ? "#48A080" :'#BEBAC5', padding: 10, borderRadius: 100, marginTop: 20}} >
+                    <Text style={styles.regButton1} >Continue  </Text>
+                </TouchableOpacity> */}
+                        </View>:
+                        
+                        
+                        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', height: Dimensions.get('window').height - 70 }}>
+                      
                     <View style={styles.SectionStyle}>
                     <TextInput
                         style={styles.forms
@@ -282,7 +302,7 @@ export default class SignUp extends React.Component {
                     />
                 </View>
 
-                <TouchableOpacity disabled={!enabled2} onPress={() =>
+                {/* <TouchableOpacity disabled={!enabled2} onPress={() =>
                     this.handleSignUp()
                 } style={{width: Dimensions.get('window').width - 105,
                         alignItems: 'center',
@@ -291,7 +311,7 @@ export default class SignUp extends React.Component {
                         borderRadius: 100,
                         marginTop: 20}} >
                     <Text style={styles.regButton1} >REGISTER  </Text>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
                 <View style={{justifyContent:'center', alignItems:'center', alignSelf:'center'}}>
                     <Text style={{color:'#E48D6A', fontFamily:'open-sans-bold', fontSize:19, padding:20, alignSelf:'center', textAlign:'center'}}>
                         {this.state.msg}

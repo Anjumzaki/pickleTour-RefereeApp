@@ -20,32 +20,33 @@ export default class EventCardsMa1 extends React.Component {
     }
 
     render() {
+        const data = this.props.data
         return (
             <View style={styles.cardStyles}>
                 <View style={{ flexDirection: 'row' }}>
                     <View style={{ flexDirection: 'row', width: '60%' }} >
                         <Text style={styles.head}>Name: </Text>
-                        <Text style={styles.inHead}>Grand Transver Bay</Text>
+                        <Text style={styles.inHead}>{data.tournamentName}</Text>
                     </View>
                     <View style={{ flexDirection: 'row', width: '30%', marginLeft: 10 }} >
                         <Text style={styles.head}>Date: </Text>
                         <Text style={styles.inHead}>12-10-2019</Text>
                     </View>
                 </View>
-                <View style={{ flexDirection: 'row', width: '100%' }} >
+                <View style={{ flexDirection: 'row', width: '80%' }} >
                     <Text style={styles.head}>Address : </Text>
-                    <Text style={styles.inHead}>Street 4, California Stadium USA</Text>
+                    <Text style={styles.inHead}>{data.address}</Text>
                 </View>
                 <View style={{ flexDirection: 'row', marginTop: 10 }}>
                     <View style={{ flexDirection: 'row', width: '100%' }} >
                         <Text style={styles.head}>Event Type : </Text>
-                        <Text style={styles.inHead}>Tournament</Text>
+                        <Text style={styles.inHead}>{data.type}</Text>
                     </View>
                 </View>
                 <View style={{ flexDirection: 'row', width: '100%' }} >
                     <View style={{ flexDirection: 'row', width: '50%' }} >
                         <Text style={styles.head}>Division : </Text>
-                        <Text style={styles.inHead}>Men's Single</Text>
+                        <Text style={styles.inHead}>{data.divisionName}</Text>
                     </View>
                 </View>
             </View>

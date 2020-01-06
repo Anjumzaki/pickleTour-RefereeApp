@@ -25,7 +25,7 @@ export default class Login extends React.Component {
     }
     componentDidMount(){
         this.setState({
-            userName:'mahmedsaeedi14@gmail.com',
+            userName:'mahmedsaeedi2020@gmail.com',
             Password:'123456'
         })
     }
@@ -203,14 +203,14 @@ export default class Login extends React.Component {
                             </Text>
                         </View>
                     </View>
-                    <View style={{ alignItems: 'center' }}>
+                    {/* <View style={{ alignItems: 'center' }}>
                         <View style={{ flexDirection: 'row' }}>
                             <Text style={styles.reg1}>  Don't have an account? </Text>
                             <TouchableOpacity onPress={() => this.props.navigation.navigate('SignUp')}>
                                 <Text style={styles.reg} >REGISTER </Text>
                             </TouchableOpacity>
                         </View>
-                    </View>
+                    </View> */}
                     {/* <Button
                             title="Go to Sign up"
                             onPress={() => this.props.navigation.navigate('SignUp')}
