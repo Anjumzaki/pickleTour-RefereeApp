@@ -107,7 +107,11 @@ class ScoreCard extends Component {
   handleStart = () =>{
     if(this.state.start){
       this.interval = setInterval(()=>{
-         if(this.state.sec!==59){
+        if(this.state.msec !== 99){
+          this.setState({
+            msec:this.state.msec+1
+          })
+        } else if(this.state.sec!==59){
             this.setState({
               msec:0,
               sec: ++ this.state.sec
@@ -119,7 +123,7 @@ class ScoreCard extends Component {
             min: ++this.state.min
           })
         }
-      }, 1000)
+      }, 1)
     } else{
       clearInterval(this.interval)
     }
@@ -535,16 +539,16 @@ class ScoreCard extends Component {
 
 
         {/* Modal Settings-`--`-------------------- */}
-        <ImageBackground style={{width: '100%', height: '100%', flexDirection:'column'}} source={require('../../assets/background.png')}>
-                  <View style={{width:'100%', height:'90%', flexDirection:'row'}}>
-                  <View style={{width:'50%', flex:1, flexDirection:'row' }}>
+        <ImageBackground style={{width: '100%', height: '100%', flexDirection:'row'}} source={require('../../assets/background.png')}>
+          
+        <View style={{width:'50%', flex:1, flexDirection:'row' }}>
           <View style={{flex:0.7, flexDirection:'column'}}>
             {this.state.Team1Serving?<View style={{backgroundColor:'#91c549', width:Responsive.width(100), height:Responsive.height(30), alignSelf:'flex-end', borderColor:'#707070', borderWidth:1,marginTop:'1%'}}>
               <Text style={{fontFamily: 'open-sans-simple',color:'#515151', alignSelf:'center', fontSize:Responsive.font(20)}}>{'Serve '+this.state.Serve}</Text>
             </View>:<View style={{ height:Responsive.height(30)}}></View>}
             {/* Player 2 Name and Ball */}
             
-            <View style={{flex:0.6, flexDirection:'row', justifyContent:'space-between', paddingLeft:Responsive.width(70), alignItems:'center'}}> 
+            <View style={{flex:0.5, flexDirection:'row', justifyContent:'space-between', paddingLeft:Responsive.width(70), alignItems:'center'}}> 
 
               <View>
                 {this.state.ballpos2?<Image style={{marginLeft:Responsive.width(10)}} source={require('../../assets/ball.png')}/>:<View></View>}
@@ -562,7 +566,7 @@ class ScoreCard extends Component {
             </TouchableOpacity>
 
             {/* Player 1 Name and Ball*/}
-            <View style={{flex:0.4, flexDirection:'row',justifyContent:'space-between',  paddingLeft:Responsive.width(70), alignItems:'center', marginBottom:Responsive.height(40)}}>
+            <View style={{flex:0.5, flexDirection:'row',justifyContent:'space-between',  paddingLeft:Responsive.width(70), alignItems:'center', marginBottom:Responsive.height(40)}}>
             <View>
                {this.state.ballpos1? <Image style={{marginLeft:Responsive.width(10)}}source={require('../../assets/ball.png')}/>:<View></View>}
               </View>
@@ -576,7 +580,15 @@ class ScoreCard extends Component {
 
 
             {/* Timer------------------------------------------------------------------------ */}
-            
+            <View style={{flex:0.2, backgroundColor:'white', flexDirection:'row', justifyContent:'center', position:'absolute'}}>
+                  <Text style={{fontSize:Responsive.font(20), fontFamily:'open-sans-bold'}}>{'  '+padToTwo(this.state.min)+' : '}</Text>
+                  <Text style={{fontSize:Responsive.font(20), fontFamily:'open-sans-bold'}}>{padToTwo(this.state.sec)+' : '}</Text>
+                  <Text style={{fontSize:Responsive.font(20), fontFamily:'open-sans-bold'}}>{padToTwo(this.state.msec)}</Text>
+                  <TouchableOpacity onPress={this.handleToggle}>
+                    <Text>Start</Text>
+                  </TouchableOpacity>
+
+            </View>
           </View> 
         {/* ------------------------------ */}
           <View style={{ flex:0.3}}>
@@ -601,7 +613,7 @@ class ScoreCard extends Component {
             {this.state.Team2Serving?<View style={{backgroundColor:'#91c549', width:Responsive.width(100), height:Responsive.height(30), borderColor:'#707070',borderWidth:1,alignSelf:'flex-start', marginTop:'1%'}}>
             <Text style={{fontFamily: 'open-sans-simple',color:'#515151',alignSelf:'center', fontSize:Responsive.font(20)}}>{'Serve '+this.state.Serve}</Text>
             </View>:<View style={{height:Responsive.height(30)}}></View>}
-            <View style={{flex:0.6, flexDirection:'row', justifyContent:'space-between', paddingRight:Responsive.width(70), alignItems:'center'}}> 
+            <View style={{flex:0.5, flexDirection:'row', justifyContent:'space-between', paddingRight:Responsive.width(70), alignItems:'center'}}> 
 
               
 
@@ -615,11 +627,11 @@ class ScoreCard extends Component {
               </View>
 
               </View>
-              <TouchableOpacity onPress={()=>this.fault('ByTwo')} style={{ height:Responsive.height(40), width:Responsive.width(100),marginRight:Responsive.width(80), alignSelf:'center'}}>
+              <TouchableOpacity onPress={()=>this.fault('ByTwo')} style={{ height:Responsive.height(40), width:Responsive.width(100),marginRight:Responsive.width(80), alignSelf:'center',}}>
 
               </TouchableOpacity>
 
-              <View style={{flex:0.4, flexDirection:'row',justifyContent:'space-between',  paddingRight:Responsive.width(70), alignItems:'center', marginBottom:Responsive.height(40)}}>
+              <View style={{flex:0.3, flexDirection:'row',justifyContent:'space-between',  paddingRight:Responsive.width(70), alignItems:'center', marginBottom:Responsive.height(40)}}>
            
 
 
@@ -633,30 +645,6 @@ class ScoreCard extends Component {
 
           </View>
         </View>
-        
-
-
-                  </View>
-
-                    
-
-                  <View style={{width:'100%', height:'10%', justifyContent:'flex-start', flexDirection:'row'}}>
-                  <View style={{marginLeft:10,marginBottom:10,flexDirection:'row', borderColor:'white', borderWidth:2}}>
-                    <Text style={{color:'white',fontSize:Responsive.font(20), fontFamily:'open-sans-bold', alignSelf:'center'}}>{'  '+padToTwo(this.state.min)+' : '}</Text>
-                    <Text style={{color:'white',fontSize:Responsive.font(20), fontFamily:'open-sans-bold', alignSelf:'center'}}>{padToTwo(this.state.sec) +'  '}</Text>
-                  </View>
-                  
-                  {/* <Text style={{fontSize:Responsive.font(20), fontFamily:'open-sans-bold'}}>{padToTwo(this.state.msec)}</Text> */}
-                  <TouchableOpacity onPress={this.handleToggle} style={{ marginBottom:10,marginLeft:20,paddingHorizontal:20, justifyContent:'center',backgroundColor:'#91c549',borderRadius:12}}>
-                    <Text style={{fontFamily: 'open-sans-bold', color:'#515151',fontSize:Responsive.font(15)}}>Start</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity onPress={this.handleReset} style={{marginBottom:10,marginLeft:20,paddingHorizontal:20, justifyContent:'center',backgroundColor:'#91c549',borderRadius:12}}>
-                    <Text style={{fontFamily: 'open-sans-bold', color:'#515151',fontSize:Responsive.font(15)}}>Reset</Text>
-                  </TouchableOpacity>
-
-            
-                  </View>
-          
           
         </ImageBackground>
       </View>
