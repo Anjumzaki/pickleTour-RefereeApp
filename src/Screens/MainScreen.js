@@ -5,6 +5,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { NavigationActions, StackActions } from 'react-navigation';
 import Responsive from 'react-native-lightweight-responsive';
 import EventCards from './EventCards'
+import MultiTypeEventsCards from './MultiTypeEventsCards'
 import axios from 'axios'
 export default class MainScreen extends React.Component {
     static navigationOptions = {
@@ -12,6 +13,7 @@ export default class MainScreen extends React.Component {
     }
     constructor(props) {
         super(props);
+        this.userData=''
         this.userId=''
         this.state = {
             actScr: 1,
@@ -24,27 +26,159 @@ export default class MainScreen extends React.Component {
             dataThreeLoaded:false,
             loading: true,
             dataFound: false,
+            showButton:false,
+            showMessage:false,
+            showTwoMessage:false,
+            showThreeMessage:false
         };
     }
 // componentDidUpdate(){
 //         this.forceUpdate()
 //     }
-    UNSAFE_componentWillMount(){
+    // UNSAFE_componentWillMount(){
         
-        this.getUserData()
-        this.props.navigation.closeDrawer()
+    //     this.getUserData()
+    //     //this.props.navigation.closeDrawer()
 
-        // console.log() 
+    //     // console.log() 
+    // }
+    componentDidMount(){
+        this.getUserData()
     }
+
+    testingData(){
+        var onEvents=[];
+        // var gettingUrl = 'http://pickletour.com/api/get/ongoing/Events/'
+        var gettingUrl = 'http://pickletour.com/api/get/tournament/page/0'
+        //axios.get(gettingUrl+userId)
+        axios.get(gettingUrl)
+        .then((response)=>{
+            onEvents = response.data
+            //c0onsole.log(upEvents)
+            if(onEvents.length>0){
+                this.setState({
+                    compData:onEvents,
+                    onData:onEvents,
+                    upData:onEvents,
+                    dataThreeLoaded:true,
+                    dataOneLoaded:true,
+                    dataTwoLoaded:true
+                })
+            }
+            else{
+                this.setState({
+                    dataOneLoaded:false,
+                    dataTwoLoaded:false,
+                    dataThreeLoaded:false,
+                    showMessage:true
+                })
+            }
+        }).catch((error)=>{
+            console.log(error)
+        })
+    }
+    getCompletedData(userId){
+        var compEvents=[];
+        var gettingUrl = 'http://pickletour.com/api/get/completed/Events/'
+        //var gettingUrl = 'http://pickletour.com/api/get/tournament/page/0'
+        //axios.get(gettingUrl+userId)
+        axios.get(gettingUrl+userId)
+        .then((response)=>{
+            compEvents = response.data
+            //console.log(onEvents)
+            if(compEvents.length>0){
+                this.setState({
+                    compData:compEvents,
+                    dataOneLoaded:true
+                })
+            }
+            else{
+                this.setState({
+                    dataOneLoaded:false,
+                    showMessage:true
+                })
+            }
+        }).catch((error)=>{
+            console.log(error)
+        })
+    }
+
+    getUpcomingData(userId){
+        // console.log(userId)
+        var upEvents=[];
+        var gettingUrl = 'http://pickletour.com/api/get/upcoming/Events/'
+        axios.get(gettingUrl+userId)
+        .then((response)=>{
+            upEvents = response.data
+            //console.log(upEvents)
+            if(upEvents.length>0){
+                this.setState({
+                    upData:upEvents,
+                    dataThreeLoaded:true
+                })
+            }
+            else{
+                this.setState({
+                    dataThreeLoaded:false,
+                    showThreeMessage:true
+                })
+            }
+        }).catch((error)=>{
+            console.log(error)
+        })
+    }
+
+    getOngoingData(userId){
+        // console.log(userId)
+        var onEvents=[];
+        var gettingUrl = 'http://pickletour.com/api/get/ongoing/Events/'
+        axios.get(gettingUrl+userId)
+        .then((response)=>{
+            onEvents = response.data
+            //c0onsole.log(upEvents)
+            if(onEvents.length>0){
+                this.setState({
+                    onData:onEvents,
+                    dataTwoLoaded:true
+                })
+            }
+            else{
+                this.setState({
+                    dataTwoLoaded:false,
+                    showTwoMessage:true
+                })
+            }
+        }).catch((error)=>{
+            console.log(error)
+        })
+    }
+    // componentDidMount(){
+    //     this.getUserData()
+    // }
     async getUserData(){
         try{
             let user = await AsyncStorage.getItem('userProfileData')
             let parsed = JSON.parse(user)
-            this.getItem()
+            this.userData= parsed
+            this.getUpcomingData(this.userData.uid)
+            this.getOngoingData(this.userData.uid)
+            
+            this.getCompletedData(this.userData.uid)
+
+            // this.testingData()
+            //this.getItem()
             // console.log(parsed)
         }catch(error){
             console.log(error)
         }
+    }
+
+    recall(screen){
+        // switch(screen){
+        //     case 'Third':
+        //         this.getUpcomingData(this.userData.uid)
+        //         break;
+        // }
     }
     
     async getItem(){
@@ -177,9 +311,13 @@ export default class MainScreen extends React.Component {
 
     render() {
         // console.log("state", this.state)
+        const {showMessage, showTwoMessage, showThreeMessage} = this.state
         return (
             <View>
+                {/* <Text>Here</Text> */}
                 <View style={styles.wrapTopSty}>
+
+                    
                     <TouchableOpacity onPress={() => this.setState({ actScr: 1 })} style={this.state.actScr == 1 ? styles.topBarStyAct : styles.topBarSty}>
                         <Text style={this.state.actScr==1?styles.selectedtopBarText:styles.topBarText}>Completed Events</Text>
                     </TouchableOpacity>
@@ -187,24 +325,24 @@ export default class MainScreen extends React.Component {
                         <Text style={this.state.actScr==2?styles.selectedtopBarText:styles.topBarText}>Ongoing Events</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => this.setState({ actScr: 3 })} style={this.state.actScr == 3 ? styles.topBarStyAct : styles.topBarSty}>
-                        <Text style={this.state.actScr==3?styles.selectedtopBarText:styles.topBarText}>Upcoming Events </Text>
+                        <Text style={this.state.actScr==3?styles.selectedtopBarText:styles.topBarText}>Upcoming Events</Text>
                     </TouchableOpacity>
                 </View>
-                <View style={styles.divider}></View>
+                {/* <View style={styles.divider}></View> */}
                 {/* <ScrollView style={{  marginBottom: 50 }}> */}
                     {this.state.actScr == 1 ? 
-                        <View style={{ padding: 10 }}>
+                        <View style={{ paddingTop:10 }}>
                             {this.state.dataOneLoaded?<FlatList
                                 style={{marginBottom:100}}
                                 keyExtractor={item => item._id}
                                 data ={this.state.compData}
                                 renderItem={({item})=>(
                                     // <TouchableOpacity onPress={()=>this.props.navigation.navigate('EventSummary')}>
-                                    <EventCards navigation={this.props.navigation} data={item}/>
+                                    <EventCards navigation={this.props.navigation} data={item} />
                                     // </TouchableOpacity>
                                 )}
                             />:<View style={{ paddingTop:"50%",flex: 1,justifyContent: 'center'}}>
-                                    <ActivityIndicator size="large" color="#48A080" />
+                                    {showMessage?<Text style={{fontFamily:'open-sans-bold',alignSelf:'center',fontSize:Responsive.font(20)}}>Completed Events not found !</Text>: <ActivityIndicator size="large" color="#48A080" />}
                                 </View>
                             }
                                
@@ -214,33 +352,34 @@ export default class MainScreen extends React.Component {
                             <EventCards />
                             <EventCards /> */}
                         </View> : null}
-                    {this.state.actScr == 2 ? <View style={{ padding: 10 }}>
+                    {this.state.actScr == 2 ? <View style={{ paddingTop: 10 }}>
                     {this.state.dataTwoLoaded?<FlatList
                                 style={{marginBottom:100}}
                                 keyExtractor={item => item._id}
                                 data ={this.state.onData}
                                 renderItem={({item})=>(
                                     // <TouchableOpacity onPress={()=>this.props.navigation.navigate('EventSummary')}>
-                                    <EventCards navigation={this.props.navigation} data={item}/>
+                                    <MultiTypeEventsCards navigation={this.props.navigation} data={item} />
                                     // </TouchableOpacity>
                                 )}
                             />:<View style={{ paddingTop:"50%",flex: 1,justifyContent: 'center'}}>
-                                <ActivityIndicator size="large" color="#48A080" />
+                                {showTwoMessage?<Text style={{fontFamily:'open-sans-bold',alignSelf:'center',fontSize:Responsive.font(20)}}>No data found !</Text>: <ActivityIndicator size="large" color="#48A080" />}
                             </View>
                     }
                     </View> : null}
-                    {this.state.actScr == 3 ? <View style={{ padding: 10 }}>
+                    {this.state.actScr == 3 ? <View style={{ paddingTop: 10 }}>
                     {this.state.dataThreeLoaded?<FlatList
                                 style={{marginBottom:100}}
                                 keyExtractor={item => item._id}
                                 data ={this.state.upData}
+                                onEndReached={()=>this.recall('Third')}
                                 renderItem={({item})=>(
                                     // <TouchableOpacity onPress={()=>this.props.navigation.navigate('EventSummary')}>
-                                    <EventCards navigation={this.props.navigation} data={item}/>
+                                    <MultiTypeEventsCards navigation={this.props.navigation} data={item} show={false}/>
                                     // {/* </TouchableOpacity> */}
                                 )}
                             />:<View style={{paddingTop:"50%", flex: 1,justifyContent: 'center'}}>
-                                    <ActivityIndicator size="large" color="#48A080" />
+                                    {showThreeMessage?<Text style={{fontFamily:'open-sans-bold',alignSelf:'center',fontSize:Responsive.font(20)}}>Upcoming Events not found !</Text>: <ActivityIndicator size="large" color="#48A080" />}
                                 </View>
                     }
                     </View> : null}
@@ -268,7 +407,7 @@ const styles = StyleSheet.create({
         fontSize:Responsive.font(12)
     },
     selectedtopBarText:{
-        color:'#8ACCB4',
+        color:'#9EEACE',
         fontFamily: 'open-sans-bold',
         textDecorationLine:'underline',
         fontSize:Responsive.font(12)

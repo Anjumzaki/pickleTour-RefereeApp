@@ -15,6 +15,7 @@ import ScoreCard from './Screens/ScoreCard'
 import MatchCards from './Screens/MatchCards'
 import LoadingScreen from './Screens/Loading';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import RefereeRequest from './Screens/RefereeRequest';
 
 
 const ManageEventsStack = createStackNavigator(
@@ -28,6 +29,26 @@ const ManageEventsStack = createStackNavigator(
         initialRouteName: 'ManageEvents',
     }
 );
+
+const HomePageStack = createStackNavigator(
+    {
+        HomePage:{screen:HomePage, navigationOptions: {header: null}},
+        RefereeRequestScreen:{screen:RefereeRequest, navigationOptions: {header: null}},
+        
+    },
+    {
+        initialRouteName:'HomePage',
+    }
+)
+
+// const RefereeRequestStack = createStackNavigator(
+//     {
+//         RefereeRequest:{screen:RefereeRequest, navigationOptions: {header: null}}
+//     },
+//     {
+//         initialRouteName:'RefereeRequest'
+//     }
+// )
 
 const ScoreCardStack = createStackNavigator({
     ScoreCard: {screen:ScoreCard, navigationOptions: {header: null}}
@@ -56,7 +77,8 @@ const EventSummaryStack = createStackNavigator(
     }
 );
 const DrawerNavigator = createDrawerNavigator({
-    HomePage,
+    HomePageStack,
+    // RefereeRequest,
     MainScreenStack,
     EventSummaryStack,
     ManageEventsStack
@@ -66,7 +88,11 @@ const DrawerNavigator = createDrawerNavigator({
     navigationOptions: ({ navigation }) => ({
         headerStyle: { backgroundColor: '#48A080' },
         headerTintColor: 'white',
-        headerTitle:navigation.state.routes[navigation.state.index].key=='HomePage'?'Find Events':navigation.state.routes[navigation.state.index].key=='MainScreenStack'?'Dashboard':navigation.state.routes[navigation.state.index].key=='ManageEventsStack'?'Manage Events':navigation.state.routes[navigation.state.index].key=='EventSummaryStack'?'Match Summary':'Profile',
+        headerTitle:navigation.state.routes[navigation.state.index].key=='HomePageStack'?'Find Events':
+                    navigation.state.routes[navigation.state.index].key=='MainScreenStack'?'Dashboard':
+                    navigation.state.routes[navigation.state.index].key=='ManageEventsStack'?'Manage Events':
+                    navigation.state.routes[navigation.state.index].key=='EventSummaryStack'?'Match Summary':
+                    navigation.state.routes[navigation.state.index].key=='RefereeRequest'?'Request as Referee':'Profile',
         headerTitleStyle: { alignSelf: 'center' , textAlign:"center", flex:0.8 },
         headerLeft:
             <TouchableOpacity onPress={() => navigation.openDrawer()}>
@@ -74,7 +100,7 @@ const DrawerNavigator = createDrawerNavigator({
             </TouchableOpacity >
     }),
     // initialRouteName: 'MainScreenStack',
-    initialRouteName: 'ManageEventsStack',
+    initialRouteName: 'MainScreenStack',
     contentComponent: CustomSidebarMenu,
     drawerOpenRoute: 'drawerOpen',
     drawerCloseRoute: 'drawerClose',
@@ -86,6 +112,7 @@ const RootStack = createStackNavigator(
         Loading:{screen:LoadingScreen, navigationOptions: {header: null}},
         Login: Login,
         SignUp: SignUp,
+        HomePageStack:HomePageStack,
         MainTabs: DrawerNavigator,
         ScoreCard:{screen:ScoreCardStack, navigationOptions: {header: null}}
     },

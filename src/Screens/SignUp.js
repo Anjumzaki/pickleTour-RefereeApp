@@ -4,10 +4,12 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { NavigationActions, StackActions } from 'react-navigation';
 import * as Font from 'expo-font';
-import DatePicker from 'react-native-datepicker'
+// import DatePicker from 'react-native-datepicker'
 import * as firebase from 'firebase';
 import axios from 'axios';
-import { Assets } from 'react-navigation-stack';
+import DateTimePickerModal from "react-native-modal-datetime-picker";
+import Responsive from 'react-native-lightweight-responsive';
+
 
 
 export default class SignUp extends React.Component {
@@ -26,7 +28,10 @@ export default class SignUp extends React.Component {
             gender:'',
             address:'abc',
             stage1:true,
-            phoneNumber:'123'
+            phoneNumber:'123',
+            isDatePickerVisible:false,
+            setDatePickerVisibility:false,
+            convertedDate:''
         };
     }
 
@@ -50,7 +55,7 @@ export default class SignUp extends React.Component {
                     firstName:this.state.firstName,
                     email: this.state.email,
                     password: this.state.confirmPass,
-                    dateOfBirth: this.state.dob,
+                    dateOfBirth: this.state.convertedDate,
                     gender:this.state.gender,
                     // address:this.state.address,
                     // phoneNumber:this.state.phoneNumber    
@@ -98,11 +103,29 @@ export default class SignUp extends React.Component {
             console.warn(`Error in example '${stateKey}': `, message);
         }
     };
+
+    handleConfirm=date=>{
+        // console.log(date)
+        let newDate = this.convertDate(date) 
+        this.setState({convertedDate:newDate, isDatePickerVisible:false})    
+    }
+
+    convertDate(date){
+        var d= new Date(date)
+        var month = '' + (d.getMonth() + 1)
+        var day = '' + d.getDate()
+        var year = d.getFullYear()
+        if (month.length < 2) 
+        month = '0' + month;
+        if (day.length < 2) 
+        day = '0' + day;
+        return [day, month, year].join('-');
+    }
     render() {
         // console.log("state", this.state)
 
-        const { firstName, email, Password, confirmPass, dob, gender, address, phoneNumber } = this.state
-        const enabled = firstName.length >0 && email.length>0 && Password==confirmPass && dob.length>0 && Password.length>0 && confirmPass.length>0 && gender.length>0
+        const { firstName, email, Password, confirmPass, dob, gender, address, phoneNumber, convertedDate} = this.state
+        const enabled = firstName.length >0 && email.length>0 && Password==confirmPass && convertedDate.length>0 && Password.length>0 && confirmPass.length>0 && gender.length>0
         const enabled2 = gender.length>0 && address.length>0 && phoneNumber.length>0 
         return (
 
@@ -171,8 +194,28 @@ export default class SignUp extends React.Component {
 
                             />
                         </View>
+                        <DateTimePickerModal
+                                isVisible={this.state.isDatePickerVisible}
+                                mode='date'
+                                onConfirm={this.handleConfirm}
+                                onCancel={()=>this.setState({isDatePickerVisible:false})}
+                            />
                         <View style={styles.SectionStyle}>
-                            <DatePicker
+                            <TouchableOpacity style={styles.DateForms1} onPress={()=>this.setState({isDatePickerVisible:true})}>
+                                {this.state.convertedDate.length>0?
+                                <Text style={{  fontSize: Responsive.font(19),
+                                    color: 'black',}}>
+                                {this.state.convertedDate}
+                                </Text>
+                                :
+                                <Text style={{  fontSize: Responsive.font(19),
+                                    color: 'gray',}}>
+                                Date of Birth
+                                </Text>
+                                
+                                }
+                            </TouchableOpacity>
+                            {/* <DatePicker
                                  style={styles.forms1}
                                 date={this.state.dob} //initial date from state
                                 mode="date" //The enum of date, datetime and time
@@ -213,7 +256,7 @@ export default class SignUp extends React.Component {
                                 onDateChange={dob => {
                                     this.setState({ dob });
                                 }}
-                            />
+                            /> */}
 
                             
 
@@ -237,9 +280,9 @@ export default class SignUp extends React.Component {
                            height:45,
                             
                             backgroundColor:'white',
-                            
+                            fontSize:Responsive.font(19),
                             fontFamily: 'open-sans-bold',
-                            color: 'black'}}
+                            color: 'grey'}}
                         onValueChange={(itemValue, itemIndex) =>
                             this.setState({ gender: itemValue})
                         }>
@@ -390,7 +433,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     forms: {
-        fontSize: 19,
+        fontSize: Responsive.font(19),
         padding: 8,
         paddingLeft:20,
         width: Dimensions.get('window').width - 105,
@@ -401,6 +444,17 @@ const styles = StyleSheet.create({
         height: 50,
         fontFamily: 'open-sans-bold',
         color: 'black'
+    },
+    DateForms1:{
+        justifyContent:'center',
+        padding: 8,
+        paddingLeft:20,
+        width: Dimensions.get('window').width - 105,
+        borderWidth: 1,
+        borderColor: '#48A080',
+        borderRadius:50,
+        backgroundColor:'white',
+        height: 50,
     },
     forms1: {
         // fontSize: 19,

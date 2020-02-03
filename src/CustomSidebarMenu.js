@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { View, StyleSheet, Image, Text, Button , AsyncStorage} from 'react-native';
 import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import firebase from 'firebase';
+import { NavigationActions, StackActions } from 'react-navigation';
+import Responsive from 'react-native-lightweight-responsive';
 
 export default class CustomSidebarMenu extends Component {
   constructor() {
@@ -16,16 +18,16 @@ export default class CustomSidebarMenu extends Component {
     //This screens can be any screen defined in Drawer Navigator in App.js
     //You can find the Icons from here https://material.io/tools/icons/
     this.items = [
-      // {
-      //   navOptionThumb: require('../assets/Blog_gray.png'),
-      //   navOptionName: 'Dashboard',
-      //   screenToNavigate: 'MainScreen',
-      // },
-      // {
-      //   navOptionThumb: require('../assets/Video_gray.png'),
-      //   navOptionName: 'Find Events',
-      //   screenToNavigate: 'HomePage',
-      // },
+      {
+        navOptionThumb: require('../assets/Blog_gray.png'),
+        navOptionName: 'Dashboard',
+        screenToNavigate: 'MainScreen',
+      },
+      {
+        navOptionThumb: require('../assets/Video_gray.png'),
+        navOptionName: 'Find Events',
+        screenToNavigate: 'HomePageStack',
+      },
       {
         navOptionThumb: require('../assets/Contact_Us_gray.png'),
         navOptionName: 'Manage Events',
@@ -71,7 +73,11 @@ export default class CustomSidebarMenu extends Component {
     firebase.auth().signOut().then(function() {
       this.props.navigation.closeDrawer()
       AsyncStorage.removeItem('userProfileData')
-      this.props.navigation.navigate('Login',{loading:true})
+      this.props.navigation.dispatch(StackActions.reset({
+        index: 0,
+        actions: [NavigationActions.navigate({ routeName: 'Login' })],
+    }))
+      //this.props.navigation.navigate('Login',{loading:true})
     }).catch(function(error) {
       // An error happened.
     });
@@ -90,14 +96,14 @@ export default class CustomSidebarMenu extends Component {
     return (
       <View style={styles.sideMenuContainer}>
         {/*Top Large Image */}
-        <View style={{ backgroundColor: '#48A080', alignItems:'center', width: '100%', margin: 0, padding: 20 }}>
+        <View style={{ backgroundColor: '#48A080', width: '100%', margin: 0, padding: 20 }}>
         
           <Image
             source={require('../assets/User_Icon.png')}
             style={{ width: 50, height: 50,borderRadius:100,marginTop:20 }}
           />
-          <Text style={{fontSize:23,color:'white',fontFamily: 'open-sans-bold'}}>{this.data.firstName}</Text>
-          <Text style={{fontSize:17,color:'white',fontFamily: 'open-sans-bold'}}>{this.data.email}</Text>
+          <Text style={{fontSize:Responsive.font(23),color:'white',fontFamily: 'open-sans-bold'}}>{this.data.firstName}</Text>
+          <Text style={{fontSize:Responsive.font(13),color:'white',fontFamily: 'open-sans-bold'}}>{this.data.email}</Text>
         </View>
        
         {/*Divider between Top Image and Sidebar Option*/}
@@ -175,7 +181,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     backgroundColor: '#fff',
-    alignItems: 'center',
+    // alignItems: 'center',
   },
   container: {
     flex: 1,

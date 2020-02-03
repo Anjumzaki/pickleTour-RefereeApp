@@ -28,6 +28,10 @@ export default class Login extends React.Component {
             userName:'mahmedsaeedi2020@gmail.com',
             Password:'123456'
         })
+        // this.props.navigation.dispatch(StackActions.reset({
+        //                     index: 0,
+        //                     actions: [NavigationActions.navigate({ routeName: 'Login' })],
+        //                 }))
     }
     async letsHandleLogin(){
         try{
@@ -35,7 +39,8 @@ export default class Login extends React.Component {
             this.setState({isFetching:true})
             const {userName, Password}= this.state
             let user = await firebase.auth().signInWithEmailAndPassword(userName,Password)
-            // let dum = await firebase.auth().signOut()
+            //let dum = await firebase.auth().signOut()
+            //console.log(dum)
             let url = 'https://pickletour.appspot.com/api/user/get/'+ user.user.uid
             const res = await fetch(url)
             const data = await res.json()
@@ -63,7 +68,7 @@ export default class Login extends React.Component {
         try{
             // const {userName, Password}= this.state
             await AsyncStorage.setItem('userProfileData', JSON.stringify(user))
-            // await firebase.auth().signInWithEmailAndPassword(userName,Password)
+            //await firebase.auth().signInWithEmailAndPassword(name,password)
             setTimeout(()=>{
                 this.setState({isFetching:false})
             },3000)
@@ -203,14 +208,14 @@ export default class Login extends React.Component {
                             </Text>
                         </View>
                     </View>
-                    {/* <View style={{ alignItems: 'center' }}>
+                    <View style={{ alignItems: 'center' }}>
                         <View style={{ flexDirection: 'row' }}>
                             <Text style={styles.reg1}>  Don't have an account? </Text>
                             <TouchableOpacity onPress={() => this.props.navigation.navigate('SignUp')}>
                                 <Text style={styles.reg} >REGISTER </Text>
                             </TouchableOpacity>
                         </View>
-                    </View> */}
+                    </View>
                     {/* <Button
                             title="Go to Sign up"
                             onPress={() => this.props.navigation.navigate('SignUp')}

@@ -1,8 +1,9 @@
 import React from 'react';
-import { Modal, View, Text, Button, ImageBackground, Image, TextInput, Dimensions, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { Modal, View, Text, Button, ImageBackground, Image, TextInput, Dimensions, StyleSheet, ScrollView, TouchableOpacity, ActivityIndicator, Picker, PickerItem } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 //import { TouchableOpacity } from 'react-native-gesture-handler';
 import Responsive from 'react-native-lightweight-responsive';
+import { Icon } from 'native-base'
 import { NavigationActions, StackActions } from 'react-navigation';
 import axios from 'axios';
 export default class ToBeRequestedEvents extends React.Component {
@@ -10,7 +11,21 @@ export default class ToBeRequestedEvents extends React.Component {
         super(props);
         this.state = {
             actScr: '1',
-            modalVisible:false
+            modalVisible:false,
+            address:'',
+            phoneNumber:'',
+            incomData:false,
+            submitted:false,
+            isSuccessFull:false,
+            selected:'',
+            finallyComplete:false,
+            convertedDate:null,
+            newName:'',
+            useNewName:false,
+            startDate:null,
+            endDate:null
+        
+
         };
     }
     // login() {
@@ -21,14 +36,53 @@ export default class ToBeRequestedEvents extends React.Component {
     //     }))
     // }
     componentDidMount(){
+        let date=this.convertDate(this.props.data.tStartDate)
+        this.setState({startDate:date})
         // console.log(this.props)
-        // console.log(this.props.data.division)
+        //console.log(this.props.data.division)
+        let name=this.props.data.tournamentName
+        let index= ''
+        let splitter = 4
+
+        let nameLength=this.convertString(name)
+        if(nameLength>40){
+            index = name.split(' ').slice(0,splitter).join(' ');
+            this.setState({newName:index, useNewName:true})
+        }
     }
-    closeModal(){
-        this.setState({modalVisible:false})
+
+    convertDate(date){
+        var d= new Date(date)
+        var month = '' + (d.getMonth() + 1)
+        var day = '' + d.getDate()
+        var year = d.getFullYear()
+        if (month.length < 2) 
+        month = '0' + month;
+        if (day.length < 2) 
+        day = '0' + day;
+        return [day, month, year].join('/');
     }
+    convertString(name){
+        name = name.replace(/(^\s*)|(\s*$)/gi,"");
+        name = name.replace(/[ ]{2,}/gi," ");
+        name = name.replace(/\n /,"\n");
+        return name.length;
+    }
+    // closeModal(){
+    //     const  { address, phoneNumber, incomData} = this.state
+    //     if(address.length>0 && phoneNumber.length>0){
+    //         this.setState({modalVisible:false})
+    //     }
+    // }
     request(){
-        this.setState({modalVisible:true})
+        const {selected} = this.state
+        // console.log('Selected:  ',selected)
+        if(selected == '' || selected == 'Select'){
+            
+        }
+        else{
+            this.setState({modalVisible:true})
+        }
         //for creating a request for registration
         // Object ={
         //     address:  this.state.address,
@@ -86,79 +140,213 @@ export default class ToBeRequestedEvents extends React.Component {
 
     }
 
+    async sendingData(obj){
+        const config = {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(obj)
+        }
+        try{
+            // console.log(obj)0
+            let url ='https://pickletour.appspot.com/api/referee/register'
+            const res = await fetch(url, config)
+            const data = await res.json()
+            console.log(data)
+            if(data.message =='referee Registered'){
+                this.setState({finallyComplete:true})
 
+                setTimeout(()=>{
+                    this.setState({modalVisible:false})
+                },3000)
+            }
+            console.log(data)
+        }catch(error){
+
+        }
+    }
+
+    conformingRequest(user, tournament){
+        const {address, phoneNumber, incomData, submitted, isSuccessFull, selected} = this.state
+        // console.log(user, tournament)
+        // console.log(address, phoneNumber)
+        if(address.length>0 && phoneNumber.length>0){
+            const Obj ={
+                address:  address,
+                dob: user.dateOfBirth,
+                fName: user.firstName,
+                email: user.email,
+                gender: user.gender,
+                phone: phoneNumber,
+                divisionName: selected,
+                tournamentId: tournament._id,
+                tournamentName: tournament.tournamentName,
+                tournamentStartDate: tournament.tStartDate,
+                type:  tournament.type,                
+                userId:  user.uid,
+                isPaid: false,
+                tournamentAddress:tournament.address
+            }
+
+            console.log('Request Sent')
+            this.setState({submitted:true, isSuccessFull:true})
+
+            this.sendingData(Obj)
+        }
+        else{
+            this.setState({incomData:true})
+        }
+    }
     render() {
-        const tournament = this.props.data
-        console.log(this.props.user)
+        //console.log('````````````````````````````````````````')
+        const data = this.props.data
+        // console.log(tournament)
+        //console.log(tournament.division)
+        let result = data.division.map(a => a.nameOfDivision);
+
+        //const divisionData =['Select', ...result]
+        const user = this.props.user
+        // console.log(divisionData)
+        const { address, phoneNumber, incomData, submitted, isSuccessFull, selected, finallyComplete } = this.state
+        // console.log('User Data:  ',this.props.user)
         return (
             <View style={styles.cardStyles}>
-                <Modal animationType='slide'
+                <View style={{ height:'45%', alignSelf:'center', width:'95%',justifyContent:'center'}}>
+                    <Text style={{fontSize:Responsive.font(14), color:'#585858', fontFamily:'open-sans-bold'}}>{this.state.useNewName?this.state.newName:data.tournamentName}</Text>
+                </View>
+                {/* Rows here */}
+
+                <View style={{borderWidth:0.5,marginHorizontal:10,borderColor:'#81D4B6'}}></View>
+                <View style={{ height:'45%', width:'95%', alignSelf:'center', justifyContent:'space-between', flexDirection:'row'}}>
+                    <View style={{flex:1, flexDirection:'row',width:'50%' }}>
+                        <Text  style={{fontSize:Responsive.font(13), color:'#585858', fontFamily:'open-sans-bold', fontWeight:'600', alignSelf:'center'}}>Event Type : </Text>
+                        <Text  style={{fontSize:Responsive.font(12), color:'#585858', fontFamily:'open-sans-bold', fontWeight:'600',alignSelf:'center'}}>{data.type}</Text>
+
+                    </View>                   
+                   
+                    <View style={{flex:1, flexDirection:'row', width:'50%' ,justifyContent: 'flex-end'}}>
+                        <Icon type="MaterialIcons" name="date-range"  style={{ alignSelf:'center',fontSize:Responsive.font(15) ,color: '#585858'}}/>
+                        <Text style={{fontSize:Responsive.font(11), color:'#585858', fontFamily:'open-sans-bold',alignSelf:'center',paddingLeft:1}}>{this.state.startDate} - 22/01/2020</Text>
+                    </View>
+
+
+                 
+                </View>
+
+
+
+
+
+
+
+
+
+                {/* <Modal animationType='slide'
                        visible={this.state.modalVisible}>
-                           <View style={{flex:1, alignContent:'center', alignItems:'center',justifyContent:'center', backgroundColor: '#86d6b9' }}>
-                                <TextInput style={{backgroundColor:'white',borderRadius:10,paddingLeft:10, paddingVertical:5, borderColor:'#48A080',borderWidth:1,width:'90%', fontFamily:'open-sans-bold', marginBottom:20, fontSize:Responsive.font(20)}} placeholder="Name" placeholderTextColor={'gray'}/>
-                                <TextInput style={{backgroundColor:'white',borderRadius:10,paddingLeft:10, paddingVertical:5, borderColor:'#48A080',borderWidth:1,width:'90%', fontFamily:'open-sans-bold', marginBottom:20, fontSize:Responsive.font(20)}} placeholder="Email Address" placeholderTextColor={'gray'}/>
-                                <TextInput style={{backgroundColor:'white',borderRadius:10,paddingLeft:10, paddingVertical:5, borderColor:'#48A080',borderWidth:1,width:'90%', fontFamily:'open-sans-bold', marginBottom:20, fontSize:Responsive.font(20)}} placeholder="Phone Number" placeholderTextColor={'gray'}/>
-                                <TextInput style={{backgroundColor:'white',borderRadius:10,paddingLeft:10, paddingVertical:5, borderColor:'#48A080',borderWidth:1,width:'90%', fontFamily:'open-sans-bold', marginBottom:20, fontSize:Responsive.font(20)}} placeholder="Address" placeholderTextColor={'gray'}/>
-                                <TouchableOpacity onPress={()=>console.log('Pressed')} style={{fontFamily: 'open-sans-simple',
+                           <View style={{width:'100%', height:'100%'}}>
+                                {isSuccessFull?
+                                <View style={{flex:1, alignContent:'center', alignItems:'center',justifyContent:'center', backgroundColor:'white' }}> 
+                                
+                                
+                                {finallyComplete? <Icon type="FontAwesome" name="check"  style={{ color: 'green'}}/>:<ActivityIndicator size={"large"}/>}
+                                
+                                
+                                {finallyComplete?
+                                <Text style={{fontSize:Responsive.font(20), fontFamily:'open-sans-bold'}}>Request Submitted Successfully !</Text>
+                                :
+                                <Text style={{fontSize:Responsive.font(20), fontFamily:'open-sans-bold'}}>Submitting Request..</Text>
+                                }
+                                
+                                </View>:
+                                
+                                <View style={{flex:1, alignContent:'center', alignItems:'center',justifyContent:'center', backgroundColor: '#86d6b9' }}>
+                                    <TextInput style={{backgroundColor:'white',borderRadius:10,paddingLeft:10, paddingVertical:5, borderColor:'#48A080',borderWidth:1,width:'90%', fontFamily:'open-sans-bold', marginBottom:20, fontSize:Responsive.font(20)}} editable={false} placeholder="Name" value={user.firstName} placeholderTextColor={'gray'}/>
+                                <TextInput style={{backgroundColor:'white',borderRadius:10,paddingLeft:10, paddingVertical:5, borderColor:'#48A080',borderWidth:1,width:'90%', fontFamily:'open-sans-bold', marginBottom:20, fontSize:Responsive.font(20)}} editable={false} placeholder="Email Address" value={user.email} placeholderTextColor={'gray'}/>
+                                <TextInput style={{backgroundColor:'white',borderRadius:10,paddingLeft:10, paddingVertical:5, borderColor:'#48A080',borderWidth:1,width:'90%', fontFamily:'open-sans-bold', marginBottom:20, fontSize:Responsive.font(20)}} placeholder="Phone Number"  value={phoneNumber} keyboardType="phone-pad" onChangeText={phoneNumber => this.setState({ phoneNumber })} placeholderTextColor={'gray'}/>
+                                <TextInput style={{backgroundColor:'white',borderRadius:10,paddingLeft:10, paddingVertical:5, borderColor:'#48A080',borderWidth:1,width:'90%', fontFamily:'open-sans-bold', marginBottom:20, fontSize:Responsive.font(20)}} placeholder="Address"  value={address}  keyboardType="default" onChangeText={address => this.setState({ address })} placeholderTextColor={'gray'}/>
+                                
+                                {incomData ? <Text style={{color:'red', fontSize:Responsive.font(16), fontFamily:'open-sans-bold'}}> Please complete forum !!</Text>:<Text></Text>}
+                                <TouchableOpacity disabled={submitted} onPress={()=>this.conformingRequest(user,tournament)} style={{fontFamily: 'open-sans-simple',
                                                                                                 width: Dimensions.get('window').width - 105,
                                                                                                 alignItems: 'center',
-                                                                                                backgroundColor: '#48A080',
+                                                                                                backgroundColor: submitted?'#BEBAC5':'#48A080',
                                                                                                 padding: 10,
                                                                                                 borderRadius: 100,
                                                                                                 marginTop: 60,}}>
                                     <Text style={{color:'white',fontFamily:'open-sans-simple',fontSize:Responsive.font(22)}}>Confirm</Text>
                                 </TouchableOpacity>
                                 
-                                <TouchableOpacity onPress={()=>this.setState({modalVisible:false})} style={{fontFamily: 'open-sans-simple',
+                                <TouchableOpacity  disabled={submitted} onPress={()=>this.setState({modalVisible:false})} style={{fontFamily: 'open-sans-simple',
                                                                                                             width: Dimensions.get('window').width - 105,
                                                                                                             alignItems: 'center',
-                                                                                                            backgroundColor: '#48A080',
+                                                                                                            backgroundColor: submitted?'#BEBAC5':'#48A080',
                                                                                                             padding: 10,
                                                                                                             borderRadius: 100,
                                                                                                             marginTop: 20,}}>
                                     <Text style={{color:'white',fontFamily:'open-sans-simple',fontSize:Responsive.font(22)}}>Close</Text>
                                     </TouchableOpacity>
+                                </View>
+                                
+                                }
+                                
                            </View>
                         
 
                 </Modal>
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                    <View style={{ flexDirection: 'row', width: '50%' }} >
-                        <Text style={styles.head}>Name: </Text>
-                        <Text style={styles.inHead}>{tournament.tournamentName}</Text>
-                    </View>
-                    <View style={{ flexDirection: 'row', width: '30%', marginRight: 20 }} >
-                        <Text style={styles.head}>Date: </Text>
-                        <Text style={styles.inHead}>12-10-2019</Text>
-                    </View>
-                </View>
-                <View style={{ flexDirection: 'row', width: '100%' }} >
+                <View style={{ height:'45%', alignSelf:'center', width:'95%',justifyContent:'center'}}>
+                <Text style={{fontSize:Responsive.font(14), color:'#585858', fontFamily:'open-sans-bold'}}>{this.state.useNewName?this.state.newName:tournament.tournamentName}</Text>
+                </View> */}
+                {/* <View style={{ flexDirection: 'row', width: '85%' }} >
                     <Text style={styles.head}>Address : </Text>
                     <Text style={styles.inHead}>{tournament.address}</Text>
-                </View>
+                </View> */}
+                {/* <View style={{borderWidth:0.5,marginHorizontal:10,borderColor:'#81D4B6'}}></View>
                 <View style={{ flexDirection: 'row', marginTop: 10 }}>
-                    <View style={{ flexDirection: 'row', width: '50%' }} >
-                        <Text style={styles.head}>Event Type : </Text>
+                    <View style={{ flexDirection: 'row', flex:1 }} >
+                        <Text  style={{fontSize:Responsive.font(14), color:'#585858', fontFamily:'open-sans-bold', fontWeight:'600', alignSelf:'center'}}>Event Type : </Text>
                         <Text style={styles.inHead}>{tournament.type}</Text>
                     </View>
 
                 </View>
-                <View style={{ flexDirection: 'row', marginTop: 10, justifyContent: 'space-between' }}>
-                    <View style={{ flexDirection: 'row', width: '50%' }} >
+                <View style={{ flexDirection: 'row', marginTop: 10, justifyContent: 'space-between' }}> */}
+                    {/* <View style={{ flexDirection: 'row', width: '50%', alignItems:'center' }} >
                         <Text style={styles.head}>Division : </Text>
-                        <Text style={styles.inHead}>
-                        {/* <Text>{tournament.nameofDivision}</Text> */}
-                            {tournament.division ? tournament.division.map((item) => {
-                                <Text>{item.nameOfDivision}</Text>
-                            }) :<Text>{item.nameOfDivision}</Text>}
-                        </Text>
-                    </View>
-                    <View style={{ flexDirection: 'row' }} >
-                        <TouchableOpacity onPress={()=>this.request()} style={{backgroundColor:'#2E8465', borderRadius:10, borderWidth:1, borderColor:'white', paddingHorizontal:15, paddingVertical:2}}>
+                        <View style={{  width: "80%",height: 25,
+                        marginRight: 10,
+                                        alignItems: 'center',
+                                        borderWidth: 1,
+                                        borderColor: '#48A080',
+                                        justifyContent:'center',
+                                        borderRadius: 5,
+                                        backgroundColor: '#F6F6F6',}}>
+                             <Picker 
+                            
+                            style={{  height:25,        width: '100%',
+
+                                color: '#48A080',}}
+                            
+                            onValueChange={(itemValue, itemIndex)=>{
+                                this.setState({selected:itemValue})
+                            }}
+                            selectedValue={this.state.selected}>
+
+                             {divisionData.map((item, index)=>{
+                                return(<Picker.Item label={item} value={item} key={index}/>)
+                            })}
+                            
+                        </Picker>
+                       
+                        </View>
+                        
+                    </View> */}
+                    {/* <View style={{flexDirection: 'row', height:'100%', alignSelf:'center', justifyContent:'center'}} >
+                        <TouchableOpacity onPress={()=>this.request()} style={{backgroundColor:'#2E8465', borderRadius:5, borderWidth:1, paddingHorizontal:15, height:25,alignContent:'center', justifyContent:'center', borderColor:'black'}}>
                             <Text style={styles.buttonText}>Request</Text>
                         </TouchableOpacity>
-                    </View>
-                </View>
+                    </View> */}
+                {/* </View> */}
             </View>
 
         );
@@ -166,19 +354,22 @@ export default class ToBeRequestedEvents extends React.Component {
 }
 const styles = StyleSheet.create({
     cardStyles: {
-        width: '100%',
-        backgroundColor: '#48A080',
-        padding: 10,
+        alignSelf:'center',
+        marginHorizontal:10,
+        width: '94.5%',
+        backgroundColor: '#9EEACE',
+        height:70,
         shadowColor: "#000",
         shadowOffset: {
             width: 0,
             height: 2,
         },
+        justifyContent:'center',
         shadowOpacity: 0.23,
         shadowRadius: 2.62,
 
-        elevation: 4,
-        marginBottom: 10
+        elevation: 3,
+        marginBottom:10,
     },
     head: {
         color: 'white',
@@ -190,7 +381,13 @@ const styles = StyleSheet.create({
     buttonText:{
         color: 'white',
         fontFamily: 'open-sans-bold',
-        fontSize: Responsive.font(10)
+        fontSize: Responsive.font(10),
+        alignSelf:'center',
+        textAlignVertical:'center',
+        textAlign:'center',
+        alignItems:'center',
+        alignContent:'center'
+
 
     },
     inHead: {

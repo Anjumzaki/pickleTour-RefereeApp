@@ -12,9 +12,10 @@ export default class App extends React.Component {
     fontLoaded:false
   }
   componentDidMount() {
+    console.disableYellowBox = true
     Font.loadAsync({
         'open-sans-bold': require('./assets/fonts/Lato-Medium.ttf'),
-        'open-sans-simple': require('./assets/fonts/Lato-Light.ttf'),
+        'open-sans-simple': require('./assets/fonts/Lato-Light.ttf')
 
     }).then(()=>{
     this.setState({ fontLoaded: true });

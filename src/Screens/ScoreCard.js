@@ -83,9 +83,9 @@ class ScoreCard extends Component {
       Section3:'Player #3',
       Section4:'Player #4',
       TeamFormation:'Doubles',
-      Player1Name:'A',
+      Player1Name:'George set',
       Player2Name:'B',
-      Player3Name:'C',
+      Player3Name:'William',
       Player4Name:'D',
       modalVisible:true,
       checked:true,
@@ -324,7 +324,16 @@ class ScoreCard extends Component {
   }
 
   componentDidMount(){
-    console.log(this.props.navigation.state.params)
+    // console.log(this.props.navigation.state.params)
+    let userData = this.props.navigation.state.params.userData
+    let data = this.props.navigation.state.params.data
+    // console.log(userData)
+    if(userData.divisionName.includes('Single')){
+      this.setState({
+        Player1Name: data.one.fName,
+        Player3Name: data.two.fName
+      })
+    }
     this.changeScreenOrientation()
     this.backHandler = BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
     // if(this.state.TeamFormation=='Doubles'){
@@ -349,12 +358,12 @@ class ScoreCard extends Component {
   settingSingles(){
     if(this.playingSide=='left'){
       this.setState({
-        ballpos1:true, ballpos2:false,ballpos3:false, ballpos4:false,Team1Serving:true,Team2Serving:false, Serve:1, Section2:'', Section4:'', Section1:this.state.Player1Name, Section3:this.state.Player3Name
+        ballpos1:true, ballpos2:false,ballpos3:false, ballpos4:false,Team1Serving:true,Team2Serving:false, Serve:1, Section2:'', Section4:'', Section1:this.state.Player1Name, Section3:this.state.Player3Name, TeamFormation:'Singles'
       })
     }
     else{
       this.setState({
-        ballpos3:true, ballpos2:false, ballpos4:false,ballpos1:false,Team2Serving:true,Team1Serving:false, Serve:1, Section2:'', Section4:'', Section1:this.state.Player1Name, Section3:this.state.Player3Name
+        ballpos3:true, ballpos2:false, ballpos4:false,ballpos1:false,Team2Serving:true,Team1Serving:false, Serve:1, Section2:'', Section4:'', Section1:this.state.Player1Name, Section3:this.state.Player3Name, TeamFormation:'Singles'
       })
     }
   }
@@ -383,7 +392,7 @@ class ScoreCard extends Component {
     this.resettingGame()
     this.setState({
       modalVisible:!this.state.modalVisible, startClicked:true
-    },()=>this.gameStyle(this.playingSide, 'Doubles'))  
+    },()=>this.gameStyle(this.playingSide, 'Singles'))  
 
   }
 
@@ -540,7 +549,7 @@ class ScoreCard extends Component {
                   <View style={{width:'50%', flex:1, flexDirection:'row' }}>
           <View style={{flex:0.7, flexDirection:'column'}}>
             {this.state.Team1Serving?<View style={{backgroundColor:'#91c549', width:Responsive.width(100), height:Responsive.height(30), alignSelf:'flex-end', borderColor:'#707070', borderWidth:1,marginTop:'1%'}}>
-              <Text style={{fontFamily: 'open-sans-simple',color:'#515151', alignSelf:'center', fontSize:Responsive.font(20)}}>{'Serve '+this.state.Serve}</Text>
+              <Text style={{fontFamily: 'open-sans-bold',color:'#515151', alignSelf:'center', fontSize:Responsive.font(20)}}>{'Serve '+this.state.Serve}</Text>
             </View>:<View style={{ height:Responsive.height(30)}}></View>}
             {/* Player 2 Name and Ball */}
             
@@ -552,7 +561,7 @@ class ScoreCard extends Component {
 
 
               <View>
-                <Text style={{fontFamily: 'open-sans-simple',color:'white', fontSize:Responsive.font(16)}}>{this.state.Section2}</Text>
+                <Text style={{fontFamily: 'open-sans-bold',color:'white', fontSize:Responsive.font(16)}}>{this.state.Section2}</Text>
               </View>
 
               
@@ -569,7 +578,7 @@ class ScoreCard extends Component {
 
 
               <View>
-                <Text style={{fontFamily: 'open-sans-simple',color:'white',fontSize:Responsive.font(16)}}>{this.state.Section1}</Text>
+                <Text style={{fontFamily: 'open-sans-bold',color:'white',fontSize:Responsive.font(16)}}>{this.state.Section1}</Text>
               </View> 
             </View>
 
@@ -581,7 +590,7 @@ class ScoreCard extends Component {
         {/* ------------------------------ */}
           <View style={{ flex:0.3}}>
             <View style={{height:Responsive.height(40),width:Responsive.width(50),backgroundColor:this.state.Team1Serving?'#91c549':'white', alignSelf:'center', justifyContent:'center', borderWidth:1,borderColor:'#707070'}}>
-              <Text style={{fontFamily: 'open-sans-simple',color:'#515151', alignSelf:'center', fontSize:Responsive.font(16)}}>{this.state.ScoreTeam1}</Text>
+              <Text style={{fontFamily: 'open-sans-bold',color:'#515151', alignSelf:'center', fontSize:Responsive.font(16)}}>{this.state.ScoreTeam1}</Text>
             </View>
           </View>
         </View>
@@ -593,13 +602,13 @@ class ScoreCard extends Component {
         <View style={{width:'50%',flex:1, flexDirection:'row'}}>
           <View style={{ flex:0.3}}>
             <View style={{height:Responsive.height(40),width:Responsive.width(50), backgroundColor:this.state.Team2Serving?'#91c549':'white', alignSelf:'center', justifyContent:'center', borderWidth:1, borderColor:'#707070'}}>
-              <Text style={{fontFamily: 'open-sans-simple',color:'#515151', alignSelf:'center', fontSize:Responsive.font(16)}}>{this.state.ScoreTeam2}</Text>
+              <Text style={{fontFamily: 'open-sans-bold',color:'#515151', alignSelf:'center', fontSize:Responsive.font(16)}}>{this.state.ScoreTeam2}</Text>
             </View>
           </View> 
         {/* ------------------------------ */}
           <View style={{ flex:0.7, flexDirection:'column'}}>
             {this.state.Team2Serving?<View style={{backgroundColor:'#91c549', width:Responsive.width(100), height:Responsive.height(30), borderColor:'#707070',borderWidth:1,alignSelf:'flex-start', marginTop:'1%'}}>
-            <Text style={{fontFamily: 'open-sans-simple',color:'#515151',alignSelf:'center', fontSize:Responsive.font(20)}}>{'Serve '+this.state.Serve}</Text>
+            <Text style={{fontFamily: 'open-sans-bold',color:'#515151',alignSelf:'center', fontSize:Responsive.font(20)}}>{'Serve '+this.state.Serve}</Text>
             </View>:<View style={{height:Responsive.height(30)}}></View>}
             <View style={{flex:0.6, flexDirection:'row', justifyContent:'space-between', paddingRight:Responsive.width(70), alignItems:'center'}}> 
 
@@ -607,7 +616,7 @@ class ScoreCard extends Component {
 
 
               <View>
-                <Text style={{fontFamily: 'open-sans-simple',color:'white', fontSize:Responsive.font(16)}}>{this.state.Section3}</Text>
+                <Text style={{fontFamily: 'open-sans-bold',color:'white', fontSize:Responsive.font(16)}}>{this.state.Section3}</Text>
               </View>
 
               <View>
@@ -624,7 +633,7 @@ class ScoreCard extends Component {
 
 
               <View>
-                <Text style={{fontFamily: 'open-sans-simple',color:'white',fontSize:Responsive.font(16)}}>{this.state.Section4}</Text>
+                <Text style={{fontFamily: 'open-sans-bold',color:'white',fontSize:Responsive.font(16)}}>{this.state.Section4}</Text>
               </View>
               <View>
                 {this.state.ballpos4?<Image style={{marginRight:Responsive.width(10)}}source={require('../../assets/ball.png')}/>:<View></View>}
