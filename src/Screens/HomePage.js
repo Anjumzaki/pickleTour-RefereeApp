@@ -177,6 +177,39 @@ searchFilterFunction = text =>{
         this.setState({ recreationalData :newData })
     }
 }
+
+searchFilterFunctionLocation = text =>{
+  if(this.state.actScr ==1){
+      const newData = this.state.tourDataSearch.filter(item =>{
+          const itemData = `${item.address.toUpperCase()}`
+          const textData = text.toUpperCase();
+          return itemData.indexOf(textData) > -1;
+          //const itemData = `${item.name.title.toUpperCase()} ${item.name.first.toUpperCase()} ${item.name.last.toUpperCase()}`;
+  
+      })
+      this.setState({ tourData :newData })
+  }
+  else if(this.state.actScr ==2){
+      const newData = this.state.leaguesDataSearch.filter(item =>{
+          const itemData = `${item.tournamentName.toUpperCase()}`
+          const textData = text.toUpperCase();
+          return itemData.indexOf(textData) > -1;
+          //const itemData = `${item.name.title.toUpperCase()} ${item.name.first.toUpperCase()} ${item.name.last.toUpperCase()}`;
+  
+      })
+      this.setState({ leaguesData :newData })
+  }
+  else{
+      const newData = this.state.recreationalDataSearch.filter(item =>{
+          const itemData = `${item.tournamentName.toUpperCase()}`
+          const textData = text.toUpperCase();
+          return itemData.indexOf(textData) > -1;
+          //const itemData = `${item.name.title.toUpperCase()} ${item.name.first.toUpperCase()} ${item.name.last.toUpperCase()}`;
+  
+      })
+      this.setState({ recreationalData :newData })
+  }
+}
 // _onMomentumScrollBegin = () => this.setState({ onEndReachedCalledDuringMomentum: false });
 // _onMomentumScrollEnd = () => this.setState({ onEndReachedCalledDuringMomentum: true });
 
@@ -202,6 +235,15 @@ searchFilterFunction = text =>{
             placeholderTextColor="#dddddd"
             style={styles.forms}
             onChangeText={value => this.searchFilterFunction(value)}
+            />
+            <Image style={{ marginRight:10, width: 20, height: 20 }} source={require('../../assets/Path100.png')} />
+        </View>
+        <View style={styles.SectionStyle}>
+            <TextInput
+            placeholder="Search by location"
+            placeholderTextColor="#dddddd"
+            style={styles.forms}
+            onChangeText={value => this.searchFilterFunctionLocation(value)}
             />
             <Image style={{ marginRight:10, width: 20, height: 20 }} source={require('../../assets/Path100.png')} />
         </View>
