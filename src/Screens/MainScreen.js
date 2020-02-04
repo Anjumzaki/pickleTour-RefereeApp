@@ -22,8 +22,11 @@ export default class MainScreen extends React.Component {
             upData:[],
             onData:[],
             dataOneLoaded:false,
+            dateOneFetching:false,
             dataTwoLoaded:false,
+            dataTwoFetching:false,
             dataThreeLoaded:false,
+            dataThreeFetching:false,
             loading: true,
             dataFound: false,
             showButton:false,
@@ -62,7 +65,8 @@ export default class MainScreen extends React.Component {
                     upData:onEvents,
                     dataThreeLoaded:true,
                     dataOneLoaded:true,
-                    dataTwoLoaded:true
+                    dataTwoLoaded:true,
+
                 })
             }
             else{
@@ -77,8 +81,10 @@ export default class MainScreen extends React.Component {
             console.log(error)
         })
     }
-    getCompletedData(userId){
+    getCompletedData(){
+        this.setState({dateOneFetching:true})
         var compEvents=[];
+        var userId = this.userData.uid
         var gettingUrl = 'http://pickletour.com/api/get/completed/Events/'
         //var gettingUrl = 'http://pickletour.com/api/get/tournament/page/0'
         //axios.get(gettingUrl+userId)
@@ -89,13 +95,15 @@ export default class MainScreen extends React.Component {
             if(compEvents.length>0){
                 this.setState({
                     compData:compEvents,
-                    dataOneLoaded:true
+                    dataOneLoaded:true,
+                    dateOneFetching:false
                 })
             }
             else{
                 this.setState({
                     dataOneLoaded:false,
-                    showMessage:true
+                    showMessage:true,
+                    dateOneFetching:false
                 })
             }
         }).catch((error)=>{
@@ -103,9 +111,11 @@ export default class MainScreen extends React.Component {
         })
     }
 
-    getUpcomingData(userId){
+    getUpcomingData(){
         // console.log(userId)
+        this.setState({dataThreeFetching:true})
         var upEvents=[];
+        var userId = this.userData.uid
         var gettingUrl = 'http://pickletour.com/api/get/upcoming/Events/'
         axios.get(gettingUrl+userId)
         .then((response)=>{
@@ -114,13 +124,15 @@ export default class MainScreen extends React.Component {
             if(upEvents.length>0){
                 this.setState({
                     upData:upEvents,
-                    dataThreeLoaded:true
+                    dataThreeLoaded:true,
+                    dataThreeFetching:false
                 })
             }
             else{
                 this.setState({
                     dataThreeLoaded:false,
-                    showThreeMessage:true
+                    showThreeMessage:true,
+                    dataThreeFetching:false
                 })
             }
         }).catch((error)=>{
@@ -128,9 +140,11 @@ export default class MainScreen extends React.Component {
         })
     }
 
-    getOngoingData(userId){
+    getOngoingData(){
         // console.log(userId)
+        this.setState({dataTwoFetching:true})
         var onEvents=[];
+        var userId = this.userData.uid
         var gettingUrl = 'http://pickletour.com/api/get/ongoing/Events/'
         axios.get(gettingUrl+userId)
         .then((response)=>{
@@ -139,13 +153,15 @@ export default class MainScreen extends React.Component {
             if(onEvents.length>0){
                 this.setState({
                     onData:onEvents,
-                    dataTwoLoaded:true
+                    dataTwoLoaded:true,
+                    dataTwoFetching:false
                 })
             }
             else{
                 this.setState({
                     dataTwoLoaded:false,
-                    showTwoMessage:true
+                    showTwoMessage:true,
+                    dataTwoFetching:false
                 })
             }
         }).catch((error)=>{
@@ -160,10 +176,10 @@ export default class MainScreen extends React.Component {
             let user = await AsyncStorage.getItem('userProfileData')
             let parsed = JSON.parse(user)
             this.userData= parsed
-            this.getUpcomingData(this.userData.uid)
-            this.getOngoingData(this.userData.uid)
+            this.getUpcomingData()
+            this.getOngoingData()
             
-            this.getCompletedData(this.userData.uid)
+            this.getCompletedData()
 
             // this.testingData()
             //this.getItem()
@@ -335,6 +351,8 @@ export default class MainScreen extends React.Component {
                             {this.state.dataOneLoaded?<FlatList
                                 style={{marginBottom:100}}
                                 keyExtractor={item => item._id}
+                                refreshing={this.state.dataOneFetching}
+                                onRefresh={()=>this.getCompletedData()}
                                 data ={this.state.compData}
                                 renderItem={({item})=>(
                                     // <TouchableOpacity onPress={()=>this.props.navigation.navigate('EventSummary')}>
@@ -357,6 +375,8 @@ export default class MainScreen extends React.Component {
                                 style={{marginBottom:100}}
                                 keyExtractor={item => item._id}
                                 data ={this.state.onData}
+                                refreshing={this.state.dataTwoFetching}
+                                onRefresh={()=>this.getOngoingData()}
                                 renderItem={({item})=>(
                                     // <TouchableOpacity onPress={()=>this.props.navigation.navigate('EventSummary')}>
                                     <MultiTypeEventsCards navigation={this.props.navigation} data={item} />
@@ -372,7 +392,9 @@ export default class MainScreen extends React.Component {
                                 style={{marginBottom:100}}
                                 keyExtractor={item => item._id}
                                 data ={this.state.upData}
-                                onEndReached={()=>this.recall('Third')}
+                                
+                                refreshing={this.state.dataThreeFetching}
+                                onRefresh={()=>this.getUpcomingData()}
                                 renderItem={({item})=>(
                                     // <TouchableOpacity onPress={()=>this.props.navigation.navigate('EventSummary')}>
                                     <MultiTypeEventsCards navigation={this.props.navigation} data={item} show={false}/>

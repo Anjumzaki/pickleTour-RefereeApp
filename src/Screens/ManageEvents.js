@@ -24,11 +24,15 @@ export default class MainScreen extends React.Component {
             reqData:[],
             inviData:[],
             dataOneLoaded:false,
+            dataOneFetching:false,
             dataTwoLoaded:false,
+            dataTwoFetching:false,
             dataThreeLoaded:false,
+            dataThreeFetching:false,
             showMessage:false,
             showTwoMessage:false,
-            showThreeMessage:false
+            showThreeMessage:false,
+            userIdGlobal:null
         };
     }
 
@@ -44,8 +48,9 @@ export default class MainScreen extends React.Component {
                 // console.log('Here',user)
                 this.data= JSON.parse(user)
                 // console.log(this.data)
-                this.getMyEvents(this.data.uid)
-                this.getRequestedEvents(this.data.uid)
+                //this.setState({})
+                this.getMyEvents()
+                this.getRequestedEvents()
                 //this.testingData()
           
               }catch(error){
@@ -69,8 +74,10 @@ export default class MainScreen extends React.Component {
         
         
     }
-    getMyEvents(userId){
+    getMyEvents(){
         var myEvents=[]
+        this.setState({dataOneFetching:true})
+        var userId = this.data.uid
         var gettingUrl = 'http://pickletour.com/api/get/enroll/Events/'
         axios.get(gettingUrl+userId)
         .then((response)=>{
@@ -80,13 +87,15 @@ export default class MainScreen extends React.Component {
                 this.setState({
                     eventsData:myEvents,
                     dataOneLoaded:true,
-                    showMessage:false
+                    showMessage:false,
+                    dataOneFetching:false
                 })
             }
             else{
                 this.setState({
                     dataOneLoaded:false,
-                    showMessage:true
+                    showMessage:true,
+                    dataOneFetching:false
                 })
             }
         }).catch((error)=>{
@@ -103,18 +112,22 @@ export default class MainScreen extends React.Component {
             console.log('No False Found')
             this.setState({
                 dataTwoLoaded:false,
-                showTwoMessage:true
+                showTwoMessage:true,
+                dataTwoFetching:false
             })
         }
         else{
             this.setState({
                 dataTwoLoaded:true,
-                reqData:reqEvents
+                reqData:reqEvents,
+                dataTwoFetching:false
             })
         }
     }
-    getRequestedEvents(userId){
+    getRequestedEvents(){
         var reqEvents = []
+        this.setState({dataTwoFetching:true})
+        var userId = this.data.uid
         var gettingUrl = 'http://pickletour.com/api/get/referee/requests/'
         axios.get(gettingUrl+userId)
         .then((response)=>{
@@ -127,7 +140,8 @@ export default class MainScreen extends React.Component {
             else {
                 this.setState({
                     dataTwoLoaded:false,
-                    showMessage:true
+                    showMessage:true,
+                    dataTwoFetching:false
                 })
             }
         })
@@ -162,9 +176,11 @@ export default class MainScreen extends React.Component {
                         
 
                         {this.state.dataOneLoaded?<FlatList
-                                style={{marginBottom:100}}
+                                style={{marginBottom:90}}
                                 data ={this.state.eventsData}
                                 keyExtractor={item => item._id}
+                                refreshing={this.state.dataOneFetching}
+                                onRefresh={()=>this.getMyEvents()}
                                 // onEndReached={()=>this.recall('First')}
                                 renderItem={({item})=>(
                                     <TouchableOpacity onPress={() => { this.props.navigation.navigate('EventDetails',{item}) }}>
@@ -182,8 +198,10 @@ export default class MainScreen extends React.Component {
                     </View> : null}
                     {this.state.actScr == 2 ? <View style={{ paddingTop: 10 }}>
                     {this.state.dataTwoLoaded?<FlatList
-                                style={{marginBottom:100}}
+                                style={{marginBottom:90}}
                                 data ={this.state.reqData}
+                                refreshing={this.state.dataTwoFetching}
+                                onRefresh={()=>this.getRequestedEvents()}
                                 // extraData={this.state}
                                 keyExtractor={item => item._id}
                                 // onEndReached={()=>this.recall('Second')}
@@ -200,9 +218,10 @@ export default class MainScreen extends React.Component {
                     </View> : null}
                     {this.state.actScr == 3 ? <View style={{ paddingTop: 10 }}>
                     {this.state.dataOneLoaded?<FlatList
-                                style={{marginBottom:100}}
+                                style={{marginBottom:90}}
                                 keyExtractor={item => item._id}
                                 data ={this.state.inviData}
+                                refreshing={this.state.dataThreeFetching}
                                 renderItem={({item})=>(
                                     <EventCardsMa3 />
                                 )}
