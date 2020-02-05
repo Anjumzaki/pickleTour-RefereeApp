@@ -408,7 +408,7 @@ searchFilterFunctionLocation = text =>{
                 marginTop: 50
               }}
             >
-              <Text style={{ color: 'black' }}>No Contacts Found</Text>
+              <Text style={{ color: 'black' }}>No events Found</Text>
             </View>
           )}
         />
@@ -442,7 +442,7 @@ searchFilterFunctionLocation = text =>{
                 marginTop: 50
               }}
             >
-              <Text style={{ color: 'black' }}>No Contacts Found</Text>
+              <Text style={{ color: 'black' }}>No events Found</Text>
             </View>
           )}
         />
@@ -476,7 +476,7 @@ searchFilterFunctionLocation = text =>{
                 marginTop: 50
               }}
             >
-              <Text style={{ color: 'black' }}>No Contacts Found</Text>
+              <Text style={{ color: 'black' }}>No events Found</Text>
             </View>
           )}
         />
