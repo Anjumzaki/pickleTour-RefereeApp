@@ -13,18 +13,24 @@ export default class HomePage extends Component {
         tourDataSearch:[],
         tourOffset:0,
         tempTourOffset:0,
+        tourExtraDataLoading:false,
+        tourExtraDataFound:false,
 
         isRecreationalLoading:false,
         recreationalData:[],
         recreationalDataSearch:[],
         recreationalOffset:0,
         tempRecreationalOffset:0,
+        recreationalExtraDataLoading:false,
+        recreationalExtraDataFound:false,
 
         isLeaguesLoading:false,
         leaguesData:[],
         leaguesDataSearch:[],
         leaguesOffset:0,
         tempLeaguesOffset:0,
+        leagueExtraDataLoading:false,
+        leagueExtraDataFound:false,
         actScr:1
     };
   }
@@ -63,9 +69,7 @@ export default class HomePage extends Component {
 
 }
 getMoreTourData(counter){
-  // this.setState({isTourLoading:true})
-  // var con =  this.state.tempTourOffset
-  //console.log(counter)
+  this.setState({tourExtraDataLoading:true})
   var myEvents=[]
   var prevEvents = this.state.tourData
   var gettingUrl = 'http://pickletour.com/api/get/tournament/page/'
@@ -78,14 +82,15 @@ getMoreTourData(counter){
           this.setState({
               tourData:allEvents,
               tourDataSearch:allEvents,
-              tempTourOffset:counter
-              // isTourLoading:false,              
+              tempTourOffset:counter,
+              tourExtraDataLoading:false,
+              tourExtraDataFound:true                            
           })
       }
       else{
           this.setState({
-             //tempTourOffset:con-1,
-             isTourLoading:false
+             tourExtraDataLoading:false,
+             tourExtraDataFound:false
           })
       }
   }).catch((error)=>{
@@ -153,9 +158,8 @@ getRecreationalData(){
 }
 
 getMoreRecreationalData(counter){
-  //this.setState({isRecreationalLoading:true})
+  this.setState({recreationalExtraDataLoading:true})
   var myEvents=[]
- // var con =  this.state.tempRecreationalOffset
   var prevEvents = this.state.recreationalData
   var gettingUrl = 'http://pickletour.com/api/get/recreational/page/'
   axios.get(gettingUrl + counter)
@@ -166,18 +170,15 @@ getMoreRecreationalData(counter){
           this.setState({
               recreationalData:allEvents,
               recreationalDataSearch:allEvents,
-              tempRecreationalOffset:counter
-              // isRecreationalLoading:false,
-              // tourDataFound:true
-              
-              
+              tempRecreationalOffset:counter,
+              recreationalExtraDataLoading:false,
+              recreationalExtraDataFound:true 
           })
       }
       else{
           this.setState({
-             //tempRecreationalOffset:con-1,
-             isRecreationalLoading:false,
-            //  tourDataFound:false
+            recreationalExtraDataLoading:false,
+            recreationalExtraDataFound:false
           })
       }
   }).catch((error)=>{
@@ -187,9 +188,8 @@ getMoreRecreationalData(counter){
 }
 
 getMoreLeaguesData(counter){
-  //this.setState({isLeaguesLoading:true})
+  this.setState({leagueExtraDataLoading:true})
   var myEvents=[]
-  //var con =  this.state.tempLeaguesOffset
   var prevEvents = this.state.leaguesData
   var gettingUrl = 'http://pickletour.com/api/get/league/page/'
   axios.get(gettingUrl + counter)
@@ -200,16 +200,15 @@ getMoreLeaguesData(counter){
           this.setState({
               leaguesData:allEvents,
               leaguesDataSearch:allEvents,
-              tempLeaguesOffset:counter
-              // isLeaguesLoading:false,
-              
-              
+              tempLeaguesOffset:counter,
+              leagueExtraDataLoading:false, 
+              leagueExtraDataFound:true 
           })
       }
       else{
           this.setState({
-             isLeaguesLoading:false,
-            //  tempLeaguesOffset:con-1
+            leagueExtraDataLoading:false,
+            leagueExtraDataFound:false
           })
       }
   }).catch((error)=>{
@@ -231,50 +230,18 @@ async getUserData(){
 }
 
 handleMoreTourData=()=>{
-    // console.log('Tour Data')
     var con = this.state.tempTourOffset+1
-    // this.setState({tempTourOffset:con+1})
     this.getMoreTourData(con)
-
-    // var con = this.state.tourOffset
-    // if(this.state.tourDataFound){
-    //     this.setState({
-    //         tourOffset:con+1
-    //     })
-    //     this.forceUpdate()
-    //     this.getTourData()
-    // }
 }
 
 handleMoreRecreationalData=()=>{
-  // console.log('Tour Data')
   var con = this.state.tempRecreationalOffset+1
-  //this.setState({tempRecreationalOffset:con+1})
   this.getMoreRecreationalData(con)
-
-  // var con = this.state.tourOffset
-  // if(this.state.tourDataFound){
-  //     this.setState({
-  //         tourOffset:con+1
-  //     })
-  //     this.forceUpdate()
-  //     this.getTourData()
-  // }
 }
-handleMoreLeaguesData=()=>{
-  // console.log('Tour Data')
-  var con = this.state.tempLeaguesOffset+1
-  // this.setState({tempLeaguesOffset:con+1})
-  this.getMoreRecreationalData(con)
 
-  // var con = this.state.tourOffset
-  // if(this.state.tourDataFound){
-  //     this.setState({
-  //         tourOffset:con+1
-  //     })
-  //     this.forceUpdate()
-  //     this.getTourData()
-  // }
+handleMoreLeaguesData=()=>{
+  var con = this.state.tempLeaguesOffset+1
+  this.getMoreRecreationalData(con)
 }
 
 
@@ -398,6 +365,8 @@ searchFilterFunctionLocation = text =>{
                   <ToBeRequestedEvents key={item._id} data={item} user={this.data} />
               </TouchableOpacity>
           )}
+          ListFooterComponent=
+          {this.state.tourExtraDataLoading ? <ActivityIndicator size="large" color="#48A080" /> : this.state.tourExtraDataFound ? null : <Text style={{ justifyContent: 'center', textAlign: 'center' }}>No Remaining Data</Text>}
           keyExtractor={(item, index) => index.toString()}
           ListEmptyComponent={() => (
             <View
@@ -427,6 +396,8 @@ searchFilterFunctionLocation = text =>{
           onEndReachedThreshold={0.5}
           showsVerticalScrollIndicator={false}
           onEndReached={this.handleMoreLeaguesData}
+          ListFooterComponent=
+          {this.state.leagueExtraDataLoading ? <ActivityIndicator size="large" color="#48A080" /> : this.state.leagueExtraDataFound ? null : <Text style={{ justifyContent: 'center', textAlign: 'center' }}>No Remaining Data</Text>}
           renderItem ={({item})=>(
               <TouchableOpacity onPress={() => { this.props.navigation.navigate('RefereeRequestScreen',{item:item, user:this.data}) }}>
                   <ToBeRequestedEvents key={item._id} data={item} user={this.data} />
@@ -461,6 +432,8 @@ searchFilterFunctionLocation = text =>{
           showsVerticalScrollIndicator={false}
           onEndReached={this.handleMoreRecreationalData}
           data={this.state.recreationalData}
+          ListFooterComponent=
+          {this.state.recreationalExtraDataLoading ? <ActivityIndicator size="large" color="#48A080" /> : this.state.recreationalExtraDataFound ? null : <Text style={{ justifyContent: 'center', textAlign: 'center' }}>No Remaining Data</Text>}
           renderItem ={({item})=>(
               <TouchableOpacity onPress={() => { this.props.navigation.navigate('RefereeRequestScreen',{item:item, user:this.data}) }}>
                   <ToBeRequestedEvents key={item._id} data={item} user={this.data} />
