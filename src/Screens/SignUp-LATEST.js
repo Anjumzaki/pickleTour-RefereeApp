@@ -1,5 +1,5 @@
 import React from 'react';
-import { AsyncStorage, Picker,View, Text, Button, ImageBackground, Image, TextInput, Dimensions, StyleSheet, ScrollView, Platform } from 'react-native';
+import { AsyncStorage, Picker,View, Text, Button, ImageBackground, Image, TextInput, Dimensions, StyleSheet, ScrollView } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { NavigationActions, StackActions } from 'react-navigation';
@@ -7,11 +7,8 @@ import * as Font from 'expo-font';
 // import DatePicker from 'react-native-datepicker'
 import * as firebase from 'firebase';
 import axios from 'axios';
-// import DateTimePickerModal from "react-native-modal-datetime-picker";
-import DateTimePicker from '@react-native-community/datetimepicker';
-
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 import Responsive from 'react-native-lightweight-responsive';
-import moment from 'moment';
 
 
 
@@ -22,8 +19,6 @@ export default class SignUp extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            date:new Date(),
-            datePicked:false,
             email: 'mahmedsaeedi@gmail.com',
             firstName: 'Ahmed',
             Password: '123456',
@@ -109,19 +104,8 @@ export default class SignUp extends React.Component {
         }
     };
 
-    setDate = (event, date)=>{
-        
-        date = date || this.state.date;
-        
-        this.setState({
-            isDatePickerVisible: Platform.OS =='ios' ? true :false,
-            datePicked:true,
-            date
-            //convertedDate:date,
-        })
-    }
     handleConfirm=date=>{
-        console.log(date[0].nativeEvent)
+        // console.log(date)
         let newDate = this.convertDate(date) 
         this.setState({convertedDate:newDate, isDatePickerVisible:false})    
     }
@@ -139,11 +123,9 @@ export default class SignUp extends React.Component {
     }
     render() {
         // console.log("state", this.state)
-        
-        
-        const { firstName, email, Password, confirmPass, dob, gender, address, phoneNumber, convertedDate, date, datePicked} = this.state
-        //console.log(date)
-        const enabled = firstName.length >0 && email.length>0 && Password==confirmPass && datePicked==true && Password.length>0 && confirmPass.length>0 && gender.length>0
+
+        const { firstName, email, Password, confirmPass, dob, gender, address, phoneNumber, convertedDate} = this.state
+        const enabled = firstName.length >0 && email.length>0 && Password==confirmPass && convertedDate.length>0 && Password.length>0 && confirmPass.length>0 && gender.length>0
         const enabled2 = gender.length>0 && address.length>0 && phoneNumber.length>0 
         return (
 
@@ -212,23 +194,19 @@ export default class SignUp extends React.Component {
 
                             />
                         </View>
-                       {this.state.isDatePickerVisible &&  
-                       <DateTimePicker value={date}
-                                        mode='default'
-                                        display="default"
-                                        // onChange={this.setDate}
-                                        onChange={this.setDate}
-                        />}
-                        {/* <DateTimePickerModal
+                        <DateTimePickerModal
                                 isVisible={this.state.isDatePickerVisible}
                                 mode='date'
                                 onConfirm={this.handleConfirm}
                                 onCancel={()=>this.setState({isDatePickerVisible:false})}
-                            /> */}
+                            />
                         <View style={styles.SectionStyle}>
                             <TouchableOpacity style={styles.DateForms1} onPress={()=>this.setState({isDatePickerVisible:true})}>
-                                {this.state.datePicked ?
-                                <Text style={{  fontSize: Responsive.font(19),color: 'black',}}> {moment.utc(date).format('DD/MM/YYYY')}</Text>
+                                {this.state.convertedDate.length>0?
+                                <Text style={{  fontSize: Responsive.font(19),
+                                    color: 'black',}}>
+                                {this.state.convertedDate}
+                                </Text>
                                 :
                                 <Text style={{  fontSize: Responsive.font(19),
                                     color: 'gray',}}>
