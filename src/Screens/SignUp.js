@@ -1,7 +1,7 @@
 import React from 'react';
-import { AsyncStorage, Picker,View, Text, Button, ImageBackground, Image, TextInput, Dimensions, StyleSheet, ScrollView, Platform } from 'react-native';
+import { AsyncStorage, Picker,View, Text, Button, ImageBackground, Image, TextInput, Dimensions, StyleSheet, ScrollView, Platform, Modal, TouchableOpacity } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { TouchableOpacity } from 'react-native-gesture-handler';
+
 import { NavigationActions, StackActions } from 'react-navigation';
 import * as Font from 'expo-font';
 // import DatePicker from 'react-native-datepicker'
@@ -36,7 +36,8 @@ export default class SignUp extends React.Component {
             phoneNumber:'123',
             isDatePickerVisible:false,
             setDatePickerVisibility:false,
-            convertedDate:''
+            convertedDate:'',
+            selectionModal:false
         };
     }
 
@@ -148,7 +149,41 @@ export default class SignUp extends React.Component {
         return (
 
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#86d6b9' }}>
+                <Modal
+                    transparent ={true}
+                    animationType='none'
+                    visible={this.state.selectionModal}
+                >
+                    <View style={{   backgroundColor:'white',
+                                    opacity:0.9,
+                                
+                                    flex: 1,
+                                    flexDirection: 'column',
+                                    justifyContent: 'center',
+                                    alignItems: 'center'}}>
 
+                       <View style={{ width:'94.5%', justifyContent: 'center'}}>
+                       <ScrollView style={{ backgroundColor:'white',borderColor:'#585858', borderWidth:1, borderRadius:3}} contentContainerStyle={{alignItems:'center', justifyContent: 'center',alignContent:'center'}}>
+                           <View style={{justifyContent:'center',borderBottomWidth:1,borderColor:'#585858', paddingVertical:10, backgroundColor:'white', width:'99%'}}>
+                           <Text style={{ color:'#276091', alignSelf:'center',fontSize:Responsive.font(16),fontFamily:'open-sans-bold'}}>Select Gender</Text>
+                           </View>
+                            
+                            
+                           <TouchableOpacity onPress={()=>this.setState({gender:'Male', selectionModal:false})} style={{justifyContent:'center',borderBottomWidth:1,borderColor:'#585858', paddingVertical:10, backgroundColor:'white', width:'99%'}}><Text style={{color:'#585858',alignSelf:'center', fontSize:Responsive.font(14),fontFamily:'open-sans-bold'}}>Male</Text></TouchableOpacity>
+                           <TouchableOpacity onPress={()=>this.setState({gender:'Female', selectionModal:false})} style={{justifyContent:'center',borderBottomWidth:1,borderColor:'#585858', paddingVertical:10, backgroundColor:'white', width:'99%'}}><Text style={{color:'#585858',alignSelf:'center', fontSize:Responsive.font(14),fontFamily:'open-sans-bold'}}>Female</Text></TouchableOpacity>
+                            
+                            
+                            <TouchableOpacity onPress={()=>this.setState({selectionModal:false})} style={{justifyContent:'center', paddingVertical:10, backgroundColor:'white', width:'99%'}}>
+                           <Text style={{color:'#FF0000', alignSelf:'center',fontSize:Responsive.font(16),fontFamily:'open-sans-bold'}}>Close</Text>
+                           </TouchableOpacity>
+                                                      
+
+                        </ScrollView>
+                       </View>
+
+                   </View>
+
+                </Modal>
 
                 <KeyboardAwareScrollView enableOnAndroid={true}>
                     {this.state.stage1? <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', height: Dimensions.get('window').height - 70 }}>
@@ -228,7 +263,7 @@ export default class SignUp extends React.Component {
                         <View style={styles.SectionStyle}>
                             <TouchableOpacity style={styles.DateForms1} onPress={()=>this.setState({isDatePickerVisible:true})}>
                                 {this.state.datePicked ?
-                                <Text style={{  fontSize: Responsive.font(19),color: 'black',}}> {moment.utc(date).format('DD/MM/YYYY')}</Text>
+                                <Text style={{  fontSize: Responsive.font(19),color: 'black',}}>{moment.utc(date).format('DD/MM/YYYY')}</Text>
                                 :
                                 <Text style={{  fontSize: Responsive.font(19),
                                     color: 'gray',}}>
@@ -286,16 +321,21 @@ export default class SignUp extends React.Component {
 
                         </View>
 
-                        <View style={{borderWidth: 1,fontSize: 19, margin:10,
-                            borderColor: '#48A080',
-                            width: Dimensions.get('window').width - 105,
-                            borderRadius:20,
-                            backgroundColor:'white',
-                            // padding: 8,
-                            paddingLeft:10,height: 50,paddingRight:20, justifyContent:'center'}}>
-
-                
-                <Picker
+                        <View style={
+                            styles.SectionStyle
+                            // {borderWidth: 1,fontSize: 19, margin:10,
+                            // borderColor: '#48A080',
+                            // width: Dimensions.get('window').width - 105,
+                            // borderRadius:20,
+                            // backgroundColor:'white',
+                            // // padding: 8,
+                            // paddingLeft:10,height: 50,paddingRight:20, justifyContent:'center'}
+                            }>
+                        
+                <TouchableOpacity style={styles.DateForms1} onPress={()=>this.setState({selectionModal:true})}>
+                        {this.state.gender.length>0 ? <Text style={{fontSize: Responsive.font(19),color: 'black',}}>{this.state.gender}</Text>: <Text style={{fontSize: Responsive.font(19),color: 'grey',}}>Select Gender</Text>}
+                </TouchableOpacity>
+                {/* <Picker
                         selectedValue={this.state.gender}
                         style={{
                             
@@ -311,7 +351,7 @@ export default class SignUp extends React.Component {
                         <Picker.Item label='Select Gender' value=""/>
                         <Picker.Item label='Male' value="male"/>
                         <Picker.Item label='Female' value="female"/>
-                    </Picker>
+                    </Picker> */}
                     </View>
 
                     <TouchableOpacity disabled={!enabled} onPress={() =>
