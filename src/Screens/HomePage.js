@@ -254,7 +254,14 @@ searchFilterFunction = text =>{
             //const itemData = `${item.name.title.toUpperCase()} ${item.name.first.toUpperCase()} ${item.name.last.toUpperCase()}`;
     
         })
-        this.setState({ tourData :newData })
+
+        if(newData.length ==0){
+          this.searchFilterFunctionLocation(text)
+        }
+        else{
+          this.setState({ tourData :newData })
+        }
+        
     }
     else if(this.state.actScr ==2){
         const newData = this.state.leaguesDataSearch.filter(item =>{
@@ -264,7 +271,14 @@ searchFilterFunction = text =>{
             //const itemData = `${item.name.title.toUpperCase()} ${item.name.first.toUpperCase()} ${item.name.last.toUpperCase()}`;
     
         })
-        this.setState({ leaguesData :newData })
+     
+        if(newData.length ==0){
+          this.searchFilterFunctionLocation(text)
+        }
+        else{
+          this.setState({ leaguesData :newData })
+        }
+        
     }
     else{
         const newData = this.state.recreationalDataSearch.filter(item =>{
@@ -274,7 +288,12 @@ searchFilterFunction = text =>{
             //const itemData = `${item.name.title.toUpperCase()} ${item.name.first.toUpperCase()} ${item.name.last.toUpperCase()}`;
     
         })
-        this.setState({ recreationalData :newData })
+        if(newData.length ==0){
+          this.searchFilterFunctionLocation(text)
+        }
+        else{
+          this.setState({ recreationalData :newData })
+        }
     }
 }
 
@@ -291,7 +310,7 @@ searchFilterFunctionLocation = text =>{
   }
   else if(this.state.actScr ==2){
       const newData = this.state.leaguesDataSearch.filter(item =>{
-          const itemData = `${item.tournamentName.toUpperCase()}`
+          const itemData = `${item.address.toUpperCase()}`
           const textData = text.toUpperCase();
           return itemData.indexOf(textData) > -1;
           //const itemData = `${item.name.title.toUpperCase()} ${item.name.first.toUpperCase()} ${item.name.last.toUpperCase()}`;
@@ -301,7 +320,7 @@ searchFilterFunctionLocation = text =>{
   }
   else{
       const newData = this.state.recreationalDataSearch.filter(item =>{
-          const itemData = `${item.tournamentName.toUpperCase()}`
+          const itemData = `${item.address.toUpperCase()}`
           const textData = text.toUpperCase();
           return itemData.indexOf(textData) > -1;
           //const itemData = `${item.name.title.toUpperCase()} ${item.name.first.toUpperCase()} ${item.name.last.toUpperCase()}`;
@@ -331,14 +350,14 @@ searchFilterFunctionLocation = text =>{
         </View>
         <View style={styles.SectionStyle}>
             <TextInput
-            placeholder="Search by name"
+            placeholder="Search by name or location"
             placeholderTextColor="#dddddd"
             style={styles.forms}
             onChangeText={value => this.searchFilterFunction(value)}
             />
             <Image style={{ marginRight:10, width: 20, height: 20 }} source={require('../../assets/Path100.png')} />
         </View>
-        <View style={styles.SectionStyle}>
+        {/* <View style={styles.SectionStyle}>
             <TextInput
             placeholder="Search by location"
             placeholderTextColor="#dddddd"
@@ -346,7 +365,7 @@ searchFilterFunctionLocation = text =>{
             onChangeText={value => this.searchFilterFunctionLocation(value)}
             />
             <Image style={{ marginRight:10, width: 20, height: 20 }} source={require('../../assets/Path100.png')} />
-        </View>
+        </View> */}
         {this.state.actScr ==1 ?
         <View style={{ flex: 1, backgroundColor: 'white', paddingTop:10 }}>
         {this.state.isTourLoading ? (
