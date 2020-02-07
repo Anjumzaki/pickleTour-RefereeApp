@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { AsyncStorage, Dimensions, StyleSheet, Text, View, TextInput, Image, SafeAreaView, FlatList, ActivityIndicator, TouchableOpacity} from 'react-native';
+import { AsyncStorage, Dimensions, StyleSheet, Text, View, TextInput, Image, SafeAreaView, FlatList, ActivityIndicator, TouchableOpacity, Keyboard} from 'react-native';
 import Responsive from 'react-native-lightweight-responsive';
 import ToBeRequestedEvents from './ToBeRequestedEvents';
 import axios from 'axios';
@@ -15,6 +15,8 @@ export default class HomePage extends Component {
         tempTourOffset:0,
         tourExtraDataLoading:false,
         tourExtraDataFound:false,
+        checkedExtraTourData:false,
+        isSearching:false,
 
         isRecreationalLoading:false,
         recreationalData:[],
@@ -23,6 +25,8 @@ export default class HomePage extends Component {
         tempRecreationalOffset:0,
         recreationalExtraDataLoading:false,
         recreationalExtraDataFound:false,
+        showMessageRecreational:false,
+        checkedExtraLeaguesData:false,
 
         isLeaguesLoading:false,
         leaguesData:[],
@@ -31,6 +35,7 @@ export default class HomePage extends Component {
         tempLeaguesOffset:0,
         leagueExtraDataLoading:false,
         leagueExtraDataFound:false,
+        checkedExtraRecreationalData:false,
         actScr:1
     };
   }
@@ -39,6 +44,12 @@ export default class HomePage extends Component {
       this.getTourData()
       this.getLeaguesData()
       this.getRecreationalData()
+      this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this.keyboardDidHide)
+  }
+
+  keyboardDidHide=()=>{
+    Keyboard.dismiss()
+    this.setState({isSearching:false})
   }
   getTourData(){
     this.setState({isTourLoading:true})
@@ -84,13 +95,15 @@ getMoreTourData(counter){
               tourDataSearch:allEvents,
               tempTourOffset:counter,
               tourExtraDataLoading:false,
-              tourExtraDataFound:true                            
+              tourExtraDataFound:true,
+              checkedExtraTourData:true                            
           })
       }
       else{
           this.setState({
              tourExtraDataLoading:false,
-             tourExtraDataFound:false
+             tourExtraDataFound:false,
+             checkedExtraTourData:true
           })
       }
   }).catch((error)=>{
@@ -158,7 +171,8 @@ getRecreationalData(){
 }
 
 getMoreRecreationalData(counter){
-  this.setState({recreationalExtraDataLoading:true})
+  this.setState({recreationalExtraDataLoading:true })
+  // console.log('i am here')
   var myEvents=[]
   var prevEvents = this.state.recreationalData
   var gettingUrl = 'http://pickletour.com/api/get/recreational/page/'
@@ -172,13 +186,16 @@ getMoreRecreationalData(counter){
               recreationalDataSearch:allEvents,
               tempRecreationalOffset:counter,
               recreationalExtraDataLoading:false,
-              recreationalExtraDataFound:true 
+              recreationalExtraDataFound:true,
+              
           })
       }
       else{
           this.setState({
             recreationalExtraDataLoading:false,
-            recreationalExtraDataFound:false
+            recreationalExtraDataFound:false,
+            showMessageRecreational:true
+            
           })
       }
   }).catch((error)=>{
@@ -202,13 +219,15 @@ getMoreLeaguesData(counter){
               leaguesDataSearch:allEvents,
               tempLeaguesOffset:counter,
               leagueExtraDataLoading:false, 
-              leagueExtraDataFound:true 
+              leagueExtraDataFound:true,
+              checkedExtraLeaguesData:true 
           })
       }
       else{
           this.setState({
             leagueExtraDataLoading:false,
-            leagueExtraDataFound:false
+            leagueExtraDataFound:false,
+            checkedExtraLeaguesData:true
           })
       }
   }).catch((error)=>{
@@ -246,6 +265,7 @@ handleMoreLeaguesData=()=>{
 
 
 searchFilterFunction = text =>{
+    this.setState({isSearching:true})
     if(this.state.actScr ==1){
         const newData = this.state.tourDataSearch.filter(item =>{
             const itemData = `${item.tournamentName.toUpperCase()}`
@@ -333,6 +353,21 @@ searchFilterFunctionLocation = text =>{
 // _onMomentumScrollEnd = () => this.setState({ onEndReachedCalledDuringMomentum: true });
 
 
+  renderRecreationalFooter =()=>{
+    const { showMessageRecreational, recreationalExtraDataLoading} = this.state
+    if(showMessageRecreational){
+      return(
+        <Text style={{ justifyContent: 'center', textAlign: 'center', paddingBottom:10 }}>No Remaining Data</Text>
+      )
+    }
+    else if(recreationalExtraDataLoading){
+      return(
+        <ActivityIndicator size="large" color="#48A080" style={{paddingBottom:10}} />
+      )
+    }
+    else
+      return null
+  }
   render() {
     return (
       <View style={{flex:1}}>
@@ -344,7 +379,7 @@ searchFilterFunctionLocation = text =>{
                     <TouchableOpacity onPress={() => this.setState({ actScr: 2 })} style={this.state.actScr == 2 ? styles.topBarStyAct : styles.topBarSty}>
                         <Text style={this.state.actScr==2?styles.selectedtopBarText:styles.topBarText}>Leagues</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => this.setState({ actScr: 3 })} style={this.state.actScr == 3 ? styles.topBarStyAct : styles.topBarSty}>
+                    <TouchableOpacity onPress={() => this.setState({ actScr: 3  })} style={this.state.actScr == 3 ? styles.topBarStyAct : styles.topBarSty}>
                         <Text style={this.state.actScr==3?styles.selectedtopBarText:styles.topBarText}>Recreational</Text>
                     </TouchableOpacity>
         </View>
@@ -354,6 +389,8 @@ searchFilterFunctionLocation = text =>{
             placeholderTextColor="#dddddd"
             style={styles.forms}
             onChangeText={value => this.searchFilterFunction(value)}
+            // onFocus={()=>console.log('Here')}
+            // onBlur={()=>console.log('Not here')}
             />
             <Image style={{ marginRight:10, width: 20, height: 20 }} source={require('../../assets/Path100.png')} />
         </View>
@@ -385,7 +422,7 @@ searchFilterFunctionLocation = text =>{
               </TouchableOpacity>
           )}
           ListFooterComponent=
-          {this.state.tourExtraDataLoading ? <ActivityIndicator size="large" color="#48A080" /> : this.state.tourExtraDataFound ? null : <Text style={{ justifyContent: 'center', textAlign: 'center' }}>No Remaining Data</Text>}
+          {!this.state.isSearching && (this.state.tourExtraDataLoading ? <ActivityIndicator size="large" color="#48A080" style={{paddingBottom:10}} /> : this.state.tourExtraDataFound ? null : this.state.checkedExtraTourData && <Text style={{ justifyContent: 'center', textAlign: 'center', paddingBottom:10 }}>No Remaining Data</Text>) }
           keyExtractor={(item, index) => index.toString()}
           ListEmptyComponent={() => (
             <View
@@ -416,7 +453,7 @@ searchFilterFunctionLocation = text =>{
           showsVerticalScrollIndicator={false}
           onEndReached={this.handleMoreLeaguesData}
           ListFooterComponent=
-          {this.state.leagueExtraDataLoading ? <ActivityIndicator size="large" color="#48A080" /> : this.state.leagueExtraDataFound ? null : <Text style={{ justifyContent: 'center', textAlign: 'center' }}>No Remaining Data</Text>}
+          {!this.state.isSearching && (this.state.leagueExtraDataLoading ? <ActivityIndicator size="large" color="#48A080" style={{paddingBottom:10}}/> : this.state.leagueExtraDataFound ? null : this.state.checkedExtraLeaguesData && <Text style={{ justifyContent: 'center', textAlign: 'center', paddingBottom:10 }}>No Remaining Data</Text>)}
           renderItem ={({item})=>(
               <TouchableOpacity onPress={() => { this.props.navigation.navigate('RefereeRequestScreen',{item:item, user:this.data}) }}>
                   <ToBeRequestedEvents key={item._id} data={item} user={this.data} />
@@ -451,8 +488,11 @@ searchFilterFunctionLocation = text =>{
           showsVerticalScrollIndicator={false}
           onEndReached={this.handleMoreRecreationalData}
           data={this.state.recreationalData}
-          ListFooterComponent=
-          {this.state.recreationalExtraDataLoading ? <ActivityIndicator size="large" color="#48A080" /> : this.state.recreationalExtraDataFound ? null : <Text style={{ justifyContent: 'center', textAlign: 'center' }}>No Remaining Data</Text>}
+          ListFooterComponent={this.renderRecreationalFooter}
+          // { 
+          //   (this.state.recreationalExtraDataLoading && <ActivityIndicator size="large" color="#48A080" style={{paddingBottom:10}} />)
+          //   (this.state.checkedExtraRecreationalData && <Text style={{ justifyContent: 'center', textAlign: 'center', paddingBottom:10 }}>No Remaining Data</Text>)}
+            // !this.state.isSearching && (this.state.recreationalExtraDataLoading ? <ActivityIndicator size="large" color="#48A080" style={{paddingBottom:10}} /> : this.state.recreationalExtraDataFound ? null : this.state.checkedExtraRecreationalData && <Text style={{ justifyContent: 'center', textAlign: 'center', paddingBottom:10 }}>No Remaining Data</Text>)}
           renderItem ={({item})=>(
               <TouchableOpacity onPress={() => { this.props.navigation.navigate('RefereeRequestScreen',{item:item, user:this.data}) }}>
                   <ToBeRequestedEvents key={item._id} data={item} user={this.data} />
