@@ -24,7 +24,7 @@ export default class SignUp extends React.Component {
         this.state = {
             date:new Date(),
             datePicked:false,
-            email: 'mahmedsaeedi@gmail.com',
+            email: 'mahmedsaeedi2020@gmail.com',
             firstName: 'Ahmed',
             Password: '123456',
             confirmPass: '123456',
@@ -144,7 +144,7 @@ export default class SignUp extends React.Component {
         
         const { firstName, email, Password, confirmPass, dob, gender, address, phoneNumber, convertedDate, date, datePicked} = this.state
         //console.log(date)
-        const enabled = firstName.length >0 && email.length>0 && Password==confirmPass && datePicked==true && Password.length>0 && confirmPass.length>0 && gender.length>0
+        const enabled = firstName.length >0 && email.length>0 && Password==confirmPass && datePicked==false && Password.length>0 && confirmPass.length>0 && gender.length>0
         const enabled2 = gender.length>0 && address.length>0 && phoneNumber.length>0 
         return (
 
@@ -247,19 +247,13 @@ export default class SignUp extends React.Component {
 
                             />
                         </View>
-                       {this.state.isDatePickerVisible &&  
+                       {/* {this.state.isDatePickerVisible &&  
                        <DateTimePicker value={date}
                                         mode='default'
                                         display="default"
                                         // onChange={this.setDate}
                                         onChange={this.setDate}
                         />}
-                        {/* <DateTimePickerModal
-                                isVisible={this.state.isDatePickerVisible}
-                                mode='date'
-                                onConfirm={this.handleConfirm}
-                                onCancel={()=>this.setState({isDatePickerVisible:false})}
-                            /> */}
                         <View style={styles.SectionStyle}>
                             <TouchableOpacity style={styles.DateForms1} onPress={()=>this.setState({isDatePickerVisible:true})}>
                                 {this.state.datePicked ?
@@ -271,87 +265,14 @@ export default class SignUp extends React.Component {
                                 </Text>
                                 
                                 }
-                            </TouchableOpacity>
-                            {/* <DatePicker
-                                 style={styles.forms1}
-                                date={this.state.dob} //initial date from state
-                                mode="date" //The enum of date, datetime and time
-                                placeholder="Date of Birth"
-                                allowFontScaling={false}
-                                format="DD-MM-YYYY"
-                                confirmBtnText="Confirm"
-                                cancelBtnText="Cancel"
-                                showIcon={false}
-                                customStyles={{
-                                    dateIcon: {
-                                        position: 'absolute',
-                                        left: 0,
-                                        top: 4,
-                                        marginLeft: 0,
-                                    },
-                                    dateText: {
-                                        fontSize: 19,
-                                        color: 'black'
-                                    },
-                                    dateInput: {
-                                        borderWidth:0,
-                                        placeholderTextColor:'black',
-                                    alignItems:'flex-start',
-                                    color: 'black',
-                                    position:'relative',
-                                    paddingBottom:8
-                                    },
-                                    dateTouchBody:{
-                                        color:'black',
-                                        
-                                    },
-                                    placeholderText: {
-                                        fontSize: 19,
-                                        color: 'gray'
-                                    }
-                                }}
-                                onDateChange={dob => {
-                                    this.setState({ dob });
-                                }}
-                            /> */}
+                            </TouchableOpacity>                       
+                        </View> */}
 
-                            
-
-                           
-
-                        </View>
-
-                        <View style={
-                            styles.SectionStyle
-                            // {borderWidth: 1,fontSize: 19, margin:10,
-                            // borderColor: '#48A080',
-                            // width: Dimensions.get('window').width - 105,
-                            // borderRadius:20,
-                            // backgroundColor:'white',
-                            // // padding: 8,
-                            // paddingLeft:10,height: 50,paddingRight:20, justifyContent:'center'}
-                            }>
+                        <View style={styles.SectionStyle}>
                         
                 <TouchableOpacity style={styles.DateForms1} onPress={()=>this.setState({selectionModal:true})}>
                         {this.state.gender.length>0 ? <Text style={{fontSize: Responsive.font(19),color: 'black',}}>{this.state.gender}</Text>: <Text style={{fontSize: Responsive.font(19),color: 'grey',}}>Select Gender</Text>}
                 </TouchableOpacity>
-                {/* <Picker
-                        selectedValue={this.state.gender}
-                        style={{
-                            
-                           height:45,
-                            
-                            backgroundColor:'white',
-                            fontSize:Responsive.font(19),
-                            fontFamily: 'open-sans-bold',
-                            color: 'grey'}}
-                        onValueChange={(itemValue, itemIndex) =>
-                            this.setState({ gender: itemValue})
-                        }>
-                        <Picker.Item label='Select Gender' value=""/>
-                        <Picker.Item label='Male' value="male"/>
-                        <Picker.Item label='Female' value="female"/>
-                    </Picker> */}
                     </View>
 
                     <TouchableOpacity disabled={!enabled} onPress={() =>

@@ -142,7 +142,7 @@ class ScoreCard extends Component {
   }
 
   async exitScreenOrientation(){
-    await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_DOWN)
+    await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT)
   }
   // balltesting(){
   //   this.setState({ballpos1:false, ballpos2:false})
