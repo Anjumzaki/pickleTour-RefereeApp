@@ -8,10 +8,11 @@ import * as Font from 'expo-font';
 import * as firebase from 'firebase';
 import axios from 'axios';
 // import DateTimePickerModal from "react-native-modal-datetime-picker";
-import DateTimePicker from '@react-native-community/datetimepicker';
+// import DateTimePicker from '@react-native-community/datetimepicker';
 
 import Responsive from 'react-native-lightweight-responsive';
-import moment from 'moment';
+// import moment from 'moment';
+import DatePicker from 'react-native-datepicker';
 
 
 
@@ -62,7 +63,7 @@ export default class SignUp extends React.Component {
                     firstName:this.state.firstName,
                     email: this.state.email,
                     password: this.state.confirmPass,
-                    dateOfBirth: this.state.convertedDate,
+                    dateOfBirth: this.state.dob,
                     gender:this.state.gender,
                     // address:this.state.address,
                     // phoneNumber:this.state.phoneNumber    
@@ -145,7 +146,7 @@ export default class SignUp extends React.Component {
         
         const { firstName, email, Password, confirmPass, dob, gender, address, phoneNumber, convertedDate, date, datePicked} = this.state
         //console.log(date)
-        const enabled = firstName.length >0 && email.length>0 && Password==confirmPass && datePicked==false && Password.length>0 && confirmPass.length>0 && gender.length>0
+        const enabled = firstName.length >0 && email.length>0 && Password==confirmPass && dob.length>0 && Password.length>0 && confirmPass.length>0 && gender.length>0
         const enabled2 = gender.length>0 && address.length>0 && phoneNumber.length>0 
         return (
 
@@ -248,18 +249,52 @@ export default class SignUp extends React.Component {
 
                             />
                         </View>
-                        <Modal visible={this.state.isDatePickerVisibleForIos}
-                               onDismiss={()=>this.setState({isDatePickerVisibleForIos:false})}
-                        >
-                            <DateTimePicker value={date}
-                                        mode='default'
-                                        display="default"
-                                        // onChange={this.setDate}
-                                        onChange={this.setDate}
-                        />
-                            
-                        </Modal>
-                        {this.state.isDatePickerVisible && Platform.OS=='ios' && <DateTimePicker/>}
+                   
+                        <View style={styles.SectionStyle}>
+                            <DatePicker
+                                 style={styles.forms1}
+                                date={this.state.dob} //initial date from state
+                                mode="date" //The enum of date, datetime and time
+                                placeholder="Date of Birth"
+                                allowFontScaling={false}
+                                format="DD-MM-YYYY"
+                                confirmBtnText="Confirm"
+                                cancelBtnText="Cancel"
+                                showIcon={false}
+                                customStyles={{
+                                    dateIcon: {
+                                        position: 'absolute',
+                                        left: 0,
+                                        top: 4,
+                                        marginLeft: 0,
+                                    },
+                                    dateText: {
+                                        fontSize: Responsive.font(19),
+                                        color: 'black'
+                                    },
+                                    dateInput: {
+                                        borderWidth:0,
+                                        placeholderTextColor:'black',
+                                    alignItems:'flex-start',
+                                    color: 'black',
+                                    position:'relative',
+                                    paddingBottom:8
+                                    },
+                                    dateTouchBody:{
+                                        color:'black',
+                                        
+                                    },
+                                    placeholderText: {
+                                        fontSize: Responsive.font(19),
+                                        color: 'gray'
+                                    }
+                                }}
+                                onDateChange={dob => {
+                                    this.setState({ dob });
+                                }}
+                            />
+
+                        </View>
                        {/* {this.state.isDatePickerVisible &&  
                        <DateTimePicker value={date}
                                         mode='default'
@@ -267,7 +302,7 @@ export default class SignUp extends React.Component {
                                         // onChange={this.setDate}
                                         onChange={this.setDate}
                         />}*/}
-                        <View style={styles.SectionStyle}>
+                        {/* <View style={styles.SectionStyle}>
                             <TouchableOpacity style={styles.DateForms1} onPress={()=>this.setState({isDatePickerVisibleForIos:true})}>
                                 {this.state.datePicked ?
                                 <Text style={{  fontSize: Responsive.font(19),color: 'black',}}>{moment.utc(date).format('DD/MM/YYYY')}</Text>
@@ -279,7 +314,7 @@ export default class SignUp extends React.Component {
                                 
                                 }
                             </TouchableOpacity>                       
-                        </View> 
+                        </View>  */}
 
                         <View style={styles.SectionStyle}>
                         
