@@ -192,8 +192,11 @@ closeSelectedModal({item, location}){
                 return '(F.L.)'
             else if(a.bracketType == 'Box League')
                 return '(B.L.)'
-            else
-                return '(USAPA)'
+            else if(a.bracketType == 'Single Elimination')
+                return '(S.E.)'
+            else if(a.bracketType =='Double Elimination')
+                return '(D.E.)'
+                
            }
         )
         

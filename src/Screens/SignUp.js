@@ -34,6 +34,7 @@ export default class SignUp extends React.Component {
             address:'abc',
             stage1:true,
             phoneNumber:'123',
+            isDatePickerVisibleForIos:false,
             isDatePickerVisible:false,
             setDatePickerVisibility:false,
             convertedDate:'',
@@ -247,15 +248,27 @@ export default class SignUp extends React.Component {
 
                             />
                         </View>
+                        <Modal visible={this.state.isDatePickerVisibleForIos}
+                               onDismiss={()=>this.setState({isDatePickerVisibleForIos:false})}
+                        >
+                            <DateTimePicker value={date}
+                                        mode='default'
+                                        display="default"
+                                        // onChange={this.setDate}
+                                        onChange={this.setDate}
+                        />
+                            
+                        </Modal>
+                        {this.state.isDatePickerVisible && Platform.OS=='ios' && <DateTimePicker/>}
                        {/* {this.state.isDatePickerVisible &&  
                        <DateTimePicker value={date}
                                         mode='default'
                                         display="default"
                                         // onChange={this.setDate}
                                         onChange={this.setDate}
-                        />}
+                        />}*/}
                         <View style={styles.SectionStyle}>
-                            <TouchableOpacity style={styles.DateForms1} onPress={()=>this.setState({isDatePickerVisible:true})}>
+                            <TouchableOpacity style={styles.DateForms1} onPress={()=>this.setState({isDatePickerVisibleForIos:true})}>
                                 {this.state.datePicked ?
                                 <Text style={{  fontSize: Responsive.font(19),color: 'black',}}>{moment.utc(date).format('DD/MM/YYYY')}</Text>
                                 :
@@ -266,7 +279,7 @@ export default class SignUp extends React.Component {
                                 
                                 }
                             </TouchableOpacity>                       
-                        </View> */}
+                        </View> 
 
                         <View style={styles.SectionStyle}>
                         
