@@ -4,6 +4,8 @@ import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture
 import firebase from 'firebase';
 import { NavigationActions, StackActions } from 'react-navigation';
 import Responsive from 'react-native-lightweight-responsive';
+import { LinearGradient } from 'expo-linear-gradient';
+import {Icon} from 'native-base';
 
 export default class CustomSidebarMenu extends Component {
   constructor() {
@@ -19,17 +21,20 @@ export default class CustomSidebarMenu extends Component {
     //You can find the Icons from here https://material.io/tools/icons/
     this.items = [
       {
-        navOptionThumb: require('../assets/Blog_gray.png'),
+        navOptionIconType: "MaterialIcons", 
+        navOptionIconName:"dashboard",
         navOptionName: 'Dashboard',
         screenToNavigate: 'MainScreen',
-      },
+       },
       {
-        navOptionThumb: require('../assets/Video_gray.png'),
+        navOptionIconType: "MaterialIcons", 
+        navOptionIconName:"find-in-page",
         navOptionName: 'Find Events',
         screenToNavigate: 'HomePageStack',
       },
       {
-        navOptionThumb: require('../assets/Contact_Us_gray.png'),
+        navOptionIconType: "MaterialIcons", 
+        navOptionIconName:"settings",
         navOptionName: 'Manage Events',
         screenToNavigate: 'ManageEvents',
       },
@@ -96,7 +101,9 @@ export default class CustomSidebarMenu extends Component {
     return (
       <View style={styles.sideMenuContainer}>
         {/*Top Large Image */}
-        <View style={{ backgroundColor: '#48A080', width: '100%', margin: 0, padding: 20 }}>
+        <LinearGradient 
+        colors={['#86D6B9','#48A080', ]}
+        style={{ backgroundColor: '#48A080', width: '100%', margin: 0, padding: 20 }}>
         
           <Image
             source={require('../assets/User_Icon.png')}
@@ -104,7 +111,7 @@ export default class CustomSidebarMenu extends Component {
           />
           <Text style={{fontSize:Responsive.font(23),color:'white',fontFamily: 'open-sans-bold'}}>{this.data.firstName}</Text>
           <Text style={{fontSize:Responsive.font(13),color:'white',fontFamily: 'open-sans-bold'}}>{this.data.email}</Text>
-        </View>
+        </LinearGradient>
        
         {/*Divider between Top Image and Sidebar Option*/}
         <View
@@ -120,6 +127,12 @@ export default class CustomSidebarMenu extends Component {
             <TouchableOpacity onPress={() => {
               global.currentScreenIndex = key;
               this.props.navigation.navigate(item.screenToNavigate,this.data);
+            //   this.props.navigation.dispatch(StackActions.reset({
+            //     index: 0,
+            //     key:null,
+            //     actions: [NavigationActions.navigate({ routeName: item.screenToNavigate })],
+            // }))
+              
             }}
               key={key}>
               <View
@@ -133,11 +146,11 @@ export default class CustomSidebarMenu extends Component {
 
               >
                 <View style={{ marginRight: 10, marginLeft: 20 }}>
-                  <Image source={item.navOptionThumb} style={{ width: 30, height: 30 }} color="#808080" />
+                <Icon type={item.navOptionIconType} name={item.navOptionIconName}  style={{ alignSelf:'center',fontSize:Responsive.font(25) ,color: '#585858'}}/>
                 </View>
                 <Text
                   style={{
-                    fontSize: 15,
+                    fontSize:Responsive.font(15) ,
                     color: global.currentScreenIndex === key ? 'white' : 'black',
                     fontFamily: 'open-sans-bold',
                   }}
@@ -159,11 +172,11 @@ export default class CustomSidebarMenu extends Component {
 
             >
               <View style={{ paddingRight: 10, paddingLeft: 20 }}>
-                <Image source={require('../assets/logout_Gray.png')} style={{ width: 30, height: 30 }}  />
+              <Icon type="SimpleLineIcons" name="logout"  style={{ alignSelf:'center',fontSize:Responsive.font(25) ,color: '#585858'}}/>
               </View>
               <Text 
                 style={{
-                  fontSize: 15,
+                  fontSize:Responsive.font(15) ,
                   color: 'black',
                 }}
               >

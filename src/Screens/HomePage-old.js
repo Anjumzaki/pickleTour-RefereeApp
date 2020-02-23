@@ -94,7 +94,7 @@ export default class HomePage extends React.Component {
 
     getRecreationalData(){
         this.setState({actScr:4})
-        console.log('here')
+        // console.log('here')
         var prevData = []
         var con = this.state.recounter
         if(this.state.dropChanged){

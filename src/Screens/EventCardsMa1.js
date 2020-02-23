@@ -27,6 +27,8 @@ export default class EventCardsMa1 extends React.Component {
     componentDidMount(){
         let date=this.convertDate(this.props.data.tournamentStartDate)
         this.setState({startDate:date})
+        let enddate = this.convertDate(this.props.data.tEndDate)
+        this.setState({endDate:enddate})
         let name=this.props.data.tournamentName
         let index= ''
         let splitter = 4
@@ -65,22 +67,24 @@ export default class EventCardsMa1 extends React.Component {
             <View style={styles.cardStyles}>
 
 <View style={{ height:'45%', alignSelf:'center', width:'95%',justifyContent:'center'}}>
-                    <Text style={{fontSize:Responsive.font(14), color:'#585858', fontFamily:'open-sans-bold'}}>{this.state.useNewName?this.state.newName:data.tournamentName}</Text>
+                    <Text style={{fontSize:Responsive.font(14), fontWeight:'bold',color:'#585858', fontFamily:'open-sans-bold'}}>{this.state.useNewName?this.state.newName:data.tournamentName}</Text>
                 </View>
                 {/* Rows here */}
 
                 <View style={{borderWidth:0.5,marginHorizontal:10,borderColor:'#81D4B6'}}></View>
                 <View style={{ height:'45%', width:'95%', alignSelf:'center', justifyContent:'space-between', flexDirection:'row'}}>
-                    <View style={{flex:1, flexDirection:'row', }}>
-                        <Text  style={{fontSize:Responsive.font(13), color:'#585858', fontFamily:'open-sans-bold', fontWeight:'600', alignSelf:'center'}}>Event Type : </Text>
-                        <Text  style={{fontSize:Responsive.font(12), color:'#585858', fontFamily:'open-sans-bold', fontWeight:'600',alignSelf:'center'}}>{data.type}</Text>
-
-                    </View>                   
-                   
-                    <View style={{flex:1, flexDirection:'row',  justifyContent: 'flex-end',}}>
-                        <Icon type="MaterialIcons" name="date-range"  style={{ alignSelf:'center',fontSize:Responsive.font(15) ,color: '#585858'}}/>
-                        <Text style={{fontSize:Responsive.font(11), color:'#585858', fontFamily:'open-sans-bold',alignSelf:'center', paddingLeft:5}}>{this.state.startDate} - 20/01/2020</Text>
+                <View style={{flex:1, flexDirection:'row',  justifyContent: 'flex-start',}}>
+                        <Icon type="MaterialIcons" name="date-range"  style={{ alignSelf:'center',fontSize:Responsive.font(14) ,color: '#585858'}}/>
+                        <Text style={{fontSize:Responsive.font(11), color:'#585858', fontFamily:'open-sans-bold',alignSelf:'center', paddingLeft:5}}>{this.state.startDate} - {this.state.endDate}</Text>
                     </View>
+                  
+                    {/* <View style={{flex:1, flexDirection:'row', }}>
+                        <Text  style={{fontSize:Responsive.font(11), color:'#585858', fontFamily:'open-sans-bold', fontWeight:'bold', alignSelf:'center'}}>Event Type : </Text>
+                        <Text  style={{fontSize:Responsive.font(11), color:'#585858', fontFamily:'open-sans-bold', fontWeight:'600',alignSelf:'center'}}>{data.type}</Text>
+
+                    </View>                    */}
+                   
+                  
 
 
                  
@@ -120,7 +124,8 @@ const styles = StyleSheet.create({
     cardStyles: {
         alignSelf:'center',
         marginHorizontal:10,
-        width: '94.5%',
+        width: '92%',
+        borderRadius:3,
         backgroundColor: '#9EEACE',
         height:70,
         shadowColor: "#000",

@@ -35,59 +35,16 @@ export default class MainScreen extends React.Component {
             showThreeMessage:false
         };
     }
-// componentDidUpdate(){
-//         this.forceUpdate()
-//     }
-    // UNSAFE_componentWillMount(){
-        
-    //     this.getUserData()
-    //     //this.props.navigation.closeDrawer()
-
-    //     // console.log() 
-    // }
     componentDidMount(){
         this.getUserData()
     }
 
-    testingData(){
-        var onEvents=[];
-        // var gettingUrl = 'http://pickletour.com/api/get/ongoing/Events/'
-        var gettingUrl = 'http://pickletour.com/api/get/tournament/page/0'
-        //axios.get(gettingUrl+userId)
-        axios.get(gettingUrl)
-        .then((response)=>{
-            onEvents = response.data
-            //c0onsole.log(upEvents)
-            if(onEvents.length>0){
-                this.setState({
-                    compData:onEvents,
-                    onData:onEvents,
-                    upData:onEvents,
-                    dataThreeLoaded:true,
-                    dataOneLoaded:true,
-                    dataTwoLoaded:true,
-
-                })
-            }
-            else{
-                this.setState({
-                    dataOneLoaded:false,
-                    dataTwoLoaded:false,
-                    dataThreeLoaded:false,
-                    showMessage:true
-                })
-            }
-        }).catch((error)=>{
-            console.log(error)
-        })
-    }
+    
     getCompletedData(){
         this.setState({dateOneFetching:true})
         var compEvents=[];
         var userId = this.userData.uid
         var gettingUrl = 'http://pickletour.com/api/get/completed/Events/'
-        //var gettingUrl = 'http://pickletour.com/api/get/tournament/page/0'
-        //axios.get(gettingUrl+userId)
         axios.get(gettingUrl+userId)
         .then((response)=>{
             compEvents = response.data
@@ -325,6 +282,17 @@ export default class MainScreen extends React.Component {
         })
     }
 
+    refreshOnButtonClickCompletedEvents(){
+        this.setState({actScr:1},()=>this.getCompletedData())
+    }
+
+    refreshOnButtonClickOngoingEvents(){
+        this.setState({actScr:2},()=>this.getOngoingData())
+    }
+
+    refreshOnButtonClickUpcomingEvents(){
+        this.setState({actScr:3},()=>this.getUpcomingData())
+    }
     render() {
         // console.log("state", this.state)
         const {showMessage, showTwoMessage, showThreeMessage} = this.state
@@ -334,13 +302,13 @@ export default class MainScreen extends React.Component {
                 <View style={styles.wrapTopSty}>
 
                     
-                    <TouchableOpacity onPress={() => this.setState({ actScr: 1 })} style={this.state.actScr == 1 ? styles.topBarStyAct : styles.topBarSty}>
+                    <TouchableOpacity onPress={() => this.refreshOnButtonClickCompletedEvents()} style={this.state.actScr == 1 ? styles.topBarStyAct : styles.topBarSty}>
                         <Text style={this.state.actScr==1?styles.selectedtopBarText:styles.topBarText}>Completed Events</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => this.setState({ actScr: 2 })} style={this.state.actScr == 2 ? styles.topBarStyAct : styles.topBarSty}>
+                    <TouchableOpacity onPress={() => this.refreshOnButtonClickOngoingEvents()} style={this.state.actScr == 2 ? styles.topBarStyAct : styles.topBarSty}>
                         <Text style={this.state.actScr==2?styles.selectedtopBarText:styles.topBarText}>Ongoing Events</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => this.setState({ actScr: 3 })} style={this.state.actScr == 3 ? styles.topBarStyAct : styles.topBarSty}>
+                    <TouchableOpacity onPress={() => this.refreshOnButtonClickUpcomingEvents()} style={this.state.actScr == 3 ? styles.topBarStyAct : styles.topBarSty}>
                         <Text style={this.state.actScr==3?styles.selectedtopBarText:styles.topBarText}>Upcoming Events</Text>
                     </TouchableOpacity>
                 </View>
@@ -351,7 +319,7 @@ export default class MainScreen extends React.Component {
                             {this.state.dataOneLoaded?<FlatList
                                 style={{marginBottom:100}}
                                 keyExtractor={item => item._id}
-                                refreshing={this.state.dataOneFetching}
+                                refreshing={this.state.dateOneFetching}
                                 onRefresh={()=>this.getCompletedData()}
                                 data ={this.state.compData}
                                 renderItem={({item})=>(
@@ -383,7 +351,7 @@ export default class MainScreen extends React.Component {
                                     // </TouchableOpacity>
                                 )}
                             />:<View style={{ paddingTop:"50%",flex: 1,justifyContent: 'center'}}>
-                                {showTwoMessage?<Text style={{fontFamily:'open-sans-bold',alignSelf:'center',fontSize:Responsive.font(20)}}>No data found !</Text>: <ActivityIndicator size="large" color="#48A080" />}
+                                {showTwoMessage?<Text style={{fontFamily:'open-sans-bold',alignSelf:'center',fontSize:Responsive.font(20)}}>Ongoing Events not found !</Text>: <ActivityIndicator size="large" color="#48A080" />}
                             </View>
                     }
                     </View> : null}

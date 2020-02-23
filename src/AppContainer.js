@@ -16,6 +16,8 @@ import MatchCards from './Screens/MatchCards'
 import LoadingScreen from './Screens/Loading';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import RefereeRequest from './Screens/RefereeRequest';
+import InvitationDetails from './Screens/InvitationDetails';
+
 
 
 const ManageEventsStack = createStackNavigator(
@@ -23,6 +25,7 @@ const ManageEventsStack = createStackNavigator(
         ManageEvents: ManageEvents,
         EventDetails: EventDetails,
         MatchCards:MatchCards,
+        InvitationDetails:InvitationDetails
         
     },
     {
@@ -92,10 +95,11 @@ const DrawerNavigator = createDrawerNavigator({
                     navigation.state.routes[navigation.state.index].key=='MainScreenStack'?'Dashboard':
                     navigation.state.routes[navigation.state.index].key=='ManageEventsStack'?'Manage Events':
                     navigation.state.routes[navigation.state.index].key=='EventSummaryStack'?'Match Summary':
-                    navigation.state.routes[navigation.state.index].key=='RefereeRequest'?'Request as Referee':'Profile',
+                    navigation.state.routes[navigation.state.index].key=='RefereeRequest'?'Request as Referee':
+                    navigation.state.routes[navigation.state.index].key=='InvitationDetails'?'Invitation Details':'Profile',
         headerTitleStyle: { alignSelf: 'center' , textAlign:"center", flex:0.8 },
         headerLeft:
-            <TouchableOpacity onPress={() => navigation.openDrawer()}>
+            <TouchableOpacity style={{}} onPress={() => navigation.toggleDrawer()}>
                 <Image style={{ width: 30, height: 30, marginLeft: 10 }} source={require('../assets/navigation.png')} />
             </TouchableOpacity >
     }),
@@ -118,6 +122,7 @@ const RootStack = createStackNavigator(
     },
     {
         initialRouteName: 'Loading',
+        
     }
 );
 const AppContainer = createAppContainer(RootStack);

@@ -5,6 +5,9 @@ import { TouchableOpacity, FlatList } from 'react-native-gesture-handler';
 import { NavigationActions, StackActions } from 'react-navigation';
 import firebase from 'firebase';
 import axios from 'axios'
+import { LinearGradient } from 'expo-linear-gradient';
+import Responsive from 'react-native-lightweight-responsive';
+
 
 
 
@@ -25,8 +28,8 @@ export default class Login extends React.Component {
     }
     componentDidMount(){
         this.setState({
-            userName:'mahmedsaeedi2020@gmail.com',
-            Password:'123456'
+            userName:'',
+            Password:''
         })
         // this.props.navigation.dispatch(StackActions.reset({
         //                     index: 0,
@@ -44,6 +47,7 @@ export default class Login extends React.Component {
             let url = 'https://pickletour.appspot.com/api/user/get/'+ user.user.uid
             const res = await fetch(url)
             const data = await res.json()
+            console.log(data)
             const newUser ={
                 uid: data.uid,
                 firstName:data.firstName,
@@ -57,7 +61,7 @@ export default class Login extends React.Component {
             this.storingUserData(newUser)
             
         }catch(error){
-            this.setState({isFetching:false})
+            this.setState({isFetching:false,msg:'Incorrect credentials, please try again'})
         }
     }
     // componentDidUpdate(){
@@ -83,7 +87,7 @@ export default class Login extends React.Component {
         const {userName, Password}= this.state
         firebase.auth().signInWithEmailAndPassword(userName,Password)
         .then((data)=>{
-            console.log(data.user.uid)
+            // console.log(data.user.uid)
             this.setState({ userId:data.user.uid})
             axios.get('https://pickletour.appspot.com/api/user/get/'+data.user.uid)
             .then((data)=>{
@@ -122,7 +126,7 @@ export default class Login extends React.Component {
         //         console.log(resp.data);
         //         dispatch(uidsave(resp.data)
         })
-        .catch(error=>{this.setState({isFetching:false, msg:'Incorrect credentials, please try again'})})
+        .catch(error=>{this.setState({isFetching:false, msg:'Incorrect credentials, please try again.'})})
         
       }
     login() {
@@ -156,14 +160,20 @@ export default class Login extends React.Component {
     }
 
     render() {
-        
+        const { userName, Password  } =this.state
+        const enabled = userName.length>0 && Password.length>0
         // console.log("state", this.state)
         return (
-            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#86d6b9' }}>
+            <LinearGradient           
+            colors={['#86D6B9','#48A080', ]}
+            start={[0.5, 0]}
+            end={[0.5, 1]}
+            // location={[0.25, 0.4]}
+            style={{ flex: 1, justifyContent: 'center', alignItems: 'center',  }}>
                 <KeyboardAwareScrollView enableOnAndroid={true}>
-                    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', height: Dimensions.get('window').height - 70 }}>
+                    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center',marginTop:200}}>
                         <View style={styles.SectionStyle}>
-                           <Image style={{ height:50,marginBottom:100, width: Dimensions.get('window').width - 70}} source={require('../../assets/Logo.png')}/>
+                           <Image resizeMode='contain' style={{ height:'100%',marginBottom:100, width: '100%'}} source={require('../../assets/NLogo.png')}/>
                         </View>
                         <View style={styles.SectionStyle}>
                             <TextInput
@@ -196,32 +206,56 @@ export default class Login extends React.Component {
                             this.state.isFetching? <ActivityIndicator size='large'/>:
                             <TouchableOpacity onPress={() =>
                                 this.letsHandleLogin()
-                            } style={styles.regButton} >
-                                <Text style={styles.regButton1} >LOGIN  </Text>
+                            } disabled={!enabled} style={{fontFamily: 'open-sans-bold',
+        
+                            //width: Dimensions.get('window').width - 105,
+                            alignItems: 'center',
+                            backgroundColor: enabled?'#48D5A0':'#BEBAC5',
+                            paddingTop:5,
+                            paddingBottom:5,
+                            borderRadius: 100,
+                            marginTop: 20,
+                            paddingLeft:50,
+                            paddingRight:50,
+                            shadowColor: "#000",
+                            shadowOffset: {
+                                width: 0,
+                                height: 2,
+                            },
+                            shadowOpacity: 0.23,
+                            shadowRadius: 2.62,
+                    
+                            elevation: 4,
+                            }} >
+                                <Text style={styles.regButton1} >Sign in</Text>
                             </TouchableOpacity>
                         
                         }
-                        
-                        <View>
-                            <Text>
+                          <View style={{marginTop:10}}>
+                            <Text style={{color:'white', fontFamily:'open-sans-bold', fontSize:Responsive.font(16), alignSelf:'center', textAlign:'center'}}>
                                 {this.state.msg}
                             </Text>
                         </View>
-                    </View>
-                    <View style={{ alignItems: 'center' }}>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Text style={styles.reg1}>  Don't have an account? </Text>
-                            <TouchableOpacity onPress={() => this.props.navigation.navigate('SignUp')}>
-                                <Text style={styles.reg} >REGISTER </Text>
-                            </TouchableOpacity>
+                        <View style={{marginTop:20}}>
+                            <Text style={styles.forgButton}>Forgot Password?</Text>
                         </View>
+                      
+                    </View>
+                    <View style={{ height: 1, backgroundColor: '#E2E2E2', marginTop: 30, marginBottom: 30, opacity:0.6, width:'80%', alignSelf:'center' }} />
+                    <View style={{ alignItems: 'center' }}>
+                        <TouchableOpacity style={{ flexDirection: 'row' }} onPress={() => this.props.navigation.navigate('SignUp')}>
+                            <Text style={styles.reg1}>Don't have an account?</Text>
+                            {/* <TouchableOpacity onPress={() => this.props.navigation.navigate('SignUp')}>
+                                <Text style={styles.reg} >REGISTER </Text>
+                            </TouchableOpacity> */}
+                        </TouchableOpacity>
                     </View>
                     {/* <Button
                             title="Go to Sign up"
                             onPress={() => this.props.navigation.navigate('SignUp')}
                         /> */}
                 </KeyboardAwareScrollView>
-            </View>
+            </LinearGradient>
 
         );
     }
@@ -232,7 +266,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         height: 50,
-        margin: 10
+        margin: 10,
+        
 
     },
     ImageStyle: {
@@ -256,31 +291,55 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     forms: {
-        fontSize: 19,
+        fontSize: Responsive.font(14),
         padding: 8,
         paddingLeft: 20,
-        width: Dimensions.get('window').width - 105,
+        width: '90%',
         borderWidth: 1,
         borderColor: '#48A080',
         borderRadius: 50,
         backgroundColor: 'white',
         height: 50,
         fontFamily: 'open-sans-bold',
-        color: 'black'
+        color: 'black',
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.23,
+        shadowRadius: 2.62,
+
+        elevation: 4,
     },
     regButton1: {
-        fontSize: 22,
-        fontFamily: 'open-sans-simple',
-        color: 'white'
+        fontSize:Responsive.font(16),
+        fontFamily: 'open-sans-bold',
+        color: 'white',
+        
+        
     },
     regButton: {
-        fontFamily: 'open-sans-simple',
-        width: Dimensions.get('window').width - 105,
+        fontFamily: 'open-sans-bold',
+        
+        //width: Dimensions.get('window').width - 105,
         alignItems: 'center',
-        backgroundColor: '#48A080',
-        padding: 10,
+        // backgroundColor: '#48D5A0',
+        paddingTop:5,
+        paddingBottom:5,
         borderRadius: 100,
-        marginTop: 60,
+        marginTop: 20,
+        paddingLeft:50,
+        paddingRight:50,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.23,
+        shadowRadius: 2.62,
+
+        elevation: 4,
     },
     reg: {
         textDecorationLine: 'underline',
@@ -290,8 +349,20 @@ const styles = StyleSheet.create({
         fontSize: 20
     },
     reg1: {
-        fontFamily: 'open-sans-simple',
-        color: 'white',
-        fontSize: 20
+        fontFamily: 'open-sans-bold',
+        color: '#D0EEE3',
+        fontSize:Responsive.font(16),
+        textDecorationLine:'underline',
+        
+
+    },
+    forgButton:{
+        fontFamily: 'open-sans-bold',
+        color: '#D0EEE3',
+        fontSize:Responsive.font(16),
+        // textShadowOffset:{width:0.5, height:0.5},
+        // textShadowColor:'black',
+        // textShadowRadius:1
+        
     }
 });

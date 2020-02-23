@@ -17,9 +17,15 @@ export default class MatchCards extends React.Component {
             checkCourt:false,
             checkPlayer1:false,
             checkPlayer2:false,
+            checkPlayer3:false,
+            checkPlayer4:false,
             testTime:'11:10',
             convertedDate:null,
-            showWidget:true
+            showWidget:true,
+            player1:'',
+            player2:'',
+            player3:'',
+            player4:''
         };
     }
     // login() {
@@ -33,14 +39,38 @@ export default class MatchCards extends React.Component {
         // console.log(this.props.data)
         let date=this.convertDate(this.props.data.matchDate)
         this.setState({convertedDate:date})
-
-        let fname = this.props.data.one.fName
-        let sname = this.props.data.two.fName
-        if( fname.includes('Winner of') && sname.includes('Winner of') ){
-            this.setState({
-                showWidget:false
-            })
+        // console.log(this.props.showMulti)
+        if(this.props.showMulti==true){
+            if(this.props.data.one.player1==undefined){
+                this.setState({
+                    player1:this.props.data.one.fName,
+                    player3:this.props.data.two.fName
+                })
+            }
+            else{
+                this.setState({player1:this.props.data.one.player1.fName,
+                               player2:this.props.data.one.player2.fName,
+                               player3:this.props.data.two.player1.fName,
+                               player4:this.props.data.two.player2.fName
+                })
+            }
         }
+        else{
+            // console.log(this.props.data.one)
+            this.setState({
+                player1: this.props.data.one.fName,
+                player3: this.props.data.two.fName
+            })
+            // console.log(this.props.showMulti)
+            // let fname = this.props.data.one.fName
+            // let sname = this.props.data.two.fName
+            // if( fname.includes('Winner of') && sname.includes('Winner of') ){
+            //     this.setState({
+            //         showWidget:false
+            //     })
+            // }
+        }
+        
         // this.getTimeFirstTime()
     }
     convertDate(date){
@@ -100,7 +130,14 @@ export default class MatchCards extends React.Component {
         //console.log(h+' : '+m+' : '+s)
     }
 
-    checkTime(userData, data){
+    checkTime(userData, checkMulti){
+        const {player4, player3, player2, player1}=this.state
+        let players=null
+        if(checkMulti){
+            players =[player1,  player2, player3, player4]
+        }else{
+            players=[player1, player3]
+        }
         const today = new Date();
         var month = '' + (today.getMonth() + 1)
         var day = '' + today.getDate()
@@ -110,58 +147,73 @@ export default class MatchCards extends React.Component {
         if (day.length < 2) 
         day = '0' + day;
         const date = [day,month,year].join('/')
-        console.log(date)
+        // console.log(today)
         const h = today.getHours();
         const s = today.getSeconds();
         let m = today.getMinutes();
         m = (m < 10) ? ("0" + m) : m;
         let time = h+':'+m
-        console.log(time)
+        
+        // if(time>=this.props.data.matchTime && data.matchDate <= date )
+        
         if(time>=this.props.data.matchTime ){
-            this.props.navigation.navigate('ScoreCard',{userData, data})
+            //console.log(players)
+            this.props.navigation.navigate('ScoreCard',{userData, checkMulti, players})
         }
         else{
             this.showingAlert()
         }
     }
+    // player(player){
+    //     const show = this.props.showMulti
+    //     if(show){
+    //         this.setState({checkPlayer3:player})
+    //     }
+    //     else{
+    //         this.setState({checkPlayer2:player})
+    //     }
+    // }
     render() {
         const data = this.props.data
-        const { checkCourt, checkPlayer1, checkPlayer2 } =this.state
-        const enabled = checkCourt==true && checkPlayer1==true && checkPlayer2==true
-        //console.log('----------------------------------------------------------------------------------------------------------')
-        // console.log(this.props.data)
-        // console.log('saeedi')
-        // console.log(this.props.navigation.state.params.item)
+        const show = this.props.showMulti
+        const { checkCourt, checkPlayer1, checkPlayer2, checkPlayer4, checkPlayer3, player1, player2, player3, player4 } =this.state
+        const enabled = checkCourt==true && checkPlayer1==true && checkPlayer3==true
+        const enabled2 = checkCourt==true && checkPlayer1==true && checkPlayer2==true && checkPlayer4==true && checkPlayer3==true
+
         return (
             <View style={styles.cardStyles}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                     <View style={{ flexDirection: 'row', justifyContent:'center', alignContent:'center' }} >
-        <Text style={{paddingHorizontal:5,paddingVertical:2,alignSelf:'center',justifyContent:'center',alignContent:'center',backgroundColor:'#5D5D5D',color:'#FFFFFF',fontFamily:'open-sans-bold', fontSize:Responsive.font(12)}}>Match No {this.props.location+1}</Text>
+        <Text style={{paddingHorizontal:5,paddingVertical:2,alignSelf:'center',justifyContent:'center',alignContent:'center',color:'#5D5D5D',fontFamily:'open-sans-bold',fontWeight: 'bold', fontSize:Responsive.font(13)}}>Match No {this.props.location+1}</Text>
                     </View>
                 </View>
 
-                <View style={{flexDirection:'row',marginTop:10,}}>
-                    <View style={{flexDirection:'row', }}>
-                    <Icon type="MaterialCommunityIcons" name="calendar-today"  style={{ fontSize:Responsive.font(14) ,color: '#585858', alignSelf:'center'}}/>
-                    <Text style={{alignSelf:'center',fontSize:Responsive.font(11), color:'#585858', fontFamily:'open-sans-bold', fontWeight:'600', paddingLeft:5}}>{this.state.convertedDate}</Text>
+                <View style={{flexDirection:'row',marginTop:10, justifyContent:'space-between'}}>
+                    <View style={{flexDirection:'row', width:'50%'}}>
+                        <View style={{flexDirection:'row', }}>
+                            <Icon type="MaterialCommunityIcons" name="calendar-today"  style={{ fontSize:Responsive.font(14) ,color: '#585858', alignSelf:'center'}}/>
+                            <Text style={{alignSelf:'center',fontSize:Responsive.font(11), color:'#585858', fontFamily:'open-sans-bold', fontWeight:'600', paddingLeft:5}}>{this.state.convertedDate}</Text>
+                        </View>
+
+                        <View style={{flexDirection:'row', marginLeft:15}}>
+                            <Icon type="Ionicons" name="md-time"  style={{ fontSize:Responsive.font(14) ,color: '#585858', alignSelf:'center'}}/>
+                            <Text style={{alignSelf:'center',fontSize:Responsive.font(11), color:'#585858', fontFamily:'open-sans-bold', fontWeight:'600', paddingLeft:5}}>{data.matchTime}</Text>
+                        </View>
                     </View>
 
-                    <View style={{flexDirection:'row', marginLeft:15}}>
-                        <Icon type="Ionicons" name="md-time"  style={{ fontSize:Responsive.font(14) ,color: '#585858', alignSelf:'center'}}/>
-        <Text style={{alignSelf:'center',fontSize:Responsive.font(11), color:'#585858', fontFamily:'open-sans-bold', fontWeight:'600', paddingLeft:5}}>{data.matchTime}</Text>
+                    <View style={{justifyContent:'flex-end', width:'50%', flexDirection:'row'}}>
+                        <View style={{flexDirection:'row', paddingHorizontal:7, borderRadius:15, backgroundColor:'#C7FFEB'}}>
+                            <Text style={{marginRight:5,alignSelf:'center',color:'#585858',fontSize:Responsive.font(12), fontFamily:'open-sans-bold'}}>Court no. {data.court}</Text>
+                            <Switch thumbColor={this.state.checkCourt? '#69C674':'#E9835D'} trackColor={{false:'#E9835D' , true:'#69C674' }}
+                                value={this.state.checkCourt}  
+                                onValueChange ={(checkCourt)=>this.setState({checkCourt})}
+                            /> 
+                        </View>
                     </View>
-                </View>
 
                 <View style={{justifyContent:'flex-end', flexDirection:'row'}}>
-                    <View style={{width:'65%'}}>
-
-                    </View>
-                    <View style={{paddingHorizontal:7,flexDirection:'row', justifyContent:'flex-start', borderColor:'#8B8B8B', borderWidth:1, borderRadius:50}}>
-        <Text style={{marginRight:5,alignSelf:'center',color:'#585858',fontSize:Responsive.font(12), fontFamily:'open-sans-bold'}}>Court no. {data.court}</Text>
-                        <Switch thumbColor={this.state.checkCourt? '#42974D':'#D14D4D'} trackColor={{false:'#D14D4D' , true:'#42974D' }}
-                            value={this.state.checkCourt}  
-                            onValueChange ={(checkCourt)=>this.setState({checkCourt})}
-                        />  
+                   
+                     
 
 
                         
@@ -170,47 +222,96 @@ export default class MatchCards extends React.Component {
                 </View>
 
 
-                <View style={{ height: 1, backgroundColor: '#AAAAAA', marginBottom: 5, marginTop: 5 }} />
+                <View style={{ height: 1,  marginBottom: 5, marginTop: 5 }} />
                 <View style={{ flexDirection: 'row' }}>
                     <View style={{ width: '48%', marginRight: '4%' }}>
                         <View style={styles.teamName} >
                             <Text style={styles.head}>Team A - </Text>
                             <Text style={styles.head}>Alpha</Text>
                         </View>
+                        
+                        
+                        
                         <View style={styles.teamNames} >
-                            <Text style={styles.head1}>{data.one.fName}</Text>
-                            {this.state.showWidget &&  <Switch thumbColor={this.state.checkPlayer1? '#42974D':'#D14D4D'} trackColor={{false:'#D14D4D' , true:'#42974D' }}
+                            <Text style={styles.head1}>{this.state.player1}</Text>
+                           
+                            {!this.state.player1.includes(('Winner of')) &&<Switch thumbColor={this.state.checkPlayer1? '#69C674':'#E9835D'} trackColor={{false:'#E9835D' , true:'#69C674' }}
                                 value={this.state.checkPlayer1}  
                                 onValueChange ={(checkPlayer1)=>this.setState({checkPlayer1})}
-                            />  }
+                            />}
+                            
+
+                            {/* <Text style={styles.head1}>{data.one.fName}</Text>
+                            {this.state.showWidget &&  <Switch thumbColor={this.state.checkPlayer1? '#69C674':'#E9835D'} trackColor={{false:'#E9835D' , true:'#69C674' }}
+                                value={this.state.checkPlayer1}  
+                                onValueChange ={(checkPlayer1)=>this.setState({checkPlayer1})}
+                            />  } */}
                         </View>
+
+
+
+                       {this.state.player2.length>0 &&  <View style={styles.teamNames} >
+                            <Text style={styles.head1}>{this.state.player2}</Text>
+                            <Switch thumbColor={this.state.checkPlayer2? '#69C674':'#E9835D'} trackColor={{false:'#E9835D' , true:'#69C674' }}
+                                value={this.state.checkPlayer2}  
+                                onValueChange ={(checkPlayer2)=>this.setState({checkPlayer2})}
+                            /> 
+                            {/* {this.state.showWidget &&  <Switch thumbColor={this.state.checkPlayer2? '#69C674':'#E9835D'} trackColor={{false:'#E9835D' , true:'#69C674' }}
+                                value={this.state.checkPlayer2}  
+                                onValueChange ={(checkPlayer2)=>this.setState({checkPlayer2})}
+                            />  } */}
+                        </View>}
                     </View>
+
+
+
                     <View style={{ width: '48%' }}>
                         <View style={styles.teamName} >
                             <Text style={styles.head}>Team B - </Text>
                             <Text style={styles.head}>Beta </Text>
                         </View>
                         <View style={styles.teamNames} >
-                            <Text style={styles.head1}>{data.two.fName}</Text>
-                            {this.state.showWidget && <Switch thumbColor={this.state.checkPlayer2? '#42974D':'#D14D4D'} trackColor={{false:'#D14D4D' , true:'#42974D' }}
-                                value={this.state.checkPlayer2}  
-                                onValueChange ={(checkPlayer2)=>this.setState({checkPlayer2})}
-                            />  }
+
+                        <Text style={styles.head1}>{this.state.player3}</Text>
+                        {!this.state.player3.includes(('Winner of')) &&<Switch thumbColor={this.state.checkPlayer3? '#69C674':'#E9835D'} trackColor={{false:'#E9835D' , true:'#69C674' }}
+                                value={this.state.checkPlayer3}  
+                                onValueChange ={(checkPlayer3)=>this.setState({checkPlayer3})}
+                        /> }
+                        
+                            {/* <Text style={styles.head1}>{show? 'Third Player': data.two.fName}</Text> */}
+                            {/* {this.state.showWidget && <Switch thumbColor={show?this.state.checkPlayer3? '#69C674':'#E9835D':this.state.checkPlayer2? '#69C674':'#E9835D'} trackColor={{false:'#E9835D' , true:'#69C674' }}
+                                value={show?this.state.checkPlayer3:this.state.checkPlayer2}  
+                                onValueChange ={(checkPlayer2)=>this.player(checkPlayer2)}
+                            />  } */}
                         </View>
+
+                       {this.state.player4.length>0 &&  <View style={styles.teamNames} >
+                            <Text style={styles.head1}>{this.state.player4}</Text>
+                            <Switch thumbColor={this.state.checkPlayer4? '#69C674':'#E9835D'} trackColor={{false:'#E9835D' , true:'#69C674' }}
+                                value={this.state.checkPlayer4}  
+                                onValueChange ={(checkPlayer4)=>this.setState({checkPlayer4})}
+                            /> 
+                            {/* {this.state.showWidget && <Switch thumbColor={this.state.checkPlayer4? '#69C674':'#E9835D'} trackColor={{false:'#E9835D' , true:'#69C674' }}
+                                value={this.state.checkPlayer4}  
+                                onValueChange ={(checkPlayer4)=>this.setState({checkPlayer4})}
+                            />  } */}
+                        </View>}
                     </View>
                 </View>
-                <View style={{ height: 1, backgroundColor: '#AAAAAA', marginBottom: 10, marginTop: 5 }} />
+                <View style={{ height: 1, marginBottom: 10, marginTop: 5 }} />
 
                     
                     
-                    <View style={{ flexDirection: 'row', width: '100%', marginRight: 10 ,justifyContent:'flex-end'}} >
-                    <TouchableOpacity disabled={!enabled} onPress={() =>  this.checkTime(this.props.navigation.state.params.item,data) }style={[styles.mySBtn,{backgroundColor: enabled?'#42974D':'#82C68B'}]}>
-                            <Text style={styles.myStext}> Start Match</Text>
+                   {!show &&  <View style={{ flexDirection: 'row', width: '100%', marginRight: 10 ,justifyContent:'flex-end', marginBottom:5}} >
+                    <TouchableOpacity disabled={!enabled} onPress={() =>  this.checkTime(this.props.navigation.state.params.item,show) }style={[styles.mySBtn,{backgroundColor: enabled?'#51C560':'#87DC92'}]}>
+                            <Text style={styles.myStext}>Start Match</Text>
                         </TouchableOpacity>
-                        {/* <TouchableOpacity disabled={!enabled} onPress={() =>  this.props.navigation.navigate('ScoreCard',this.props.navigation.state.params.item) }style={[styles.mySBtn,{backgroundColor: enabled?'#42974D':'#82C68B'}]}>
-                            <Text style={styles.myStext}> Start Match</Text>
-                        </TouchableOpacity> */}
-                    </View>
+                    </View>}
+                    {show && <View style={{ flexDirection: 'row', width: '100%', marginRight: 10 ,justifyContent:'flex-end'}} >
+                    <TouchableOpacity disabled={!enabled2} onPress={() =>  this.checkTime(this.props.navigation.state.params.item,show) }style={[styles.mySBtn,{backgroundColor: enabled2?'#51C560':'#87DC92'}]}>
+                            <Text style={styles.myStext}>Start Match</Text>
+                        </TouchableOpacity>
+                    </View>}
             </View>
 
         );
@@ -218,9 +319,11 @@ export default class MatchCards extends React.Component {
 }
 const styles = StyleSheet.create({
     cardStyles: {
-        width: '100%',
-        backgroundColor: '#C4C4C4',
+        alignSelf:'center',
+        width: '97%',
+        backgroundColor: '#9EEACE',
         padding: 10,
+        borderRadius:15,
         shadowColor: "#000",
         shadowOffset: {
             width: 0,
@@ -230,7 +333,7 @@ const styles = StyleSheet.create({
         shadowRadius: 2.62,
 
         elevation: 4,
-        marginBottom: 10
+        marginBottom: 15
     },
     head: {
         color: 'white',
@@ -288,13 +391,13 @@ const styles = StyleSheet.create({
     teamName: {
         flexDirection: 'row',
         width: '100%',
-        backgroundColor: '#8B8B8B',
+        backgroundColor: '#999999',
         padding: 5
     },
     teamNames: {
         flexDirection: 'row',
         width: '100%',
-        backgroundColor: '#ECECEC',
+        backgroundColor: '#C7FFEB',
         padding: 5,
         color: 'black',
         justifyContent:'space-between'

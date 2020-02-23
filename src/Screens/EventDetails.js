@@ -22,16 +22,29 @@ export default class EventDetails extends React.Component {
             dataLoaded:false,
             startDate:null,
             loading:true,
-            showMessage:false
+            showMessage:false,
+            showMulti:null,
+            endDate:null
         };
     }
   
     componentDidMount(){
         const tournamentInfo = this.props.navigation.getParam('item')
-        console.log(tournamentInfo)
+        // console.log(tournamentInfo)
+        let decide = this.decisionForMatchCard(tournamentInfo.divisionName)
+
         let date=this.convertDate(tournamentInfo.tournamentStartDate)
-        this.setState({startDate:date})
-        this.getData()
+        let enddate = this.convertDate(tournamentInfo.tEndDate)
+        this.setState({endDate:enddate})
+        this.setState({startDate:date, showMulti:decide})
+        this.getData(tournamentInfo)
+    }
+    decisionForMatchCard(divisionType){
+        if(divisionType.includes('Men\'s Doubles') || divisionType.includes('Women\'s Doubles') || divisionType.includes('Mixed Doubles')){
+            return true
+        }
+        else
+            return false
     }
 
     convertDate(date){
@@ -46,27 +59,47 @@ export default class EventDetails extends React.Component {
         return [day, month, year].join('/');
     }
 
-    getData= (tournamentId, eventType)=>{
-
+    getData= (tournamentInfo)=>{
+        let bracketType = tournamentInfo.bracketType
+        let tournamentId = tournamentInfo.tournamentId
+        let divisionName = tournamentInfo.divisionName
+        // console.log(bracketType, tournamentId)
         var newData = [];
         // dslkfsd;lfsd
         var dummyData=[]
+        var url=''
+        if(bracketType=='Round Robin' || bracketType=='Single Elimination' || 'Knock Out')
+            url='http://pickletour.com/api/get/schedule'
+
+        else if(bracketType=='Box League')
+            url = 'http://pickletour.com/api/get/bschedule'
+
+        else if(bracketType=='Flex Ladder')
+            url = 'http://pickletour.com/api/get/fschedule'
+
+        else if(bracketType=='Double Elimination')
+            url ='http://pickeletour.com/api/get/dschedule'
+        
         // var gettingUrl = 'https://pickletour.appspot.com/api/get/Schedule/'
         //var gettingUrl = 'http://pickletour.com/api/get/tournament/page/0'
-        var gettingUrl = 'http://pickletour.appspot.com/api/get/schedule/5e2eb96e8bb07c00121fa750/'
-        var div='Men\'s Singles'
+        // var gettingUrl = 'http://pickletour.appspot.com/api/get/schedule/5e2eb96e8bb07c00121fa750/'
+        // var div='Men\'s Singles'
+        // var gettingUrl = 'http://pickletour.com/api/get/schedule/5e4bb1db8fa805001faa4605/'
+        // var div ='Men\'s Doubles'
         // axios.get(gettingUrl+tournamentId)
-        axios.get(gettingUrl+div)
+        // console.log(url+'/'+tournamentId+'/'+divisionName)
+        axios.get(url+'/'+tournamentId+'/'+divisionName)
         .then((response)=>{
-            newData = response.data[0].schedule
-            // console.log(newData[0].schedule[0])
-            if (newData.length > 0) {
+            // console.log(response.data)
+            // response.data.length > 0
+                       
+            if (response.data.length > 0 ) {
+                newData = response.data[0].schedule
                 newData.forEach(element => {
                     element.map(item=>{
                         dummyData.push(item)
                     })
                 });
-                // console.log(dummyData)
                 this.setState({
                     tourData: dummyData,
                     dataLoaded:true,
@@ -95,34 +128,31 @@ export default class EventDetails extends React.Component {
         //console.log(this.props.navigation.getParam('item'))
         return (
             <View>
-                {/* <ScrollView style={{ marginBottom: 10 }}> */}
+                
                     
 
-                    <View style={{ padding: 10 }}>
-                        <FlatList
-                            
-                            data ={this.state.tourData}
-                            extraData={this.props}
-                            keyExtractor={item => item._id}
-                            ListHeaderComponent={()=>(
-                                <View>
+                    <View style={{ paddingTop: 10, paddingLeft:10, paddingRight:10 }}>
+                    <View>
                                         <View style={styles.cardStyles}>
                                         <View style={{ flexDirection: 'row' , paddingLeft:10, paddingTop:10}}>
                                             <View style={{ }} >
                                                 <Text style={styles.inHead}>{tournamentInfo.tournamentName}</Text>
                                             </View>
                                         </View>
-                                        
                                         <View style={{borderWidth:0.5,borderColor:'#CAECDF', marginTop:10, marginRight:10, marginLeft:10}}></View>
+                                        
                                         <View style={{flexDirection:'row', paddingTop:10, paddingLeft:10}}>
                                             <Icon type="MaterialIcons" name="date-range"  style={{ alignSelf:'center',fontSize:Responsive.font(14) ,color: '#585858'}}/>
-                                            <Text style={{fontSize:Responsive.font(11), color:'#585858', fontFamily:'open-sans-bold', fontWeight:'600', paddingLeft:5}}>{this.state.startDate} - 22/01/2020</Text>
+                                            <Text style={{fontSize:Responsive.font(11), color:'#585858', fontFamily:'open-sans-bold', fontWeight:'600', paddingLeft:5}}>{this.state.startDate} - {this.state.endDate}</Text>
                                         </View>
 
                                         <View style={{flexDirection:'row', paddingTop:10, paddingLeft:10}}>
                                             <Icon type="Entypo" name="location-pin"  style={{ alignSelf:'center',fontSize:Responsive.font(14) ,color: '#585858'}}/>
                                             <Text style={{fontSize:Responsive.font(11), color:'#585858', fontFamily:'open-sans-bold', fontWeight:'600', paddingLeft:5}}>{tournamentInfo.address}</Text>
                                         </View>
+
+                                        
+                                        <View style={{borderWidth:0.5,borderColor:'#CAECDF', marginTop:10, marginRight:10, marginLeft:10}}></View>
 
                                         <View style={{ flexDirection: 'row', paddingTop: 10 , paddingLeft:10}}>
                                             <View style={{ flexDirection: 'row', width: '50%' }} >
@@ -133,8 +163,8 @@ export default class EventDetails extends React.Component {
 
                                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingTop: 10, paddingLeft:10 }}>
                                             <View style={{ flexDirection: 'row', width: '100%' }} >
-                                                <Text style={styles.head}>Organizer Name : </Text>
-                                                <Text style={styles.detail}>Steve</Text>
+                                                <Text style={styles.head}>Organizer : </Text>
+                                                <Text style={styles.detail}>{tournamentInfo.organizerName}</Text>
                                             </View>
                                         </View>
 
@@ -148,10 +178,20 @@ export default class EventDetails extends React.Component {
                                     
                                     </View>
 
-                                    <View style={{ height: 1, backgroundColor: '#E2E2E2', marginTop: 0, marginBottom: 10 }} />
+                                    <View style={{ height: 1, backgroundColor: '#E2E2E2', marginTop: 0, marginBottom: 15 }} />
                                 </View>
+                        <View style={{paddingBottom:1000}}>
+                        <FlatList
+                            
+                            data ={this.state.tourData}
+                            extraData={this.props}
+                            keyExtractor={item => item._id}
+                            // ListHeaderComponent={()=>(
+                            ListFooterComponent={
+                                <View style={{marginTop:40}}></View>
+                            }
                     
-                            )}
+                            // )}
                             ListEmptyComponent={()=>
                             //     (
                             //     (this.state.loading && <ActivityIndicator size='large'/> )
@@ -167,26 +207,17 @@ export default class EventDetails extends React.Component {
                                 }
                             }
 
-                            
+                            showsVerticalScrollIndicator={false}
                             renderItem={({item, index})=>
                             (
-                                <MatchCards navigation={this.props.navigation} data={item} location={index}/>
+                                <MatchCards navigation={this.props.navigation} data={item} location={index} showMulti={this.state.showMulti}/>
                             )
-                            // {
-                            //     if(item){
-                            //         return <MatchCards navigation={this.props.navigation} data={item} location={index}/>
-                            //     }
-                            //     else
-                            //     return   <Text style={{fontFamily:'open-sans-bold',alignSelf:'center',fontSize:Responsive.font(20)}}>Upcoming Events not found !</Text>
-                            // }
-                            
-                                
-                                
-                                
-                                
                             
                             }
                         />
+                        </View>
+
+                        
                         {/* :<View style={{ paddingTop:"50%",flex: 1,justifyContent: 'center'}}>
                         <ActivityIndicator size="large" color="#48A080" />
                     </View>} */}
@@ -203,6 +234,7 @@ const styles = StyleSheet.create({
         alignSelf:'center',
         //marginHorizontal:10,
         width: '100%',
+        borderRadius:3,
         backgroundColor:'#DBFFF1',
         shadowColor: "#000",
         shadowOffset: {
@@ -222,7 +254,7 @@ const styles = StyleSheet.create({
         fontSize: Responsive.font(12)
     },
     inHead: {
-        fontSize:Responsive.font(14), color:'#585858', fontFamily:'open-sans-bold'
+        fontSize:Responsive.font(16), color:'#585858', fontFamily:'open-sans-bold', fontWeight:'bold'
     },
     detail:{
         fontSize:Responsive.font(11), color:'#585858', fontFamily:'open-sans-bold'

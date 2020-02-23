@@ -13,7 +13,8 @@ export default class EventCards extends React.Component {
         this.state = {
             newName:'',
             useNewName:false,
-            convertedDate:null
+            convertedDate:null,
+            endDate:null
         };
     }
     // async getItem(){
@@ -31,6 +32,8 @@ export default class EventCards extends React.Component {
     componentDidMount(){
         let date=this.convertDate(this.props.data.tournamentStartDate)
         this.setState({convertedDate:date})
+        let enddate = this.convertDate(this.props.tEndDate)
+        this.setState({endDate:enddate})
         let name=this.props.data.tournamentName
         let index= ''
         let splitter = 4
@@ -78,7 +81,7 @@ export default class EventCards extends React.Component {
         return (
             <View style={styles.cardStyles}>
                 <View style={{ height:'45%', alignSelf:'center', width:'95%',justifyContent:'center'}}>
-                    <Text style={{fontSize:Responsive.font(14), color:'#585858', fontFamily:'open-sans-bold'}}>{this.state.useNewName?this.state.newName:data.tournamentName}</Text>
+                    <Text style={{fontSize:Responsive.font(14), color:'#585858',fontWeight:'bold', fontFamily:'open-sans-bold'}}>{this.state.useNewName?this.state.newName:data.tournamentName}</Text>
                 </View>
                 {/* Rows here */}
 
@@ -86,12 +89,12 @@ export default class EventCards extends React.Component {
                 <View style={{ height:'45%', width:'95%', alignSelf:'center', justifyContent:'space-between', flexDirection:'row'}}>
                     <View style={{flex:1, flexDirection:'row', alignSelf:'center'}}>
                         <Icon type="MaterialIcons" name="date-range"  style={{ alignSelf:'center',fontSize:Responsive.font(14) ,color: '#585858'}}/>
-                        <Text style={{fontSize:Responsive.font(11), color:'#585858', fontFamily:'open-sans-bold', fontWeight:'600'}}>  12/01/2020 - 22/01/2020</Text>
+                        <Text style={{fontSize:Responsive.font(11), color:'#585858', fontFamily:'open-sans-bold', fontWeight:'600'}}>  {this.state.convertedDate} - {this.state.endDate}</Text>
                     </View>
 
 
                     <View style={{flex:1, justifyContent:'center',}}>
-                    <TouchableOpacity style={styles.mySBtn} onPress={()=>this.props.navigation.navigate('EventSummary')}>
+                    <TouchableOpacity style={styles.mySBtn} onPress={()=>this.props.navigation.navigate('EventSummary',{data})}>
                                   
                                   <Text style={styles.myStext}>Summary</Text>
                   </TouchableOpacity>
@@ -148,14 +151,14 @@ const styles = StyleSheet.create({
         alignSelf:'center',
         // marginLeft:10,
         // marginRight:10,
-        
+        borderRadius:3,
         marginHorizontal:10,
-        width: '94.5%',
+        width: '92%',
         backgroundColor: '#9EEACE',
         // marginHorizontal: 10,
         // paddingHorizontal:10,
         // paddingVertical:10,
-        height:70,
+        height:75,
         shadowColor: "#000",
         shadowOffset: {
             width: 0,

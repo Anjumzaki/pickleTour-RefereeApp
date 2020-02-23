@@ -23,7 +23,8 @@ export default class ToBeRequestedEvents extends React.Component {
             newName:'',
             useNewName:false,
             startDate:null,
-            endDate:null
+            endDate:null,
+            expandSpace:false
         
 
         };
@@ -37,9 +38,14 @@ export default class ToBeRequestedEvents extends React.Component {
     // }
     componentDidMount(){
         let date=this.convertDate(this.props.data.tStartDate)
-        this.setState({startDate:date})
+        let enddate=this.convertDate(this.props.data.tEndDate)
+        this.setState({startDate:date, endDate:enddate})
         // console.log(this.props)
         //console.log(this.props.data.division)
+        let address = this.props.data.address
+        if(address.length>53){
+            this.setState({expandSpace:true})
+        }
         let name=this.props.data.tournamentName
         let index= ''
         let splitter = 4
@@ -206,148 +212,69 @@ export default class ToBeRequestedEvents extends React.Component {
         //console.log(tournament.division)
         let result = data.division.map(a => a.nameOfDivision);
 
+
         //const divisionData =['Select', ...result]
         const user = this.props.user
         // console.log(divisionData)
-        const { address, phoneNumber, incomData, submitted, isSuccessFull, selected, finallyComplete } = this.state
+        const { address, phoneNumber, incomData, submitted, isSuccessFull, selected, finallyComplete, expandSpace } = this.state
         // console.log('User Data:  ',this.props.user)
         return (
-            <View style={styles.cardStyles}>
-                <View style={{ height:'45%', alignSelf:'center', width:'95%',justifyContent:'center'}}>
-                    <Text style={{fontSize:Responsive.font(14), color:'#585858', fontFamily:'open-sans-bold'}}>{this.state.useNewName?this.state.newName:data.tournamentName}</Text>
-                </View>
-                {/* Rows here */}
+            <View>
+                                        <View style={styles.cardStyles}>
+                                        <View style={{ flexDirection: 'row' , paddingLeft:10, paddingTop:10}}>
+                                            <View style={{ }} >
+                                                <Text style={styles.inHead}>{data.tournamentName}</Text>
+                                            </View>
+                                        </View>
+                                        
+                                        <View style={{borderWidth:0.5,borderColor:'#81D4B6', marginTop:10, marginRight:10, marginLeft:10}}></View>
+                                        <View style={{flexDirection:'row', paddingTop:10, paddingLeft:10}}>
+                                            <Icon type="MaterialIcons" name="date-range"  style={{ alignSelf:'center',fontSize:Responsive.font(14) ,color: '#585858'}}/>
+                                            <Text style={{fontSize:Responsive.font(11), color:'#585858', fontFamily:'open-sans-bold', fontWeight:'600', paddingLeft:5}}>{this.state.startDate} - {this.state.endDate}</Text>
+                                        </View>
 
-                <View style={{borderWidth:0.5,marginHorizontal:10,borderColor:'#81D4B6'}}></View>
-                <View style={{ height:'45%', width:'95%', alignSelf:'center', justifyContent:'space-between', flexDirection:'row'}}>
-                    <View style={{flex:1, flexDirection:'row',width:'50%' }}>
-                        <Text  style={{fontSize:Responsive.font(13), color:'#585858', fontFamily:'open-sans-bold', fontWeight:'600', alignSelf:'center'}}>Event Type : </Text>
-                        <Text  style={{fontSize:Responsive.font(12), color:'#585858', fontFamily:'open-sans-bold', fontWeight:'600',alignSelf:'center'}}>{data.type}</Text>
+                                        <View style={{flexDirection:'row', paddingTop:5, paddingLeft:10}}>
+                                            <Icon type="Entypo" name="location-pin"  style={{ alignSelf:'center',fontSize:Responsive.font(14) ,color: '#585858'}}/>
+                                            <Text style={{fontSize:Responsive.font(11), width:'95%' ,color:'#585858', fontFamily:'open-sans-bold', fontWeight:'600', paddingLeft:5}}>{data.address}</Text>
+                                        </View>
 
-                    </View>                   
+                                     
+
+                                        
+                                    
+
+                                        <View>
+
+                                        </View>
+                                    
+                                    </View>
+
+                                    {/* <View style={{ height: 1, backgroundColor: '#E2E2E2', marginTop: 5, marginBottom: 5 }} /> */}
+                                </View>
+            // <View style={styles.cardStyles}>
+            //     <View style={{ height:'50%', alignSelf:'center', width:'95%',justifyContent:'center', }}>
+            //         <View>
+            //             <Text style={{fontSize:Responsive.font(14), color:'#585858', fontFamily:'open-sans-bold'}}>{this.state.useNewName?this.state.newName:data.tournamentName}</Text>
+            //         </View>
+            //         <View style={{flexDirection:"row", padding:0}}>
+            //             <Icon type="Entypo" name="location-pin"  style={{ alignSelf:'center',fontSize:Responsive.font(15) ,color: '#585858'}}/>
+            //             <Text style={{fontSize:Responsive.font(11), color:'#585858', fontFamily:'open-sans-bold',alignSelf:'center',paddingLeft:1, width:'95%', }}>{data.address}</Text>
+            //         </View>
+            //     </View>
+            //     {/* Rows here */}
+
+            //     <View style={{borderWidth:0.5,marginHorizontal:10,borderColor:'#81D4B6', marginTop:expandSpace?5:0}}></View>
+            //     <View style={{ height:'35%', width:'95%', alignSelf:'center', flexDirection:'row'}}>
                    
-                    <View style={{flex:1, flexDirection:'row', width:'50%' ,justifyContent: 'flex-end'}}>
-                        <Icon type="MaterialIcons" name="date-range"  style={{ alignSelf:'center',fontSize:Responsive.font(15) ,color: '#585858'}}/>
-                        <Text style={{fontSize:Responsive.font(11), color:'#585858', fontFamily:'open-sans-bold',alignSelf:'center',paddingLeft:1}}>{this.state.startDate} - 22/01/2020</Text>
-                    </View>
+            //         <View style={{flex:1, flexDirection:'row', width:'50%' ,justifyContent: 'flex-start', marginBottom:0, padding:0}}>
+            //             <Icon type="MaterialIcons" name="date-range"  style={{ alignSelf:'center',fontSize:Responsive.font(15) ,color: '#585858'}}/>
+            //             <Text style={{fontSize:Responsive.font(11), color:'#585858', fontFamily:'open-sans-bold',alignSelf:'center',paddingLeft:1}}>{this.state.startDate} - 22/01/2020</Text>
+            //         </View>
 
 
                  
-                </View>
-
-
-
-
-
-
-
-
-
-                {/* <Modal animationType='slide'
-                       visible={this.state.modalVisible}>
-                           <View style={{width:'100%', height:'100%'}}>
-                                {isSuccessFull?
-                                <View style={{flex:1, alignContent:'center', alignItems:'center',justifyContent:'center', backgroundColor:'white' }}> 
-                                
-                                
-                                {finallyComplete? <Icon type="FontAwesome" name="check"  style={{ color: 'green'}}/>:<ActivityIndicator size={"large"}/>}
-                                
-                                
-                                {finallyComplete?
-                                <Text style={{fontSize:Responsive.font(20), fontFamily:'open-sans-bold'}}>Request Submitted Successfully !</Text>
-                                :
-                                <Text style={{fontSize:Responsive.font(20), fontFamily:'open-sans-bold'}}>Submitting Request..</Text>
-                                }
-                                
-                                </View>:
-                                
-                                <View style={{flex:1, alignContent:'center', alignItems:'center',justifyContent:'center', backgroundColor: '#86d6b9' }}>
-                                    <TextInput style={{backgroundColor:'white',borderRadius:10,paddingLeft:10, paddingVertical:5, borderColor:'#48A080',borderWidth:1,width:'90%', fontFamily:'open-sans-bold', marginBottom:20, fontSize:Responsive.font(20)}} editable={false} placeholder="Name" value={user.firstName} placeholderTextColor={'gray'}/>
-                                <TextInput style={{backgroundColor:'white',borderRadius:10,paddingLeft:10, paddingVertical:5, borderColor:'#48A080',borderWidth:1,width:'90%', fontFamily:'open-sans-bold', marginBottom:20, fontSize:Responsive.font(20)}} editable={false} placeholder="Email Address" value={user.email} placeholderTextColor={'gray'}/>
-                                <TextInput style={{backgroundColor:'white',borderRadius:10,paddingLeft:10, paddingVertical:5, borderColor:'#48A080',borderWidth:1,width:'90%', fontFamily:'open-sans-bold', marginBottom:20, fontSize:Responsive.font(20)}} placeholder="Phone Number"  value={phoneNumber} keyboardType="phone-pad" onChangeText={phoneNumber => this.setState({ phoneNumber })} placeholderTextColor={'gray'}/>
-                                <TextInput style={{backgroundColor:'white',borderRadius:10,paddingLeft:10, paddingVertical:5, borderColor:'#48A080',borderWidth:1,width:'90%', fontFamily:'open-sans-bold', marginBottom:20, fontSize:Responsive.font(20)}} placeholder="Address"  value={address}  keyboardType="default" onChangeText={address => this.setState({ address })} placeholderTextColor={'gray'}/>
-                                
-                                {incomData ? <Text style={{color:'red', fontSize:Responsive.font(16), fontFamily:'open-sans-bold'}}> Please complete forum !!</Text>:<Text></Text>}
-                                <TouchableOpacity disabled={submitted} onPress={()=>this.conformingRequest(user,tournament)} style={{fontFamily: 'open-sans-simple',
-                                                                                                width: Dimensions.get('window').width - 105,
-                                                                                                alignItems: 'center',
-                                                                                                backgroundColor: submitted?'#BEBAC5':'#48A080',
-                                                                                                padding: 10,
-                                                                                                borderRadius: 100,
-                                                                                                marginTop: 60,}}>
-                                    <Text style={{color:'white',fontFamily:'open-sans-simple',fontSize:Responsive.font(22)}}>Confirm</Text>
-                                </TouchableOpacity>
-                                
-                                <TouchableOpacity  disabled={submitted} onPress={()=>this.setState({modalVisible:false})} style={{fontFamily: 'open-sans-simple',
-                                                                                                            width: Dimensions.get('window').width - 105,
-                                                                                                            alignItems: 'center',
-                                                                                                            backgroundColor: submitted?'#BEBAC5':'#48A080',
-                                                                                                            padding: 10,
-                                                                                                            borderRadius: 100,
-                                                                                                            marginTop: 20,}}>
-                                    <Text style={{color:'white',fontFamily:'open-sans-simple',fontSize:Responsive.font(22)}}>Close</Text>
-                                    </TouchableOpacity>
-                                </View>
-                                
-                                }
-                                
-                           </View>
-                        
-
-                </Modal>
-                <View style={{ height:'45%', alignSelf:'center', width:'95%',justifyContent:'center'}}>
-                <Text style={{fontSize:Responsive.font(14), color:'#585858', fontFamily:'open-sans-bold'}}>{this.state.useNewName?this.state.newName:tournament.tournamentName}</Text>
-                </View> */}
-                {/* <View style={{ flexDirection: 'row', width: '85%' }} >
-                    <Text style={styles.head}>Address : </Text>
-                    <Text style={styles.inHead}>{tournament.address}</Text>
-                </View> */}
-                {/* <View style={{borderWidth:0.5,marginHorizontal:10,borderColor:'#81D4B6'}}></View>
-                <View style={{ flexDirection: 'row', marginTop: 10 }}>
-                    <View style={{ flexDirection: 'row', flex:1 }} >
-                        <Text  style={{fontSize:Responsive.font(14), color:'#585858', fontFamily:'open-sans-bold', fontWeight:'600', alignSelf:'center'}}>Event Type : </Text>
-                        <Text style={styles.inHead}>{tournament.type}</Text>
-                    </View>
-
-                </View>
-                <View style={{ flexDirection: 'row', marginTop: 10, justifyContent: 'space-between' }}> */}
-                    {/* <View style={{ flexDirection: 'row', width: '50%', alignItems:'center' }} >
-                        <Text style={styles.head}>Division : </Text>
-                        <View style={{  width: "80%",height: 25,
-                        marginRight: 10,
-                                        alignItems: 'center',
-                                        borderWidth: 1,
-                                        borderColor: '#48A080',
-                                        justifyContent:'center',
-                                        borderRadius: 5,
-                                        backgroundColor: '#F6F6F6',}}>
-                             <Picker 
-                            
-                            style={{  height:25,        width: '100%',
-
-                                color: '#48A080',}}
-                            
-                            onValueChange={(itemValue, itemIndex)=>{
-                                this.setState({selected:itemValue})
-                            }}
-                            selectedValue={this.state.selected}>
-
-                             {divisionData.map((item, index)=>{
-                                return(<Picker.Item label={item} value={item} key={index}/>)
-                            })}
-                            
-                        </Picker>
-                       
-                        </View>
-                        
-                    </View> */}
-                    {/* <View style={{flexDirection: 'row', height:'100%', alignSelf:'center', justifyContent:'center'}} >
-                        <TouchableOpacity onPress={()=>this.request()} style={{backgroundColor:'#2E8465', borderRadius:5, borderWidth:1, paddingHorizontal:15, height:25,alignContent:'center', justifyContent:'center', borderColor:'black'}}>
-                            <Text style={styles.buttonText}>Request</Text>
-                        </TouchableOpacity>
-                    </View> */}
-                {/* </View> */}
-            </View>
+            //     </View>
+            // </View>
 
         );
     }
@@ -356,9 +283,9 @@ const styles = StyleSheet.create({
     cardStyles: {
         alignSelf:'center',
         marginHorizontal:10,
-        width: '94.5%',
+        width: '92%',
         backgroundColor: '#9EEACE',
-        height:70,
+        // height:100,
         shadowColor: "#000",
         shadowOffset: {
             width: 0,
@@ -367,9 +294,10 @@ const styles = StyleSheet.create({
         justifyContent:'center',
         shadowOpacity: 0.23,
         shadowRadius: 2.62,
-
+        borderRadius:3,
         elevation: 3,
         marginBottom:10,
+        paddingBottom:10
     },
     head: {
         color: 'white',
@@ -391,9 +319,10 @@ const styles = StyleSheet.create({
 
     },
     inHead: {
-        color: '#DCDCDC',
+        color: '#585858',
         fontFamily: 'open-sans-bold',
-        fontSize: Responsive.font(12)
+        fontWeight:'bold',
+        fontSize: Responsive.font(14)
 
     },
     mySBtn: {

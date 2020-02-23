@@ -17,6 +17,7 @@ export default class RefereeRequest extends React.Component {
     constructor(props) {
         super(props);
         // this.BracketTypes=null
+        this.BracketData=''
         this.DivisionData=''
         this.state = {
             actScr: '1',
@@ -43,7 +44,7 @@ export default class RefereeRequest extends React.Component {
     componentDidMount(){    
         //this.backHandler = BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
         const tournamentInfo = this.props.navigation.getParam('item')
-       
+        console.log(tournamentInfo)
         // this.BracketTypes = bracketTypes
         let date=this.convertDate(tournamentInfo.tStartDate)
         this.setState({startDate:date})
@@ -130,6 +131,9 @@ closeSelectedModal({item, location}){
                 gender: user.gender,
                 phone: phoneNumber,
                 divisionName: this.DivisionData[this.state.arrayLocation],
+                bracketType:this.BracketData[this.state.arrayLocation],
+                tEndDate:tournament.tEndDate,
+                organizerName:tournament.OrganizerName,
                 tournamentId: tournament._id,
                 tournamentName: tournament.tournamentName,
                 tournamentStartDate: tournament.tStartDate,
@@ -188,7 +192,7 @@ closeSelectedModal({item, location}){
         const bracketTypes =  tournamentInfo.division.map(a => {
             if(a.bracketType=='Round Robin')
                 return '(R.R.)'
-            else if(a.bracketType=='Flex Ladder')
+            else if(a.bracketType =='Flex Ladder')
                 return '(F.L.)'
             else if(a.bracketType == 'Box League')
                 return '(B.L.)'
@@ -196,6 +200,10 @@ closeSelectedModal({item, location}){
                 return '(S.E.)'
             else if(a.bracketType =='Double Elimination')
                 return '(D.E.)'
+            else if(a.bracketType =='Knock Out')
+                return'(K.O.)'
+            else if(a.bracketType =='Groups')
+                return 'Groups'
                 
            }
         )
@@ -204,6 +212,11 @@ closeSelectedModal({item, location}){
         let result = division.map(a => a.nameOfDivision);
         const divisionData=[...result]
         this.DivisionData= divisionData
+        let result2= division.map(a=>a.bracketType);
+        const bracketData =[...result2]
+        this.BracketData =bracketData
+
+
         // console.log(this.DivisionData)
         //console.log(divisionData)
         // console.log('Here')
@@ -339,7 +352,7 @@ closeSelectedModal({item, location}){
                                             <Icon type="Entypo" name="location-pin"  style={{ alignSelf:'center',fontSize:Responsive.font(14) ,color: '#585858'}}/>
                                             <Text style={{fontSize:Responsive.font(11), width:'95%' ,color:'#585858', fontFamily:'open-sans-bold', fontWeight:'600', paddingLeft:5}}>{tournamentInfo.address}</Text>
                                         </View>
-
+                                        <View style={{borderWidth:0.5,borderColor:'#CAECDF', marginTop:10, marginRight:10, marginLeft:10}}></View>
                                         <View style={{ flexDirection: 'row', paddingTop: 10 , paddingLeft:10}}>
                                             <View style={{ flexDirection: 'row', width: '50%' }} >
                                                 <Text style={styles.head}>Event Type : </Text>
@@ -349,7 +362,7 @@ closeSelectedModal({item, location}){
 
                                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingTop: 10, paddingLeft:10 }}>
                                             <View style={{ flexDirection: 'row', width: '100%' }} >
-                                                <Text style={styles.head}>Organizer Name : </Text>
+                                                <Text style={styles.head}>Organizer : </Text>
                                                 <Text style={styles.detail}>{tournamentInfo.OrganizerName}</Text>
                                             </View>
                                         </View>
@@ -425,7 +438,7 @@ const styles = StyleSheet.create({
         fontSize: Responsive.font(12)
     },
     inHead: {
-        fontSize:Responsive.font(14), color:'#585858', fontFamily:'open-sans-bold'
+        fontSize:Responsive.font(16), color:'#585858', fontFamily:'open-sans-bold', fontWeight:'bold'
     },
     detail:{
         fontSize:Responsive.font(11), color:'#585858', fontFamily:'open-sans-bold', alignSelf:'center'

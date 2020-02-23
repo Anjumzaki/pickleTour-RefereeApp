@@ -1,5 +1,5 @@
 import React from 'react';
-import { AsyncStorage, Picker,View, Text, Button, ImageBackground, Image, TextInput, Dimensions, StyleSheet, ScrollView, Platform, Modal, TouchableOpacity } from 'react-native';
+import { AsyncStorage, Picker,View, Text, Button, ImageBackground, Image, TextInput, Dimensions, StyleSheet, ScrollView, Platform, Modal, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 import { NavigationActions, StackActions } from 'react-navigation';
@@ -13,6 +13,8 @@ import axios from 'axios';
 import Responsive from 'react-native-lightweight-responsive';
 // import moment from 'moment';
 import DatePicker from 'react-native-datepicker';
+import { LinearGradient } from 'expo-linear-gradient';
+
 
 
 
@@ -23,18 +25,19 @@ export default class SignUp extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            loading:false,
             date:new Date(),
             datePicked:false,
-            email: 'mahmedsaeedi2020@gmail.com',
-            firstName: 'Ahmed',
-            Password: '123456',
-            confirmPass: '123456',
+            email: '',
+            firstName: '',
+            Password: '',
+            confirmPass: '',
             msg: "",
             dob: '',
             gender:'',
-            address:'abc',
+            address:'',
             stage1:true,
-            phoneNumber:'123',
+            phoneNumber:'',
             isDatePickerVisibleForIos:false,
             isDatePickerVisible:false,
             setDatePickerVisibility:false,
@@ -53,10 +56,12 @@ export default class SignUp extends React.Component {
     }
     
     handleSignUp=()=>{
+        this.setState({loading:true})
         firebase
             .auth()
             .createUserWithEmailAndPassword(this.state.email, this.state.Password)
             .then((data)=>{
+                
                 // console.log(data.user.uid)
                 const newUser ={
                     uid: data.user.uid,
@@ -78,12 +83,13 @@ export default class SignUp extends React.Component {
                         AsyncStorage.setItem('userProfileData', JSON.stringify(newUser))
                         console.log(AsyncStorage.getItem('userProfileData'))
                     })
+                
                     
             }
             
             )
             .catch((error)=>{
-                this.setState({msg:error.message})
+                this.setState({msg:error.message, loading:false})
             })
     }
 
@@ -150,7 +156,7 @@ export default class SignUp extends React.Component {
         const enabled2 = gender.length>0 && address.length>0 && phoneNumber.length>0 
         return (
 
-            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#86d6b9' }}>
+            <LinearGradient colors={[ '#86D6B9','#48A080',]}style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#86d6b9' }}>
                 <Modal
                     transparent ={true}
                     animationType='none'
@@ -167,7 +173,7 @@ export default class SignUp extends React.Component {
                        <View style={{ width:'94.5%', justifyContent: 'center'}}>
                        <ScrollView style={{ backgroundColor:'white',borderColor:'#585858', borderWidth:1, borderRadius:3}} contentContainerStyle={{alignItems:'center', justifyContent: 'center',alignContent:'center'}}>
                            <View style={{justifyContent:'center',borderBottomWidth:1,borderColor:'#585858', paddingVertical:10, backgroundColor:'white', width:'99%'}}>
-                           <Text style={{ color:'#276091', alignSelf:'center',fontSize:Responsive.font(16),fontFamily:'open-sans-bold'}}>Select Gender</Text>
+                           <Text style={{ color:'#276091', alignSelf:'center',fontSize:Responsive.font(14),fontFamily:'open-sans-bold'}}>Select Gender</Text>
                            </View>
                             
                             
@@ -188,12 +194,19 @@ export default class SignUp extends React.Component {
                 </Modal>
 
                 <KeyboardAwareScrollView enableOnAndroid={true}>
-                    {this.state.stage1? <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', height: Dimensions.get('window').height - 70 }}>
+                    {this.state.stage1? <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center',paddingBottom:10}}>
+                        <Text style={{marginTop:Responsive.height(50), marginBottom:Responsive.height(20),fontFamily:'open-sans-bold',color:'white', textShadowOffset:{width:1, height:1},
+        textShadowColor:'black',
+        textShadowRadius:2,fontSize:Responsive.font(35)}}>SignUp</Text>
+                        
+                        
                         <View style={{flexDirection: 'row',
                                     justifyContent: 'center',
                                     alignItems: 'center',
                                     height: 50,
-                                    marginBottom:10, marginTop:80}}>
+                                    marginBottom:10,
+                                    width:'95%'
+                                    }}>
                             <TextInput
                                 style={styles.forms
                                 }
@@ -269,7 +282,7 @@ export default class SignUp extends React.Component {
                                         marginLeft: 0,
                                     },
                                     dateText: {
-                                        fontSize: Responsive.font(19),
+                                        fontSize: Responsive.font(14),
                                         color: 'black'
                                     },
                                     dateInput: {
@@ -285,7 +298,7 @@ export default class SignUp extends React.Component {
                                         
                                     },
                                     placeholderText: {
-                                        fontSize: Responsive.font(19),
+                                        fontSize: Responsive.font(14),
                                         color: 'gray'
                                     }
                                 }}
@@ -319,26 +332,57 @@ export default class SignUp extends React.Component {
                         <View style={styles.SectionStyle}>
                         
                 <TouchableOpacity style={styles.DateForms1} onPress={()=>this.setState({selectionModal:true})}>
-                        {this.state.gender.length>0 ? <Text style={{fontSize: Responsive.font(19),color: 'black',}}>{this.state.gender}</Text>: <Text style={{fontSize: Responsive.font(19),color: 'grey',}}>Select Gender</Text>}
+                        {this.state.gender.length>0 ? <Text style={{fontSize: Responsive.font(14),color: 'black',}}>{this.state.gender}</Text>: <Text style={{fontSize: Responsive.font(14),color: 'grey',}}>Select Gender</Text>}
                 </TouchableOpacity>
                     </View>
 
+                   {this.state.loading ?<ActivityIndicator size='large'/>
+                   :
                     <TouchableOpacity disabled={!enabled} onPress={() =>
-                    this.handleSignUp()
-                } style={{width: Dimensions.get('window').width - 105,
-                        alignItems: 'center',
-                        backgroundColor: enabled?'#48A080':'#BEBAC5',
-                        padding: 10,
-                        borderRadius: 100,
-                        marginTop: 20}} >
-                    <Text style={styles.regButton1} >REGISTER  </Text>
-                </TouchableOpacity>
-
-                <View style={{justifyContent:'center', alignItems:'center', alignSelf:'center'}}>
-                    <Text style={{color:'#E48D6A', fontFamily:'open-sans-bold', fontSize:19, padding:20, alignSelf:'center', textAlign:'center'}}>
+                        this.handleSignUp()
+                    } style={{
+                            
+                            
+                            
+                            
+                            
+                            fontFamily: 'open-sans-bold',
+        
+                            //width: Dimensions.get('window').width - 105,
+                            alignItems: 'center',
+                            backgroundColor: enabled?'#48D5A0':'#BEBAC5',
+                            paddingTop:5,
+                            paddingBottom:5,
+                            borderRadius: 100,
+                            marginTop: 20,
+                            paddingLeft:50,
+                            paddingRight:50,
+                            shadowColor: "#000",
+                            shadowOffset: {
+                                width: 0,
+                                height: 2,
+                            },
+                            shadowOpacity: 0.23,
+                            shadowRadius: 2.62,
+                    
+                            elevation: 4,
+                            
+                            
+                            }} >
+                        <Text style={styles.regButton1}>Confirm</Text>
+                    </TouchableOpacity>
+                   }
+                    <View style={{justifyContent:'center', alignItems:'center', alignSelf:'center', marginTop:10, width:'95%'}}>
+                    <Text style={{color:'white', fontFamily:'open-sans-bold', fontSize:Responsive.font(16),alignSelf:'center', textAlign:'center'}}>
                         {this.state.msg}
+                        
                     </Text>
                 </View>
+                {/* <View style={{justifyContent:'center', alignItems:'center', alignSelf:'center'}}>
+                    <Text style={{color:'#E48D6A', fontFamily:'open-sans-bold', fontSize:Responsive.font(19), alignSelf:'center', textAlign:'center'}}>
+                        {this.state.msg}
+                    </Text>
+                </View> */}
                         {/* <TouchableOpacity  disabled={!enabled} onPress={()=>this.setState({stage1:false})
                 } style={{ width: Dimensions.get('window').width - 105, alignItems: 'center', backgroundColor: enabled ? "#48A080" :'#BEBAC5', padding: 10, borderRadius: 100, marginTop: 20}} >
                     <Text style={styles.regButton1} >Continue  </Text>
@@ -386,11 +430,7 @@ export default class SignUp extends React.Component {
                         marginTop: 20}} >
                     <Text style={styles.regButton1} >REGISTER  </Text>
                 </TouchableOpacity> */}
-                <View style={{justifyContent:'center', alignItems:'center', alignSelf:'center'}}>
-                    <Text style={{color:'#E48D6A', fontFamily:'open-sans-bold', fontSize:19, padding:20, alignSelf:'center', textAlign:'center'}}>
-                        {this.state.msg}
-                    </Text>
-                </View>
+                
             </View>
                         }
                         
@@ -419,18 +459,16 @@ export default class SignUp extends React.Component {
                     
                     
                     
-                    
-                    <View style={{ alignItems: 'center', marginTop:15 }}>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Text style={styles.reg1}>  Already have an Account </Text>
-                            <TouchableOpacity onPress={() => this.props.navigation.navigate('Login')}>
-                                <Text style={styles.reg} >LOGIN </Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
+{/*                     
+                    <View style={{ alignItems: 'center',  }}>
+                        <TouchableOpacity style={{ flexDirection: 'row' }} onPress={() => this.props.navigation.navigate('Login')}>
+                            <Text style={styles.reg1}>Already have an account?</Text>
+                            
+                        </TouchableOpacity>
+                    </View> */}
                 </KeyboardAwareScrollView>
 
-            </View>
+            </LinearGradient>
         );
     }
 }
@@ -440,7 +478,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         height: 50,
-        margin: 10
+        margin: 10,
+        
 
     },
     ImageStyle: {
@@ -464,53 +503,95 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     forms: {
-        fontSize: Responsive.font(19),
+        fontSize: Responsive.font(14),
         padding: 8,
         paddingLeft:20,
-        width: Dimensions.get('window').width - 105,
+        width: '95%',
         borderWidth: 1,
         borderColor: '#48A080',
         borderRadius:50,
         backgroundColor:'white',
         height: 50,
         fontFamily: 'open-sans-bold',
-        color: 'black'
+        color: 'black',
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.23,
+        shadowRadius: 2.62,
+
+        elevation: 4,
     },
     DateForms1:{
         justifyContent:'center',
         padding: 8,
         paddingLeft:20,
-        width: Dimensions.get('window').width - 105,
+        width: '95%',
         borderWidth: 1,
         borderColor: '#48A080',
         borderRadius:50,
         backgroundColor:'white',
         height: 50,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.23,
+        shadowRadius: 2.62,
+
+        elevation: 4,
     },
     forms1: {
         // fontSize: 19,
         padding: 8,
         paddingLeft:20,
-        width: Dimensions.get('window').width - 105,
+        width: '95%',
         borderWidth: 1,
         borderColor: '#48A080',
         borderRadius:50,
         backgroundColor:'white',
         height: 50,
-        // color: 'black'
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.23,
+        shadowRadius: 2.62,
+
+        elevation: 4,
+        
     },
     regButton1: {
-        fontSize: 22,
-        fontFamily: 'open-sans-simple',
-        color: 'white'
+        fontSize:Responsive.font(16),
+        fontFamily: 'open-sans-bold',
+        color: 'white',
     },
     regButton: {
-        width: Dimensions.get('window').width - 105,
+        fontFamily: 'open-sans-bold',
+        
+        //width: Dimensions.get('window').width - 105,
         alignItems: 'center',
-        backgroundColor: '#48A080',
-        padding: 10,
+        backgroundColor: '#48D5A0',
+        paddingTop:5,
+        paddingBottom:5,
+        marginBottom:5,
         borderRadius: 100,
-        marginTop: 20
+        marginTop: 20,
+        paddingLeft:50,
+        paddingRight:50,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.23,
+        shadowRadius: 2.62,
+
+        elevation: 4,
 
     },
     reg: {
@@ -522,9 +603,13 @@ const styles = StyleSheet.create({
         fontSize: 20
     },
     reg1: {
-        fontFamily: 'open-sans-simple',
+        fontFamily: 'open-sans-bold',
         color: 'white',
-        fontSize: 20,
+        fontSize:Responsive.font(22),
+        textDecorationLine:'underline',
+        textShadowOffset:{width:1, height:1},
+        textShadowColor:'black',
+        textShadowRadius:2
 
     }
 

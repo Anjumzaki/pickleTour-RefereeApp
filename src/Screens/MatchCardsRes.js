@@ -1,9 +1,10 @@
 import React from 'react';
-import { View, Text, Button, ImageBackground, Image, TextInput, Dimensions, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, Button, ImageBackground, Image, TextInput, Dimensions, StyleSheet, ScrollView,Switch } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { NavigationActions, StackActions } from 'react-navigation';
 import Responsive from 'react-native-lightweight-responsive';
+import {Icon} from 'native-base'
 
 export default class MatchCardsRes extends React.Component {
 
@@ -13,107 +14,149 @@ export default class MatchCardsRes extends React.Component {
             actScr: '1'
         };
     }
-    login() {
-        this.props.navigation.navigate('MainTabs')
-        this.props.navigation.dispatch(StackActions.reset({
-            index: 0,
-            actions: [NavigationActions.navigate({ routeName: 'MainTabs' })],
-        }))
+
+    componentDidMount(){
+        let date=this.convertDate(this.props.data.matchDate)
+        this.setState({convertedDate:date})
     }
+    convertDate(date){
+        var d= new Date(date)
+        var month = '' + (d.getMonth() + 1)
+        var day = '' + d.getDate()
+        var year = d.getFullYear()
+        if (month.length < 2) 
+        month = '0' + month;
+        if (day.length < 2) 
+        day = '0' + day;
+        return [day, month, year].join('/');
+    }
+    // login() {
+    //     this.props.navigation.navigate('MainTabs')
+    //     this.props.navigation.dispatch(StackActions.reset({
+    //         index: 0,
+    //         actions: [NavigationActions.navigate({ routeName: 'MainTabs' })],
+    //     }))
+    // }
 
     render() {
+        const data = this.props.data
+        const show = this.props.showMulti
+        const { checkCourt, checkPlayer1, checkPlayer2, checkPlayer4, checkPlayer3 } =this.state
+        const enabled = checkCourt==true && checkPlayer1==true && checkPlayer2==true
+        const enabled2 = checkCourt==true && checkPlayer1==true && checkPlayer2==true && checkPlayer4==true && checkPlayer3==true
+        //console.log('----------------------------------------------------------------------------------------------------------')
+        // console.log(this.props.data)
+        // console.log('saeedi')
+        // console.log(this.props.navigation.state.params.item)
         return (
             <View style={styles.cardStyles}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                    <View style={{ flexDirection: 'row' }} >
-                        <Text style={styles.mcde}>Match No 1 </Text>
-                        <Text style={styles.mcde}>Court No 1</Text>
-                    </View>
-                    <View>
-                        <View style={{ flexDirection: 'row', marginLeft: 10 }} >
-                            <Text style={styles.head}>Date: </Text>
-                            <Text style={styles.inHead}>12-10-2019</Text>
-                        </View>
-                        <View style={{ flexDirection: 'row', marginLeft: 10 }} >
-                            <Text style={styles.head}>Start Time: </Text>
-                            <Text style={styles.inHead}>09:00 AM</Text>
-                        </View>
+                    <View style={{ flexDirection: 'row', justifyContent:'center', alignContent:'center' }} >
+        <Text style={{paddingHorizontal:5,paddingVertical:2,alignSelf:'center',justifyContent:'center',alignContent:'center',color:'#5D5D5D',fontFamily:'open-sans-bold',fontWeight: 'bold', fontSize:Responsive.font(13)}}>Match No {this.props.location+1}</Text>
                     </View>
                 </View>
-                <View style={{ height: 1, backgroundColor: '#99C5B5', marginBottom: 10, marginTop: 10 }} />
+
+                <View style={{flexDirection:'row',marginTop:10, justifyContent:'space-between'}}>
+                    <View style={{flexDirection:'row', width:'50%'}}>
+                        <View style={{flexDirection:'row', }}>
+                            <Icon type="MaterialCommunityIcons" name="calendar-today"  style={{ fontSize:Responsive.font(14) ,color: '#585858', alignSelf:'center'}}/>
+                            <Text style={{alignSelf:'center',fontSize:Responsive.font(11), color:'#585858', fontFamily:'open-sans-bold', fontWeight:'600', paddingLeft:5}}>{this.state.convertedDate}</Text>
+                        </View>
+
+                        <View style={{flexDirection:'row', marginLeft:15}}>
+                            <Icon type="Ionicons" name="md-time"  style={{ fontSize:Responsive.font(14) ,color: '#585858', alignSelf:'center'}}/>
+                            <Text style={{alignSelf:'center',fontSize:Responsive.font(11), color:'#585858', fontFamily:'open-sans-bold', fontWeight:'600', paddingLeft:5}}>{data.matchTime}</Text>
+                        </View>
+                    </View>
+
+                    <View style={{justifyContent:'flex-end', width:'50%', flexDirection:'row'}}>
+                        <View style={{flexDirection:'row', paddingHorizontal:7, borderRadius:15, backgroundColor:'#C7FFEB'}}>
+                            <Text style={{marginRight:5,alignSelf:'center',color:'#585858',fontSize:Responsive.font(12), fontFamily:'open-sans-bold'}}>Court no. {data.court}</Text>
+                            
+                        </View>
+                    </View>
+
+                <View style={{justifyContent:'flex-end', flexDirection:'row'}}>
+                   
+                     
+
+
+                        
+                    </View>
+
+                </View>
+
+
+                <View style={{ height: 1,  marginBottom: 5, marginTop: 5 }} />
                 <View style={{ flexDirection: 'row' }}>
                     <View style={{ width: '48%', marginRight: '4%' }}>
                         <View style={styles.teamName} >
                             <Text style={styles.head}>Team A - </Text>
-                            <Text style={styles.head}>Alpha </Text>
+                            <Text style={styles.head}>Alpha</Text>
                         </View>
                         <View style={styles.teamNames} >
-                            <Text style={styles.head1}>Anjum Muneer </Text>
+                            <Text style={styles.head1}>{data.one.fName}</Text>
+                         
                         </View>
+                       {show &&  <View style={styles.teamNames} >
+                            <Text style={styles.head1}>{data.two.fName}</Text>
+                          
+                        </View>}
                     </View>
                     <View style={{ width: '48%' }}>
                         <View style={styles.teamName} >
                             <Text style={styles.head}>Team B - </Text>
-                            <Text style={styles.head}>Beeta </Text>
+                            <Text style={styles.head}>Beta </Text>
                         </View>
                         <View style={styles.teamNames} >
-                            <Text style={styles.head1}>Aijaz Ali </Text>
+                            <Text style={styles.head1}>{show? 'Third Player': data.two.fName}</Text>
+                            <Icon type="Entypo" name="trophy"  style={{ fontSize:Responsive.font(17) ,color: '#DBE187', alignSelf:'center'}}/>
+
+                            {/* {this.state.showWidget && <Switch thumbColor={show?this.state.checkPlayer3? '#42974D':'#D14D4D':this.state.checkPlayer2? '#42974D':'#D14D4D'} trackColor={{false:'#D14D4D' , true:'#42974D' }}
+                                value={show?this.state.checkPlayer3:this.state.checkPlayer2}  
+                                onValueChange ={(checkPlayer2)=>this.player(checkPlayer2)}
+                            />  } */}
                         </View>
+
+                       {show &&  <View style={styles.teamNames} >
+                            <Text style={styles.head1}>Fourth Player</Text>
+                            {/* {this.state.showWidget && <Switch thumbColor={this.state.checkPlayer4? '#42974D':'#D14D4D'} trackColor={{false:'#D14D4D' , true:'#42974D' }}
+                                value={this.state.checkPlayer4}  
+                                onValueChange ={(checkPlayer4)=>this.setState({checkPlayer4})}
+                            />  } */}
+                        </View>}
                     </View>
                 </View>
-                <View style={{ height: 1, backgroundColor: '#99C5B5', marginBottom: 10, marginTop: 10 }} />
-
-                <View style={{ flex:1,flexDirection:'row', width:'100%'}}>
-
-                    <View style={{flex:0.5, flexDirection:'row'}}>
-                        <View style={{flex:0.7, justifyContent:'center'}}>
-                            <Text style={{color:'#EEE277',fontFamily: 'open-sans-bold',alignSelf:'flex-end', marginRight:10, fontSize:Responsive.font(16)}}></Text>
-                        </View>
-                        <View style={{flex:0.3, justifyContent:'center', alignItems:'center', alignSelf:'center'}}>
-                            <Text style={{color:'#7E7E7E',alignSelf:'flex-end', marginRight:10,backgroundColor:'white',fontFamily: 'open-sans-bold',paddingVertical:Responsive.height(4), fontSize:Responsive.font(22),paddingHorizontal:Responsive.width(5)}}>10</Text>
-                        </View>
+                <View style={{ height: 1, marginBottom: 10, marginTop: 5 }} />
+                <View style={{flexDirection:'row'}}>
+                    <View style={{width:'48%', flexDirection:'row', justifyContent:'flex-end'}}>
+                    {/* <Text style={{alignSelf:'center', marginRight:5,  fontFamily:'open-sans-bold',color:'#585858'}}>Winner</Text> */}
+                        <Text style={{backgroundColor:'white', padding:5, borderWidth:1, borderColor:'#999999',  fontFamily:'open-sans-bold',color:'#585858'}}>13</Text>
                     </View>
+                    <View style={{width:'4%'}}>
 
-
-                    <View style={{flex:0.5,flexDirection:'row'}}>
-                        <View style={{flex:0.3}}>
-                            <Text style={{alignSelf:'flex-end', color:'#7E7E7E',fontFamily: 'open-sans-bold',marginLeft:10,backgroundColor:'#EEE277',paddingVertical:Responsive.height(4), fontSize:Responsive.font(22),paddingHorizontal:Responsive.width(5)}}>11</Text>
-                        </View>
-                        <View style={{flex:0.7, justifyContent:'center'}}>
-                            <Text style={{color:'#EEE277',alignSelf:'flex-start', marginLeft:10, fontFamily: 'open-sans-bold',fontSize:Responsive.font(16)}}>Winner</Text>
-                        </View>
                     </View>
-
-
-
+                    <View style={{width:'48%',flexDirection:'row', justifyContent:'flex-start'}}>
+                    
+                        <Text style={{backgroundColor:'#DBE187', padding:5, borderWidth:1, borderColor:'#999999', fontFamily:'open-sans-bold',color:'#585858'}}>14</Text>
+                        <Text style={{alignSelf:'center', marginLeft:5, fontFamily:'open-sans-bold', color:'#585858'}}>Winner</Text>
+                    </View>
                 </View>
-
-
-                {/* <View style={{ flexDirection: 'row', width: '100%', marginRight: 10 }} >
-                    <View style={{ flexDirection: 'row', width: '50%', marginRight: 10 ,alignItems:'center'}} >
-                        <View style={styles.winner}>
-                            <Text style={styles.tagWinner}>Winner</Text>
-                            <Text style={styles.scoreWinner}>11</Text>
-                        </View>
-                    </View>
-                    <View style={{ flexDirection: 'row', width: '50%', marginRight: 10,alignItems:'center' }} >
-                        <View style={styles.loser}>
-                            <Text style={styles.scoreLoser}>9</Text>
-                        </View>
-                    </View>
-
-                </View> */}
+                    
+                   
             </View>
+            
 
         );
     }
 }
 const styles = StyleSheet.create({
     cardStyles: {
-        width: '100%',
-        backgroundColor: '#48A080',
+        width: '97%',
+        backgroundColor: '#9EEACE',
         padding: 10,
         shadowColor: "#000",
+        borderRadius:15,
         shadowOffset: {
             width: 0,
             height: 2,
@@ -122,7 +165,8 @@ const styles = StyleSheet.create({
         shadowRadius: 2.62,
 
         elevation: 4,
-        marginBottom: 10
+        alignSelf:'center',
+        marginBottom: 15
     },
     head: {
         color: 'white',
@@ -131,9 +175,10 @@ const styles = StyleSheet.create({
         fontSize: Responsive.font(12)
     },
     head1: {
-        color: 'black',
+        color: '#585858',
         fontFamily: 'open-sans-bold',
-        fontSize: Responsive.font(12)
+        fontSize: Responsive.font(12),
+        alignSelf:'center'
     },
     inHead: {
         color: '#DCDCDC',
@@ -175,15 +220,16 @@ const styles = StyleSheet.create({
     teamName: {
         flexDirection: 'row',
         width: '100%',
-        backgroundColor: '#2E8465',
+        backgroundColor: '#999999',
         padding: 5
     },
     teamNames: {
         flexDirection: 'row',
         width: '100%',
-        backgroundColor: '#ECECEC',
+        backgroundColor: '#C7FFEB',
         padding: 5,
-        color: 'black'
+        color: 'black',
+        justifyContent:'space-between'
     },
     myStext: {
         color: 'white',

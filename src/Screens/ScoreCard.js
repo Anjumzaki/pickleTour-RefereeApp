@@ -82,7 +82,7 @@ class ScoreCard extends Component {
       Section2:'Player #2',
       Section3:'Player #3',
       Section4:'Player #4',
-      TeamFormation:'Doubles',
+      TeamFormation:'',
       Player1Name:'George set',
       Player2Name:'B',
       Player3Name:'William',
@@ -187,6 +187,21 @@ class ScoreCard extends Component {
   }
 }
 
+showingAlertConfirmStart(){
+  Alert.alert(
+    'Game Resetted !',
+    'Click on Start ',
+    [
+      {},
+      {
+        // text: 'Cancel',
+        // onPress: () => console.log('Cancel Pressed'),
+        // style: 'cancel',
+      },
+      {text: 'OK'}
+    ],
+    {cancelable: false},
+  )}
   showingAlert(teamMsg){
     Alert.alert(
       'Game Over !',
@@ -326,12 +341,24 @@ class ScoreCard extends Component {
   componentDidMount(){
     // console.log(this.props.navigation.state.params)
     let userData = this.props.navigation.state.params.userData
-    let data = this.props.navigation.state.params.data
+    // let data = this.props.navigation.state.params.data
+    let players = this.props.navigation.state.params.players
+    let showMulti = this.props.navigation.state.params.checkMulti
     // console.log(userData)
-    if(userData.divisionName.includes('Single')){
+    if(showMulti==false){
       this.setState({
-        Player1Name: data.one.fName,
-        Player3Name: data.two.fName
+        Player1Name: players[0],
+        Player3Name: players[1],
+        TeamFormation:'Singles'
+      })
+    }
+    else{
+      this.setState({
+        Player1Name: players[0],
+        Player2Name: players[1],
+        Player3Name: players[2],
+        Player4Name: players[3],
+        TeamFormation:'Doubles'
       })
     }
     this.changeScreenOrientation()
@@ -392,11 +419,14 @@ class ScoreCard extends Component {
     this.resettingGame()
     this.setState({
       modalVisible:!this.state.modalVisible, startClicked:true
-    },()=>this.gameStyle(this.playingSide, 'Singles'))  
+    },()=>this.gameStyle(this.playingSide, this.state.TeamFormation))  
 
   }
 
-  resettingGame(){
+  resettingGame(flag){
+    if(flag=="yes"){
+      this.showingAlertConfirmStart()
+    }
     this.setState({
       startClicked:false,
       GameStart:true,
@@ -529,7 +559,7 @@ class ScoreCard extends Component {
                 <TouchableOpacity  onPress={()=>this.startingGame()} style={{ height:'50%',paddingHorizontal:20,marginTop:10,backgroundColor:'#91c549', justifyContent:'center', borderRadius:12}}>
                   <Text style={{fontFamily: 'open-sans-bold',alignSelf:'center', color:'#515151',fontSize:Responsive.font(15)}}>Start</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={()=>this.resettingGame()}style={{ height:'50%',paddingHorizontal:20,marginTop:10,backgroundColor:'#91c549', justifyContent:'center',borderRadius:12}}>
+                <TouchableOpacity onPress={()=>this.resettingGame('yes')}style={{ height:'50%',paddingHorizontal:20,marginTop:10,backgroundColor:'#91c549', justifyContent:'center',borderRadius:12}}>
                 <Text style={{fontFamily: 'open-sans-bold',alignSelf:'center', color:'#515151',fontSize:Responsive.font(15)}}>Reset</Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={()=>this.props.navigation.navigate('ManageEventsStack')} style={{ height:'50%',paddingHorizontal:20,marginTop:10,backgroundColor:'#91c549', justifyContent:'center',borderRadius:12}}>
@@ -544,7 +574,7 @@ class ScoreCard extends Component {
 
 
         {/* Modal Settings-`--`-------------------- */}
-        <ImageBackground style={{width: '100%', height: '100%', flexDirection:'column'}} source={require('../../assets/background.png')}>
+        <ImageBackground style={{width: undefined, height: undefined, flexDirection:'column', flex:1}} source={require('../../assets/background.png')}>
                   <View style={{width:'100%', height:'90%', flexDirection:'row'}}>
                   <View style={{width:'50%', flex:1, flexDirection:'row' }}>
           <View style={{flex:0.7, flexDirection:'column'}}>

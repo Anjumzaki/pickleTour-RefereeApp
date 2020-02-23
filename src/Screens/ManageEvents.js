@@ -109,7 +109,7 @@ export default class MainScreen extends React.Component {
         let result = reqEvents.filter(item => item.isAccepted == false)
         // console.log(result)
         if(result.length==0){
-            console.log('No False Found')
+            // console.log('No False Found')
             this.setState({
                 dataTwoLoaded:false,
                 showTwoMessage:true,
@@ -132,6 +132,7 @@ export default class MainScreen extends React.Component {
         axios.get(gettingUrl+userId)
         .then((response)=>{
             reqEvents = response.data
+            // console.log('req------------------------------')
             // console.log(reqEvents)
             if(reqEvents.length>0){
                 this.checkingReqEvents(reqEvents)
@@ -140,7 +141,7 @@ export default class MainScreen extends React.Component {
             else {
                 this.setState({
                     dataTwoLoaded:false,
-                    showMessage:true,
+                    showTwoMessage:true,
                     dataTwoFetching:false
                 })
             }
@@ -150,8 +151,12 @@ export default class MainScreen extends React.Component {
     
 
 
-
-    
+    refreshOnButtonClickMyEvents(){
+        this.setState({actScr:1},()=>this.getMyEvents())
+    }
+    refreshOnButtonClickReqEvents(){
+        this.setState({actScr:2},()=>this.getRequestedEvents())
+    }
 
     
     render() {
@@ -160,10 +165,10 @@ export default class MainScreen extends React.Component {
         return (
             <View>
                 <View style={styles.wrapTopSty}>
-                    <TouchableOpacity onPress={() => this.setState({ actScr: 1 })} style={this.state.actScr == 1 ? styles.topBarStyAct : styles.topBarSty}>
+                    <TouchableOpacity onPress={() => this.refreshOnButtonClickMyEvents()} style={this.state.actScr == 1 ? styles.topBarStyAct : styles.topBarSty}>
                         <Text style={this.state.actScr==1?styles.selectedtopBarText:styles.topBarText}>My Events</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => this.setState({ actScr: 2 })} style={this.state.actScr == 2 ? styles.topBarStyAct : styles.topBarSty}>
+                    <TouchableOpacity onPress={() => this.refreshOnButtonClickReqEvents()} style={this.state.actScr == 2 ? styles.topBarStyAct : styles.topBarSty}>
                         <Text style={this.state.actScr==2?styles.selectedtopBarText:styles.topBarText}>Requested Events</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => this.setState({ actScr: 3 })} style={this.state.actScr == 3 ? styles.topBarStyAct : styles.topBarSty}>
@@ -189,7 +194,7 @@ export default class MainScreen extends React.Component {
                                 )}
                             />:<View style={{ paddingTop:"50%",flex: 1,justifyContent: 'center'}}>
 
-                            {showMessage?<Text style={{fontFamily:'open-sans-bold',alignSelf:'center',fontSize:Responsive.font(20)}}>No data found !</Text>: <ActivityIndicator size="large" color="#48A080" />}
+                            {showMessage?<Text style={{fontFamily:'open-sans-bold',alignSelf:'center',fontSize:Responsive.font(20)}}>No Events found !</Text>: <ActivityIndicator size="large" color="#48A080" />}
                             
                             
                         
@@ -213,7 +218,7 @@ export default class MainScreen extends React.Component {
 
                                 }}
                             />:<View style={{ paddingTop:"50%",flex: 1,justifyContent: 'center'}}>
-                            {showTwoMessage?<Text style={{fontFamily:'open-sans-bold',alignSelf:'center',fontSize:Responsive.font(20), color:'black'}}>No data found !</Text>: <ActivityIndicator size="large" color="#48A080" />}
+                            {showTwoMessage?<Text style={{fontFamily:'open-sans-bold',alignSelf:'center',fontSize:Responsive.font(20), color:'black'}}>No Requests found !</Text>: <ActivityIndicator size="large" color="#48A080" />}
                         </View>}
                     </View> : null}
                     {this.state.actScr == 3 ? <View style={{ paddingTop: 10 }}>
@@ -223,10 +228,22 @@ export default class MainScreen extends React.Component {
                                 data ={this.state.inviData}
                                 refreshing={this.state.dataThreeFetching}
                                 renderItem={({item})=>(
-                                    <EventCardsMa3 />
+                                    <TouchableOpacity onPress={() => { this.props.navigation.navigate('InvitationDetails',{item}) }}>
+                                        <EventCardsMa3 data={item}/>
+                                    </TouchableOpacity>
+                                )}
+                                ListEmptyComponent={()=>(
+                                    <View style={{paddingTop:'50%'}}>
+                                        <Text style={{fontFamily:'open-sans-bold',alignSelf:'center',fontSize:Responsive.font(20)}}>Feature Coming soon !</Text>
+                                    </View>
                                 )}
                             />:<View style={{ paddingTop:"50%",flex: 1,justifyContent: 'center'}}>
-                            {showThreeMessage?<Text style={{fontFamily:'open-sans-bold',alignSelf:'center',fontSize:Responsive.font(20)}}>No data found !</Text>: <ActivityIndicator size="large" color="#48A080" />}
+                            {showThreeMessage?<Text style={{fontFamily:'open-sans-bold',alignSelf:'center',fontSize:Responsive.font(20)}}>No data found !</Text>: 
+                            (this.state.inviData.length<=0) &&
+                            (<Text style={{fontFamily:'open-sans-bold',alignSelf:'center',fontSize:Responsive.font(20)}}>Feature Coming soon !</Text>)
+                            // <ActivityIndicator size="large" color="#48A080" />
+                            
+                            }
                         </View>}
                     </View> : null}
                 {/* </ScrollView> */}

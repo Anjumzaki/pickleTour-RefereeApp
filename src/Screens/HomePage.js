@@ -386,7 +386,7 @@ searchFilterFunctionLocation = text =>{
         <View style={styles.SectionStyle}>
             <TextInput
             placeholder="Search by name or location"
-            placeholderTextColor="#dddddd"
+            placeholderTextColor="#B1B1B1"
             style={styles.forms}
             onChangeText={value => this.searchFilterFunction(value)}
             // onFocus={()=>console.log('Here')}
@@ -522,12 +522,12 @@ const styles = StyleSheet.create({
     SectionStyle: {
         marginTop:10,
         alignSelf:'center',
-        width:'95%',
-        
+        width:'92%',
+        borderRadius:20,
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#fff',
+        backgroundColor: '#F2F2F2',
         // borderRadius: 5,
         borderColor: "#48A080",
         borderWidth: 1,
@@ -538,10 +538,10 @@ const styles = StyleSheet.create({
         paddingRight: 5,
         paddingBottom: 5,
         paddingLeft: 0,
-        backgroundColor: '#fff',
+        backgroundColor: '#F2F2F2',
         color: '#48A080',
         width: Dimensions.get('window').width - 100,
-        fontSize: Responsive.font(18),
+        fontSize: Responsive.font(16),
     },
     topBarSty: {
         height: 40,
