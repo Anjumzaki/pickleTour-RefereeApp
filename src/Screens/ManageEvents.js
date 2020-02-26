@@ -1,8 +1,6 @@
 import React from 'react';
-import { ActivityIndicator,FlatList,AsyncStorage, View, Text, Button, ImageBackground, Image, TextInput, Dimensions, StyleSheet, SafeAreaView, ScrollView } from 'react-native';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { ActivityIndicator,FlatList,AsyncStorage, View, Text,  Dimensions, StyleSheet } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { NavigationActions, StackActions } from 'react-navigation';
 import EventCardsMa1 from './EventCardsMa1'
 import EventCardsMa2 from './EventCardsMa2'
 import Responsive from 'react-native-lightweight-responsive';
@@ -45,35 +43,14 @@ export default class MainScreen extends React.Component {
         
             try{
                 let user = await AsyncStorage.getItem('userProfileData')
-                // console.log('Here',user)
                 this.data= JSON.parse(user)
-                // console.log(this.data)
-                //this.setState({})
                 this.getMyEvents()
                 this.getRequestedEvents()
-                //this.testingData()
-          
               }catch(error){
                 console.log(error)
               }
     }
     
-
-
-    recall(screen){
-        // console.log(screen)
-        switch(screen)
-        {
-            case 'First':
-                this.getMyEvents(this.data.uid);
-                break;
-            case 'Second':
-                this.getRequestedEvents(this.data.uid);
-                break;
-        }
-        
-        
-    }
     getMyEvents(){
         var myEvents=[]
         this.setState({dataOneFetching:true})
@@ -82,7 +59,6 @@ export default class MainScreen extends React.Component {
         axios.get(gettingUrl+userId)
         .then((response)=>{
             myEvents = response.data
-            // console.log(myEvents)
             if(myEvents.length>0){
                 this.setState({
                     eventsData:myEvents,
@@ -107,9 +83,7 @@ export default class MainScreen extends React.Component {
 
     checkingReqEvents(reqEvents){
         let result = reqEvents.filter(item => item.isAccepted == false)
-        // console.log(result)
         if(result.length==0){
-            // console.log('No False Found')
             this.setState({
                 dataTwoLoaded:false,
                 showTwoMessage:true,
@@ -132,8 +106,6 @@ export default class MainScreen extends React.Component {
         axios.get(gettingUrl+userId)
         .then((response)=>{
             reqEvents = response.data
-            // console.log('req------------------------------')
-            // console.log(reqEvents)
             if(reqEvents.length>0){
                 this.checkingReqEvents(reqEvents)
              
@@ -171,7 +143,6 @@ export default class MainScreen extends React.Component {
 
     
     render() {
-        // console.log("state", this.state)
         const {showMessage, showTwoMessage, showThreeMessage} = this.state
         return (
             <View>
@@ -186,8 +157,6 @@ export default class MainScreen extends React.Component {
                         <Text style={this.state.actScr==3?styles.selectedtopBarText:styles.topBarText}>My Invitations</Text>
                     </TouchableOpacity>
                 </View>
-                {/* <View style={styles.divider}></View> */}
-                {/* <ScrollView style={{ marginBottom: 50 }}> */}
                     {this.state.actScr == 1 ? <View style={{paddingTop:10  }}>
                         
 
@@ -197,7 +166,6 @@ export default class MainScreen extends React.Component {
                                 keyExtractor={item => item._id}
                                 refreshing={this.state.dataOneFetching}
                                 onRefresh={()=>this.getMyEvents()}
-                                // onEndReached={()=>this.recall('First')}
                                 renderItem={({item})=>(
                                     <TouchableOpacity onPress={() => { this.props.navigation.navigate('EventDetails',{item}) }}>
                                     <EventCardsMa1 data={item}/>
@@ -218,12 +186,9 @@ export default class MainScreen extends React.Component {
                                 data ={this.state.reqData}
                                 refreshing={this.state.dataTwoFetching}
                                 onRefresh={()=>this.getRequestedEvents()}
-                                // extraData={this.state}
                                 keyExtractor={item => item._id}
-                                // onEndReached={()=>this.recall('Second')}
                                 renderItem={({item})=>{
                                     if(item.isAccepted == false){
-                                        // console.log(item);
                                             return <EventCardsMa2  data={item}/>
                                     }
 
@@ -251,13 +216,10 @@ export default class MainScreen extends React.Component {
                             />:<View style={{ paddingTop:"50%",flex: 1,justifyContent: 'center'}}>
                             {showThreeMessage?<Text style={{fontFamily:'open-sans-bold',alignSelf:'center',fontSize:Responsive.font(20)}}>No data found !</Text>: 
                             (this.state.inviData.length<=0) &&
-                            (<Text style={{fontFamily:'open-sans-bold',alignSelf:'center',fontSize:Responsive.font(20)}}>Feature Coming soon !</Text>)
-                            // <ActivityIndicator size="large" color="#48A080" />
-                            
+                            (<Text style={{fontFamily:'open-sans-bold',alignSelf:'center',fontSize:Responsive.font(20)}}>Feature Coming soon !</Text>)                          
                             }
                         </View>}
                     </View> : null}
-                {/* </ScrollView> */}
             </View>
 
         );

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { AsyncStorage, Dimensions, StyleSheet, Text, View, TextInput, Image, SafeAreaView, FlatList, ActivityIndicator, TouchableOpacity, Keyboard} from 'react-native';
+import { AsyncStorage, Dimensions, StyleSheet, Text, View, TextInput, Image, FlatList, ActivityIndicator, TouchableOpacity, Keyboard} from 'react-native';
 import Responsive from 'react-native-lightweight-responsive';
 import ToBeRequestedEvents from './ToBeRequestedEvents';
 import axios from 'axios';
@@ -60,8 +60,6 @@ export default class HomePage extends Component {
     axios.get(gettingUrl + con)
     .then((response)=>{
         myEvents = response.data
-        //console.log(myEvents)
-        //var allEvents = [...prevEvents, ...myEvents]
         if(myEvents.length>0){
             this.setState({
                 tourData:myEvents,
@@ -87,7 +85,6 @@ getMoreTourData(counter){
   axios.get(gettingUrl + counter)
   .then((response)=>{
       myEvents = response.data
-      //console.log(myEvents)
       var allEvents = [...prevEvents, ...myEvents]
       if(myEvents.length>0){
           this.setState({
@@ -172,7 +169,6 @@ getRecreationalData(){
 
 getMoreRecreationalData(counter){
   this.setState({recreationalExtraDataLoading:true })
-  // console.log('i am here')
   var myEvents=[]
   var prevEvents = this.state.recreationalData
   var gettingUrl = 'http://pickletour.com/api/get/recreational/page/'
@@ -238,10 +234,7 @@ getMoreLeaguesData(counter){
 async getUserData(){
     try{
         let user = await AsyncStorage.getItem('userProfileData')
-        // console.log('Here',user)
         this.data= JSON.parse(user)
-
-        //  console.log(this.data)
   
       }catch(error){
         console.log(error)
@@ -270,9 +263,7 @@ searchFilterFunction = text =>{
         const newData = this.state.tourDataSearch.filter(item =>{
             const itemData = `${item.tournamentName.toUpperCase()}`
             const textData = text.toUpperCase();
-            return itemData.indexOf(textData) > -1;
-            //const itemData = `${item.name.title.toUpperCase()} ${item.name.first.toUpperCase()} ${item.name.last.toUpperCase()}`;
-    
+            return itemData.indexOf(textData) > -1;    
         })
 
         if(newData.length ==0){
@@ -287,9 +278,7 @@ searchFilterFunction = text =>{
         const newData = this.state.leaguesDataSearch.filter(item =>{
             const itemData = `${item.tournamentName.toUpperCase()}`
             const textData = text.toUpperCase();
-            return itemData.indexOf(textData) > -1;
-            //const itemData = `${item.name.title.toUpperCase()} ${item.name.first.toUpperCase()} ${item.name.last.toUpperCase()}`;
-    
+            return itemData.indexOf(textData) > -1;    
         })
      
         if(newData.length ==0){
@@ -304,9 +293,7 @@ searchFilterFunction = text =>{
         const newData = this.state.recreationalDataSearch.filter(item =>{
             const itemData = `${item.tournamentName.toUpperCase()}`
             const textData = text.toUpperCase();
-            return itemData.indexOf(textData) > -1;
-            //const itemData = `${item.name.title.toUpperCase()} ${item.name.first.toUpperCase()} ${item.name.last.toUpperCase()}`;
-    
+            return itemData.indexOf(textData) > -1;    
         })
         if(newData.length ==0){
           this.searchFilterFunctionLocation(text)
@@ -322,9 +309,7 @@ searchFilterFunctionLocation = text =>{
       const newData = this.state.tourDataSearch.filter(item =>{
           const itemData = `${item.address.toUpperCase()}`
           const textData = text.toUpperCase();
-          return itemData.indexOf(textData) > -1;
-          //const itemData = `${item.name.title.toUpperCase()} ${item.name.first.toUpperCase()} ${item.name.last.toUpperCase()}`;
-  
+          return itemData.indexOf(textData) > -1;  
       })
       this.setState({ tourData :newData })
   }
@@ -332,9 +317,7 @@ searchFilterFunctionLocation = text =>{
       const newData = this.state.leaguesDataSearch.filter(item =>{
           const itemData = `${item.address.toUpperCase()}`
           const textData = text.toUpperCase();
-          return itemData.indexOf(textData) > -1;
-          //const itemData = `${item.name.title.toUpperCase()} ${item.name.first.toUpperCase()} ${item.name.last.toUpperCase()}`;
-  
+          return itemData.indexOf(textData) > -1;  
       })
       this.setState({ leaguesData :newData })
   }
@@ -342,16 +325,11 @@ searchFilterFunctionLocation = text =>{
       const newData = this.state.recreationalDataSearch.filter(item =>{
           const itemData = `${item.address.toUpperCase()}`
           const textData = text.toUpperCase();
-          return itemData.indexOf(textData) > -1;
-          //const itemData = `${item.name.title.toUpperCase()} ${item.name.first.toUpperCase()} ${item.name.last.toUpperCase()}`;
-  
+          return itemData.indexOf(textData) > -1;  
       })
       this.setState({ recreationalData :newData })
   }
 }
-// _onMomentumScrollBegin = () => this.setState({ onEndReachedCalledDuringMomentum: false });
-// _onMomentumScrollEnd = () => this.setState({ onEndReachedCalledDuringMomentum: true });
-
 
   renderRecreationalFooter =()=>{
     const { showMessageRecreational, recreationalExtraDataLoading} = this.state
@@ -389,20 +367,9 @@ searchFilterFunctionLocation = text =>{
             placeholderTextColor="#B1B1B1"
             style={styles.forms}
             onChangeText={value => this.searchFilterFunction(value)}
-            // onFocus={()=>console.log('Here')}
-            // onBlur={()=>console.log('Not here')}
             />
             <Image style={{ marginRight:10, width: 20, height: 20 }} source={require('../../assets/Path100.png')} />
         </View>
-        {/* <View style={styles.SectionStyle}>
-            <TextInput
-            placeholder="Search by location"
-            placeholderTextColor="#dddddd"
-            style={styles.forms}
-            onChangeText={value => this.searchFilterFunctionLocation(value)}
-            />
-            <Image style={{ marginRight:10, width: 20, height: 20 }} source={require('../../assets/Path100.png')} />
-        </View> */}
         {this.state.actScr ==1 ?
         <View style={{ flex: 1, backgroundColor: 'white', paddingTop:10 }}>
         {this.state.isTourLoading ? (
@@ -489,10 +456,6 @@ searchFilterFunctionLocation = text =>{
           onEndReached={this.handleMoreRecreationalData}
           data={this.state.recreationalData}
           ListFooterComponent={this.renderRecreationalFooter}
-          // { 
-          //   (this.state.recreationalExtraDataLoading && <ActivityIndicator size="large" color="#48A080" style={{paddingBottom:10}} />)
-          //   (this.state.checkedExtraRecreationalData && <Text style={{ justifyContent: 'center', textAlign: 'center', paddingBottom:10 }}>No Remaining Data</Text>)}
-            // !this.state.isSearching && (this.state.recreationalExtraDataLoading ? <ActivityIndicator size="large" color="#48A080" style={{paddingBottom:10}} /> : this.state.recreationalExtraDataFound ? null : this.state.checkedExtraRecreationalData && <Text style={{ justifyContent: 'center', textAlign: 'center', paddingBottom:10 }}>No Remaining Data</Text>)}
           renderItem ={({item})=>(
               <TouchableOpacity onPress={() => { this.props.navigation.navigate('RefereeRequestScreen',{item:item, user:this.data}) }}>
                   <ToBeRequestedEvents key={item._id} data={item} user={this.data} />

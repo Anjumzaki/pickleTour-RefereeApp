@@ -1,15 +1,11 @@
 import React from 'react';
-import { ActivityIndicator, View, Text, Button, ImageBackground, Image, TextInput, Dimensions, StyleSheet, ScrollView, FlatList, AsyncStorage } from 'react-native';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import { NavigationActions, StackActions } from 'react-navigation';
+import { ActivityIndicator, View, Text, StyleSheet, FlatList, AsyncStorage } from 'react-native';
 import MatchCards from './MatchCards';
 import axios from 'axios'
 import Responsive from 'react-native-lightweight-responsive';
 import {Icon} from 'native-base'
 
 
-// tournament details and schedule----------------------------------------------
 export default class EventDetailsTwo extends React.Component {
     static navigationOptions = {
         header: null,
@@ -32,10 +28,6 @@ export default class EventDetailsTwo extends React.Component {
         try{
             let user  =await AsyncStorage.getItem('userProfileData')
             this.data= JSON.parse(user)
-            // console.log()
-            // let parsed = JSON.parse(user)
-            // this.userData= parsed.uid
-            // console.log('Here')
         }catch (error){
             console.log(error)
         }
@@ -43,7 +35,6 @@ export default class EventDetailsTwo extends React.Component {
     componentDidMount(){
         this.getItem()
         const tournamentInfo = this.props.navigation.getParam('item')
-        // console.log(tournamentInfo)
         let decide = this.decisionForMatchCard(tournamentInfo.divisionName)
 
         let date=this.convertDate(tournamentInfo.tournamentStartDate)
@@ -76,9 +67,7 @@ export default class EventDetailsTwo extends React.Component {
         let bracketType = tournamentInfo.bracketType
         let tournamentId = tournamentInfo.tournamentId
         let divisionName = tournamentInfo.divisionName
-        // console.log(bracketType, tournamentId)
         var newData = [];
-        // dslkfsd;lfsd
         var dummyData=[]
         var url=''
         if(bracketType=='Round Robin' || bracketType=='Single Elimination' || 'Knock Out')
@@ -92,20 +81,9 @@ export default class EventDetailsTwo extends React.Component {
 
         else if(bracketType=='Double Elimination')
             url ='http://pickeletour.com/api/get/dschedule'
-        
-        // var gettingUrl = 'https://pickletour.appspot.com/api/get/Schedule/'
-        //var gettingUrl = 'http://pickletour.com/api/get/tournament/page/0'
-        // var gettingUrl = 'http://pickletour.appspot.com/api/get/schedule/5e2eb96e8bb07c00121fa750/'
-        // var div='Men\'s Singles'
-        // var gettingUrl = 'http://pickletour.com/api/get/schedule/5e4bb1db8fa805001faa4605/'
-        // var div ='Men\'s Doubles'
-        // axios.get(gettingUrl+tournamentId)
-        // console.log(url+'/'+tournamentId+'/'+divisionName)
+
         axios.get(url+'/'+tournamentId+'/'+divisionName)
-        .then((response)=>{
-            // console.log(response.data)
-            // response.data.length > 0
-                       
+        .then((response)=>{          
             if (response.data.length > 0 ) {
                 newData = response.data[0].schedule
                 newData.forEach(element => {
@@ -135,10 +113,6 @@ export default class EventDetailsTwo extends React.Component {
     render() {
         
         const tournamentInfo = this.props.navigation.getParam('item')
-        // console.log(tournamentInfo)
-        // console.log(tournamentInfo.tournamentName)
-        //console.log('----------------------------------------------------------------------------------')
-        //console.log(this.props.navigation.getParam('item'))
         return (
             <View>
                 
@@ -199,17 +173,10 @@ export default class EventDetailsTwo extends React.Component {
                             data ={this.state.tourData}
                             extraData={this.props}
                             keyExtractor={item => item._id}
-                            // ListHeaderComponent={()=>(
                             ListFooterComponent={
                                 <View style={{marginTop:40}}></View>
                             }
-                    
-                            // )}
                             ListEmptyComponent={()=>
-                            //     (
-                            //     (this.state.loading && <ActivityIndicator size='large'/> )
-                            //     (this.state.showMessage && <Text style={{fontFamily:'open-sans-bold',alignSelf:'center',fontSize:Responsive.font(20)}}>Schedule not found !</Text>)
-                            // )
                                 {
                                     if(this.state.loading){
                                         return <ActivityIndicator size='large'/>
@@ -227,21 +194,11 @@ export default class EventDetailsTwo extends React.Component {
                                     return <MatchCards navigation={this.props.navigation} data={item} location={index} showMulti={this.state.showMulti}/>
                                 }
                             }
-                            // (
-                            //     <MatchCards navigation={this.props.navigation} data={item} location={index} showMulti={this.state.showMulti}/>
-                            // )
                             
                             }
                         />
                         </View>
-
-                        
-                        {/* :<View style={{ paddingTop:"50%",flex: 1,justifyContent: 'center'}}>
-                        <ActivityIndicator size="large" color="#48A080" />
-                    </View>} */}
                     </View>
-                {/* </ScrollView> */}
-
             </View>
 
         );
@@ -250,7 +207,6 @@ export default class EventDetailsTwo extends React.Component {
 const styles = StyleSheet.create({
     cardStyles: {
         alignSelf:'center',
-        //marginHorizontal:10,
         width: '100%',
         borderRadius:3,
         backgroundColor:'#DBFFF1',

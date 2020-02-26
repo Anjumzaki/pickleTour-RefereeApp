@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Alert,Modal,View, Text,StyleSheet,SafeAreaView , BackHandler,StatusBar , TouchableOpacity, Image} from 'react-native';
+import { Alert,Modal,View, Text,BackHandler,ImageBackground,StatusBar , TouchableOpacity, Image} from 'react-native';
 import { ScreenOrientation, } from 'expo';
 import { RadioGroup} from 'react-native-btr';
 import { CheckBox, ListItem, Icon } from 'native-base'
@@ -15,8 +15,6 @@ class ScoreCard extends Component {
     super(props);
     this.playingSide=''
     this.interval=null
-    // this.lapArr=[]
-    //this.SideSelected='Left'
     this.TargetSelected = 11
     this.state = {
       radioButtons:[
@@ -144,22 +142,15 @@ class ScoreCard extends Component {
   async exitScreenOrientation(){
     await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT)
   }
-  // balltesting(){
-  //   this.setState({ballpos1:false, ballpos2:false})
-  // }
-  // balltesting2(){
-  //   this.setState({ballpos1:true, ballpos2:true})
-  // }
+
   checkingScore(whichTeam){
     if(whichTeam=='ByOne'){
       
       if(this.state.checked==true){
         if(this.state.ScoreTeam2==this.TargetSelected && this.state.ScoreTeam2-this.state.ScoreTeam1>=2){
-          console.log(this.state.ScoreTeam2  +'   '+ this.TargetSelected +'   '+this.state.ScoreTeam1)
           this.showingAlert('Team two is the Winner.')  
         }
         else if(this.state.ScoreTeam2>this.TargetSelected && this.state.ScoreTeam2-this.state.ScoreTeam1>=2){
-          console.log(this.state.ScoreTeam2  +'   '+ this.TargetSelected +'   '+this.state.ScoreTeam1)
           this.showingAlert('Team two is the Winner.')  
         }
       }
@@ -193,11 +184,7 @@ showingAlertConfirmStart(){
     'Click on Start ',
     [
       {},
-      {
-        // text: 'Cancel',
-        // onPress: () => console.log('Cancel Pressed'),
-        // style: 'cancel',
-      },
+      {},
       {text: 'OK'}
     ],
     {cancelable: false},
@@ -208,11 +195,7 @@ showingAlertConfirmStart(){
       teamMsg,
       [
         {},
-        {
-          // text: 'Cancel',
-          // onPress: () => console.log('Cancel Pressed'),
-          // style: 'cancel',
-        },
+        {},
         {text: 'OK', onPress: () => this.setState({modalVisible:true})},
       ],
       {cancelable: false},
@@ -339,12 +322,12 @@ showingAlertConfirmStart(){
   }
 
   componentDidMount(){
-    // console.log(this.props.navigation.state.params)
+    
     let userData = this.props.navigation.state.params.userData
-    // let data = this.props.navigation.state.params.data
+    
     let players = this.props.navigation.state.params.players
     let showMulti = this.props.navigation.state.params.checkMulti
-    // console.log(userData)
+    
     if(showMulti==false){
       this.setState({
         Player1Name: players[0],
@@ -363,12 +346,7 @@ showingAlertConfirmStart(){
     }
     this.changeScreenOrientation()
     this.backHandler = BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
-    // if(this.state.TeamFormation=='Doubles'){
-    //   this.settingDoubles()
-    // }
-    // else{
-    //   this.settingSingles()
-    // }
+
   }
   componentWillUnmount() {
     this.exitScreenOrientation()
@@ -406,7 +384,6 @@ showingAlertConfirmStart(){
   }
 
   gameStyle(side, gamePattern){
-    console.log(this.TargetSelected)
     if(gamePattern=='Doubles'){
       this.settingDoubles(side)
     }
@@ -520,41 +497,9 @@ showingAlertConfirmStart(){
                 </View>
               </View>
 
-              {/* Text Only */}
-              {/* <View style={{ flex:0.3, flexDirection:'column', paddingLeft:10, justifyContent:'space-around'}}> */}
-                {/* <Text style={{fontSize:Responsive.font(20)}}>Starting Side</Text>
-                <Text style={{fontSize:Responsive.font(20)}}>Points to win</Text>
-                <Text style={{fontSize:Responsive.font(20)}}>Win By 2</Text> */}
             
               </View>
 
-
-              {/* RadioButtons etc */}
-              {/* <View style={{backgroundColor:'green', flex:0, justifyContent:'space-around'}}> */}
-              {/* <RadioGroup
-                  labelStyle={{fontSize:Responsive.font(16)}}
-                  color='#0277BD'
-                  radioButtons={this.state.radioButtons}
-                  onPress={radioButtons=>this.setState({radioButtons})}
-                  style={ {flexDirection:'row', paddingLeft:10}}
-                />
-
-                <RadioGroup
-                  labelStyle={{fontSize:Responsive.font(16)}}
-                  color='#0277BD'
-                  radioButtons={this.state.pointsButton}
-                  onPress={pointsButton=>this.setState({pointsButton})}
-                  style={{ flexDirection:'row',paddingLeft:10}}
-                />
-
-                <ListItem style={{height:20}}>
-                    <CheckBox checked={this.state.checked} onPress={()=>this.setState({checked:!this.state.checked})}/>     
-                  </ListItem>  */}
-
-              {/* </View> */}
-              
-            {/* </View> */}
-            {/* Buttons */}
             <View style={{ flex:0.25, justifyContent:'space-around', flexDirection:'row'}}>
                 <TouchableOpacity  onPress={()=>this.startingGame()} style={{ height:'50%',paddingHorizontal:20,marginTop:10,backgroundColor:'#91c549', justifyContent:'center', borderRadius:12}}>
                   <Text style={{fontFamily: 'open-sans-bold',alignSelf:'center', color:'#515151',fontSize:Responsive.font(15)}}>Start</Text>
@@ -572,9 +517,9 @@ showingAlertConfirmStart(){
 
 
 
-        <Image style={{width: '100%', height: '100%', flexDirection:'column', flex:1,overflow: 'hidden',position:'absolute'}} source={require('../../assets/background.png')}/>
+
         {/* Modal Settings-`--`-------------------- */}
-        <View style={{width: '100%', height: '100%', flexDirection:'column', flex:1,}} >
+        <ImageBackground style={{width: '100%', height: '100%', flexDirection:'column', flex:1,overflow: 'hidden',position:'absolute'}} source={require('../../assets/background.png')}>
                   <View style={{width:'100%', height:'90%', flexDirection:'row'}}>
                   <View style={{width:'50%', flex:1, flexDirection:'row' }}>
           <View style={{flex:0.7, flexDirection:'column'}}>
@@ -697,169 +642,10 @@ showingAlertConfirmStart(){
                   </View>
           
           
-        </View>
+        </ImageBackground>
       </View>
-//       <View style={{flex:1, justifyContent: 'center', flexDirection:'row', }}>
-        
-//         <StatusBar hidden={true} />
-        
-//         <Modal
-
-//             <StatusBar hidden={true} />
-//             <View style={{width:'100%', backgroundColor:'white', height:'100%', alignSelf:'center'}}>
-//               <Text style={{marginTop:Responsive.height(10), fontSize:Responsive.font(20), alignSelf:'center', fontWeight:'bold'}}>Settings</Text>
-//                 <View style={{flexDirection:'row',padding:Responsive.width(20) }}>
-//                   <Text style={{fontWeight:'bold',fontSize:Responsive.font(18), marginLeft:Responsive.width(50)}}>Select starting side</Text>
-//                   <RadioGroup
-//                   labelStyle={{fontSize:16}}
-//                   color='#0277BD'
-//                   radioButtons={this.state.radioButtons}
-//                   onPress={radioButtons=>this.setState({radioButtons})}
-//                   style={{marginLeft:Responsive.width(144), flexDirection:'row'}}
-//                 />
-//                 </View>
-              
-
-//                 <View style={{flexDirection:'row', paddingHorizontal:Responsive.width(20), paddingBottom:Responsive.width(20) }}>
-//                   <Text style={{fontWeight:'bold',fontSize:Responsive.font(18),marginLeft:Responsive.width(50)}}>Points to win</Text>
-                 
-//                 </View>
-                
-//                 <View style={{flexDirection:'row', paddingHorizontal:Responsive.width(20),paddingBottom:Responsive.width(20) }}>
-//                   <Text style={{fontWeight:'bold',fontSize:Responsive.font(18),marginLeft:Responsive.width(50)}}>Win by 2</Text>
-
-//                 </View>
-
-//                <View style={{}}>
-//                 <TouchableOpacity 
-//                     onPress={()=>this.startingGame()}
-//                     style={{width:'50%', backgroundColor:'#91c549',justifyContent:'center', alignItems:'center',alignSelf:'center', padding:Responsive.height(5), borderRadius:Responsive.width(20), }}>
-//                     <Text style={{fontSize:Responsive.font(20), fontWeight:'bold', color:'white'}}>Start</Text>
-//                   </TouchableOpacity>
-//                </View>
-//               {/* <View style={{flexDirection:'column', justifyContent:'center', alignSelf:'center', flex:0.8}}>
-//               <View style={{flexDirection:'row', justifyContent:'space-between',marginTop:Responsive.height(150)}}>
-//                 <Text style={{fontSize:Responsive.font(18)}}>Select starting Side</Text>
-//                 <RadioGroup
-//                   labelStyle={{fontSize:16}}
-//                   color='#0277BD'
-//                   radioButtons={this.state.radioButtons}
-//                   onPress={radioButtons=>this.setState({radioButtons})}
-//                   style={{flexDirection:'row'}}
-//                 />
-//               </View> */}
-// {/* 
-//               <View style={{flexDirection:'row', justifyContent:'space-between'}}>
-//                 <Text style={{fontSize:Responsive.font(18), padding:Responsive.height(10)}}>Points to win</Text>
-//                 <RadioGroup
-//                   labelStyle={{fontSize:16}}
-//                   color='#0277BD'
-//                   radioButtons={this.state.pointsButton}
-//                   onPress={pointsButton=>this.setState({pointsButton})}
-//                   style={{flexDirection:'row',}}
-//                 />
-//               </View> */}
-
-//               {/* <View style={{flexDirection:'row'}}>
-//                 <Text style={{fontSize:Responsive.font(18), padding:Responsive.height(10)}}>Win by 2</Text>
-//                 <ListItem>
-//                   <CheckBox checked={this.state.checked} onPress={()=>this.setState({checked:!this.state.checked})}/>     
-//                 </ListItem> 
-//               </View> */}
-//             {/* </View> */}
-            
-//             {/* <TouchableOpacity 
-//               onPress={()=>this.startingGame()}
-//               style={{width:'50%', backgroundColor:'#91c549',justifyContent:'center', alignItems:'center',alignSelf:'center', paddingTop:'2%', borderRadius:20, }}>
-//               <Text style={{fontSize:Responsive.font(20), fontWeight:'bold', paddingBottom:'5%', color:'white'}}>Start</Text>
-//             </TouchableOpacity> */}
-//             </View>
-//           {/* <View style={{backgroundColor:'#6e8980', justifyContent:'center', alignItems:'center'}}>
-//             <Text>Hello</Text>
-//             <TouchableOpacity onPress={()=>{this.setState({modalVisible:!this.state.modalVisible})}}>
-//               <Text>Hide</Text>
-//             </TouchableOpacity>
-//           </View> */}
-
-//         </Modal>
-        
-//       <View style={{backgroundColor:'#6e8980', flex:1,}}>
-//         <View style={{flex:0.213, flexDirection:'row'}}>
-//           <View style={{backgroundColor:'#91c549',alignSelf:'flex-end', marginLeft:'54%', marginRight:'2%'}}>
-//             <Text style={{alignSelf:'center', fontSize:18}}>{this.state.Team1Serving?' Serve : '+this.state.Serve+' ':''}</Text>
-//           </View>
-//           <View style={{backgroundColor:this.state.Team1Serving?'#91c549':'white', alignSelf:'flex-end', marginLeft:this.state.Team2Serving?'27.5%':'0%'}}>
-//             <Text style={{alignSelf:'center',paddingHorizontal:'4%', fontSize:18}}>{this.state.ScoreTeam1}</Text>
-//           </View>
-//         </View>
-//         <View style={{backgroundColor:'#2f8465', width: '80%', flex:1, alignSelf:'flex-end',borderColor:'white', borderWidth:2, marginBottom:'15%'  }}>
-//         {/* <Text style={{alignSelf:'center', color:'white', fontSize:18, marginTop:'15%'}}>{this.state.GameStart==true ?'Player #2':this.state.player2Move?'Player #1':'Player #2'}</Text> */}
-//         <Text style={{alignSelf:'center', color:'white', fontSize:18, marginTop:'15%'}}>{this.state.Section2}</Text>
-//           {this.state.ballpos2?<Image 
-//           style={{width:'10%', height:'10%', marginLeft:'2%', marginBottom:'-10%'}}
-//           source={require('./assets/ball.jpg')}/>:<View></View>}
-//           <TouchableOpacity onPress={()=>this.fault('ByOne')} style={{backgroundColor:'#ad4538', borderWidth:2, borderColor:'white', alignSelf:"center", marginVertical:"20%", paddingHorizontal:20}}>
-//             <Text style={{color:'white'}}>FAULT</Text>
-//           </TouchableOpacity>
-//           <View style={{borderColor:'white', borderWidth:1,marginTop:-65, zIndex:-1}}></View>
-//           {/* <Text style={{alignSelf:'center', color:'white', fontSize:18, marginTop:'20%'}}>{this.state.GameStart==true ?'Player #1':this.state.player1Move?'Player #2':'Player #1'}</Text> */}
-//           <Text style={{alignSelf:'center', color:'white', fontSize:18, marginTop:'20%'}}>{this.state.Section1}</Text>
-//           {this.state.ballpos1?<Image 
-//           style={{width:'10%', height:'10%', marginLeft:'2%'}}
-//           source={require('./assets/ball.jpg')}/>:<View></View>}
-//         </View>
-//       </View>
-
-      
-//       {/* <View style={{ backgroundColor:'#91c549', flex:0.1, marginVertical:'7%',borderWidth:2, borderColor:'white'}}>
-
-//       </View>
-//       <View style={{ backgroundColor:'#91c549', flex:0.1, marginVertical:'7%', borderWidth:2, borderColor:'white'}}>
-
-//       </View> */}
-
-//       <View style={{ backgroundColor:'#6e8980', flex:1}}>
-//       <View style={{flex:0.213, flexDirection:'row'}}>
-//           <View style={{backgroundColor:this.state.Team2Serving?'#91c549':'white',alignSelf:'flex-end', marginRight:'2%', marginLeft:'6%'}}>
-//             <Text style={{alignSelf:'center',paddingHorizontal:'4%', fontSize:18}}>{this.state.ScoreTeam2}</Text>
-//           </View>
-//           <View style={{backgroundColor:'#91c549', alignSelf:'flex-end'}}>
-//             <Text style={{alignSelf:'center', fontSize:18,}}>{this.state.Team1Serving?'':' Serve : '+this.state.Serve+' '}</Text>
-            
-//           </View>
-//         </View>
-
-      
-      
-//       <View style={{backgroundColor:'#2f8465', width: '80%', flex:1, alignSelf:'flex-start',marginBottom:'15%', borderColor:'white', borderWidth:2  }}>
-//       <Text style={{alignSelf:'center', color:'white', fontSize:18, marginTop:'15%'}}>{this.state.Section3}</Text>
-//     {/* <Text style={{alignSelf:'center', color:'white', fontSize:18, marginTop:'15%'}}>{this.state.GameStart?'Player #3': this.state.player3Move?"Player #4":'Player #3'}</Text> */}
-//         <View>
-//         {this.state.ballpos3?<Image 
-//           style={{width:'10%', height:'10%', marginLeft:'2%', marginBottom:'-9%', padding:12}}
-//           source={require('./assets/ball.jpg')}/>:<View></View>}
-//         <TouchableOpacity onPress={()=>this.fault('ByTwo')} style={{backgroundColor:'#ad4538', borderWidth:2, borderColor:'white', alignSelf:"center", marginVertical:"20%", paddingHorizontal:20}}>
-//             <Text style={{color:'white'}}>FAULT</Text>
-//           </TouchableOpacity>
-//           <View style={{borderColor:'white', borderWidth:1,marginTop:-65, zIndex:-1}}></View>
-//         </View>
-      
-//           {/* <Text style={{alignSelf:'center', color:'white', fontSize:18, marginTop:'20%'}}>{this.state.GameStart?'Player #4': this.state.player3Move?"Player #3":'Player #4'}</Text> */}
-//           <Text style={{alignSelf:'center', color:'white', fontSize:18, marginTop:'20%'}}>{this.state.Section4}</Text>
-//           {this.state.ballpos4?<Image 
-//           style={{width:'10%', height:'10%', marginLeft:'2%', marginBottom:'-10%'}}
-//           source={require('./assets/ball.jpg')}/>:<View></View>}
-//       </View>
-//       </View>
-//       </View>
     );
   }
 }
 
 export default ScoreCard;
-
-const styles = StyleSheet.create({
-  statusBar:{
-    
-  }
-})

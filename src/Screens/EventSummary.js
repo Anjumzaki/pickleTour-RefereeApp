@@ -1,10 +1,6 @@
 import React from 'react';
-import { View, Text, Button, ImageBackground, Image, TextInput, Dimensions, StyleSheet, ScrollView, ActivityIndicator, FlatList } from 'react-native';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import { NavigationActions, StackActions } from 'react-navigation';
+import { View, Text, StyleSheet, ActivityIndicator, FlatList } from 'react-native';
 import MatchCardsRes from './MatchCardsRes';
-// import { Item } from 'native-base';
 import {Icon} from 'native-base'
 import axios from 'axios'
 import Responsive from 'react-native-lightweight-responsive';
@@ -27,12 +23,10 @@ export default class EventSummary extends React.Component {
     }
     
     componentDidMount(){
-        // this.getAllData(this.props.navigation.state.key)
         const tournamentInfo = this.props.navigation.state.params.data
         let date=this.convertDate(tournamentInfo.tournamentStartDate)
         this.setState({startDate:date})
         this.getData()
-        // console.log(this.props.data)
     }
     convertDate(date){
         var d= new Date(date)
@@ -48,24 +42,18 @@ export default class EventSummary extends React.Component {
     getData= (tournamentId, eventType)=>{
 
         var newData = [];
-        // dslkfsd;lfsd
         var dummyData=[]
-        // var gettingUrl = 'https://pickletour.appspot.com/api/get/Schedule/'
-        //var gettingUrl = 'http://pickletour.com/api/get/tournament/page/0'
         var gettingUrl = 'http://pickletour.appspot.com/api/get/schedule/5e2eb96e8bb07c00121fa750/'
         var div='Men\'s Singles'
-        // axios.get(gettingUrl+tournamentId)
         axios.get(gettingUrl+div)
         .then((response)=>{
             newData = response.data[0].schedule
-            // console.log(newData[0].schedule[0])
             if (newData.length > 0) {
                 newData.forEach(element => {
                     element.map(item=>{
                         dummyData.push(item)
                     })
                 });
-                // console.log(dummyData)
                 this.setState({
                     tourData: dummyData,
                     dataLoaded:true,
@@ -87,15 +75,9 @@ export default class EventSummary extends React.Component {
 
     
     render() {
-        // console.log(this.props.navigation.state.params.data)  
         const tournamentInfo = this.props.navigation.state.params.data
-        // console.log(tournamentInfo)
         return (
-            <View>
-                {/* <ScrollView style={{ marginBottom: 10 }}> */}
-                    
-                    
-
+            <View>                   
                     <View style={{ padding: 10 }}>
                     <View>
                     <View>
@@ -171,14 +153,9 @@ export default class EventSummary extends React.Component {
                             )}
                             
                         />
-                        
-                        {/* <MatchCardsRes />
-                        <MatchCardsRes />
-                        <MatchCardsRes /> */}
                     </View>
                   
                     </View>
-                {/* </ScrollView> */}
 
             </View>
 
@@ -188,7 +165,6 @@ export default class EventSummary extends React.Component {
 const styles = StyleSheet.create({
     cardStyles: {
         alignSelf:'center',
-        //marginHorizontal:10,
         width: '100%',
         borderRadius:3,
         backgroundColor:'#DBFFF1',

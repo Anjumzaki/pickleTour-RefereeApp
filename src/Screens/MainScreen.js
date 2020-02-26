@@ -1,8 +1,6 @@
 import React from 'react';
-import { View, Text, Button, ImageBackground, Image, TextInput, Dimensions, StyleSheet, ActivityIndicator,SafeAreaView, ScrollView, AsyncStorage, FlatList } from 'react-native';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { View, Text, Dimensions, StyleSheet, ActivityIndicator, AsyncStorage, FlatList } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { NavigationActions, StackActions } from 'react-navigation';
 import Responsive from 'react-native-lightweight-responsive';
 import EventCards from './EventCards'
 import MultiTypeEventsCards from './MultiTypeEventsCards'
@@ -48,7 +46,6 @@ export default class MainScreen extends React.Component {
         axios.get(gettingUrl+userId)
         .then((response)=>{
             compEvents = response.data
-            //console.log(onEvents)
             if(compEvents.length>0){
                 this.setState({
                     compData:compEvents,
@@ -69,7 +66,6 @@ export default class MainScreen extends React.Component {
     }
 
     getUpcomingData(){
-        // console.log(userId)
         this.setState({dataThreeFetching:true})
         var upEvents=[];
         var userId = this.userData.uid
@@ -77,7 +73,6 @@ export default class MainScreen extends React.Component {
         axios.get(gettingUrl+userId)
         .then((response)=>{
             upEvents = response.data
-            //console.log(upEvents)
             if(upEvents.length>0){
                 this.setState({
                     upData:upEvents,
@@ -98,7 +93,6 @@ export default class MainScreen extends React.Component {
     }
 
     getOngoingData(){
-        // console.log(userId)
         this.setState({dataTwoFetching:true})
         var onEvents=[];
         var userId = this.userData.uid
@@ -106,7 +100,6 @@ export default class MainScreen extends React.Component {
         axios.get(gettingUrl+userId)
         .then((response)=>{
             onEvents = response.data
-            //c0onsole.log(upEvents)
             if(onEvents.length>0){
                 this.setState({
                     onData:onEvents,
@@ -168,11 +161,9 @@ export default class MainScreen extends React.Component {
         }
     }
     render() {
-        // console.log("state", this.state)
         const {showMessage, showTwoMessage, showThreeMessage} = this.state
         return (
             <View>
-                {/* <Text>Here</Text> */}
                 <View style={styles.wrapTopSty}>
 
                     
@@ -186,8 +177,6 @@ export default class MainScreen extends React.Component {
                         <Text style={this.state.actScr==3?styles.selectedtopBarText:styles.topBarText}>Upcoming Events</Text>
                     </TouchableOpacity>
                 </View>
-                {/* <View style={styles.divider}></View> */}
-                {/* <ScrollView style={{  marginBottom: 50 }}> */}
                     {this.state.actScr == 1 ? 
                         <View style={{ paddingTop:10 }}>
                             {this.state.dataOneLoaded?<FlatList
@@ -197,20 +186,13 @@ export default class MainScreen extends React.Component {
                                 onRefresh={()=>this.getCompletedData()}
                                 data ={this.state.compData}
                                 renderItem={({item})=>(
-                                    // <TouchableOpacity onPress={()=>this.props.navigation.navigate('EventSummary')}>
                                     <EventCards navigation={this.props.navigation} data={item} />
-                                    // </TouchableOpacity>
                                 )}
                             />:<View style={{ paddingTop:"50%",flex: 1,justifyContent: 'center'}}>
                                     {showMessage?<Text style={{fontFamily:'open-sans-bold',alignSelf:'center',fontSize:Responsive.font(20)}}>Completed Events not found !</Text>: <ActivityIndicator size="large" color="#48A080" />}
                                 </View>
                             }
-                               
                             
-                            
-                            {/* <EventCards />
-                            <EventCards />
-                            <EventCards /> */}
                         </View> : null}
                     {this.state.actScr == 2 ? <View style={{ paddingTop: 10 }}>
                     {this.state.dataTwoLoaded?<FlatList
@@ -220,9 +202,7 @@ export default class MainScreen extends React.Component {
                                 refreshing={this.state.dataTwoFetching}
                                 onRefresh={()=>this.getOngoingData()}
                                 renderItem={({item})=>(
-                                    // <TouchableOpacity onPress={()=>this.props.navigation.navigate('EventSummary')}>
                                     <MultiTypeEventsCards navigation={this.props.navigation} data={item} />
-                                    // </TouchableOpacity>
                                 )}
                             />:<View style={{ paddingTop:"50%",flex: 1,justifyContent: 'center'}}>
                                 {showTwoMessage?<Text style={{fontFamily:'open-sans-bold',alignSelf:'center',fontSize:Responsive.font(20)}}>Ongoing Events not found !</Text>: <ActivityIndicator size="large" color="#48A080" />}
@@ -238,16 +218,13 @@ export default class MainScreen extends React.Component {
                                 refreshing={this.state.dataThreeFetching}
                                 onRefresh={()=>this.getUpcomingData()}
                                 renderItem={({item})=>(
-                                    // <TouchableOpacity onPress={()=>this.props.navigation.navigate('EventSummary')}>
                                     <MultiTypeEventsCards navigation={this.props.navigation} data={item} show={false}/>
-                                    // {/* </TouchableOpacity> */}
                                 )}
                             />:<View style={{paddingTop:"50%", flex: 1,justifyContent: 'center'}}>
                                     {showThreeMessage?<Text style={{fontFamily:'open-sans-bold',alignSelf:'center',fontSize:Responsive.font(20)}}>Upcoming Events not found !</Text>: <ActivityIndicator size="large" color="#48A080" />}
                                 </View>
                     }
                     </View> : null}
-                {/* </ScrollView> */}
             </View>
 
         );
@@ -281,7 +258,6 @@ const styles = StyleSheet.create({
         width: Dimensions.get('window').width / 3,
         alignItems: 'center',
         justifyContent: 'center',
-        // backgroundColor: '#48A080',
     },
     divider: { width: '100%', height: 10, backgroundColor: 'white' }
 });

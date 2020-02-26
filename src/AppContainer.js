@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Button, TouchableHighlight, Image, Platform, StyleSheet } from 'react-native';
+import { Image } from 'react-native';
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createDrawerNavigator, DrawerItems } from 'react-navigation-drawer'
@@ -45,14 +45,6 @@ const HomePageStack = createStackNavigator(
     }
 )
 
-// const RefereeRequestStack = createStackNavigator(
-//     {
-//         RefereeRequest:{screen:RefereeRequest, navigationOptions: {header: null}}
-//     },
-//     {
-//         initialRouteName:'RefereeRequest'
-//     }
-// )
 
 const ScoreCardStack = createStackNavigator({
     ScoreCard: {screen:ScoreCard, navigationOptions: {header: null}}
@@ -105,7 +97,7 @@ const DrawerNavigator = createDrawerNavigator({
                 <Image style={{ width: 30, height: 30, marginLeft: 10 }} source={require('../assets/navigation.png')} />
             </TouchableOpacity >
     }),
-    // initialRouteName: 'MainScreenStack',
+    
     initialRouteName: 'MainScreenStack',
     contentComponent: CustomSidebarMenu,
     drawerOpenRoute: 'drawerOpen',

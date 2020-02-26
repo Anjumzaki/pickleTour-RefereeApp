@@ -1,9 +1,6 @@
 import React from 'react';
-import { View, Text, Button, ImageBackground, Image, TextInput, Dimensions, StyleSheet, ScrollView, AsyncStorage } from 'react-native';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { View, Text,StyleSheet} from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { NavigationActions, StackActions } from 'react-navigation';
-import axios from 'axios'
 import { Icon } from 'native-base'
 import Responsive from 'react-native-lightweight-responsive';
 export default class EventCards extends React.Component {
@@ -17,18 +14,7 @@ export default class EventCards extends React.Component {
             endDate:null
         };
     }
-    // async getItem(){
-    //     try{
-    //         this.userId =await AsyncStorage.getItem('userId')
-    //         this.getAllData()
-    //         // console.log('User ID:  ',this.userId)
-    //     }catch (error){
-    //         console.log('error')
-    //     }
-    // }
-    getWords(){
-
-    }
+  
     componentDidMount(){
         let date=this.convertDate(this.props.data.tournamentStartDate)
         this.setState({convertedDate:date})
@@ -63,27 +49,15 @@ export default class EventCards extends React.Component {
         name = name.replace(/\n /,"\n");
         return name.length;
     }
-    // login() {
-    //     this.props.navigation.navigate('MainTabs')
-    //     this.props.navigation.dispatch(StackActions.reset({
-    //         index: 0,
-    //         actions: [NavigationActions.navigate({ routeName: 'MainTabs' })],
-    //     }))
-    // }
-
     
 
     render() {
         const data = this.props.data
-        
-        const show = this.props.show
-        //console.log(show)
         return (
             <View style={styles.cardStyles}>
                 <View style={{ height:'45%', alignSelf:'center', width:'95%',justifyContent:'center'}}>
                     <Text style={{fontSize:Responsive.font(14), color:'#585858',fontWeight:'bold', fontFamily:'open-sans-bold'}}>{this.state.useNewName?this.state.newName:data.tournamentName}</Text>
                 </View>
-                {/* Rows here */}
 
                 <View style={{borderWidth:0.5,marginHorizontal:10,borderColor:'#81D4B6'}}></View>
                 <View style={{ height:'45%', width:'95%', alignSelf:'center', justifyContent:'space-between', flexDirection:'row'}}>
@@ -100,47 +74,6 @@ export default class EventCards extends React.Component {
                   </TouchableOpacity>
                     </View>
                 </View>
-                {/* <View style={{ flexDirection: 'row' }}>
-                    <View style={{ flexDirection: 'row', flex: 2, }} >
-                        <Text style={styles.head}>Name: </Text>
-                        <Text style={styles.inHead}>Grand Transver Bay</Text>
-                    </View>
-                    <View style={{ flexDirection: 'row',  flex:1, justifyContent:'flex-end' }} >
-                        <Text style={styles.head}>Date: </Text>
-                        <Text style={styles.inHead}>12-10-2019</Text>
-                    </View>
-                </View>
-                <View style={{ flexDirection: 'row', width: '100%' }} >
-                    <Text style={styles.head}>Address : </Text>
-                    <Text style={styles.inHead}>Street 4, California Stadium USA</Text>
-                </View>
-                <View style={{ flexDirection: 'row', marginTop: 10 }}>
-                    <View style={{ flexDirection: 'row', width: '50%' }} >
-                        <Text style={styles.head}>Event Type : </Text>
-                        <Text style={styles.inHead}>Tournament</Text>
-                    </View>
-
-                    <View style={{ flexDirection: 'row', width: '50%', justifyContent:'flex-end'}} >
-                        <Text style={styles.head}>Matches Refereed : </Text>
-                        <Text style={styles.inHead}>8/8</Text>
-                    </View>
-                   
-                </View>
-                
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                    <View style={{ flexDirection: 'row', width: '50%' }} >
-                        <Text style={styles.head}>Division : </Text>
-                        <Text style={styles.inHead}>Men's Single</Text>
-                    </View>
-                    <View style={{ flexDirection: 'row', width: '35%', justifyContent:'flex-end'}} >
-                    <TouchableOpacity style={styles.mySBtn} onPress={()=>this.props.navigation.navigate('EventSummary')}>
-                                  
-                                    <Text style={styles.myStext}>See Summary</Text>
-                    </TouchableOpacity>
-
-                      
-                    </View>
-                </View> */}
             </View>
 
         );
@@ -149,15 +82,10 @@ export default class EventCards extends React.Component {
 const styles = StyleSheet.create({
     cardStyles: {
         alignSelf:'center',
-        // marginLeft:10,
-        // marginRight:10,
         borderRadius:3,
         marginHorizontal:10,
         width: '92%',
         backgroundColor: '#9EEACE',
-        // marginHorizontal: 10,
-        // paddingHorizontal:10,
-        // paddingVertical:10,
         height:75,
         shadowColor: "#000",
         shadowOffset: {

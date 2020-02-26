@@ -1,8 +1,5 @@
 import React from 'react';
-import { View, Text, Button, ImageBackground, Switch, Image, TextInput, Dimensions, StyleSheet, ScrollView, Alert } from 'react-native';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import { NavigationActions, StackActions,withNavigation  } from 'react-navigation';
+import { View, Text, Switch, StyleSheet, Alert, TouchableOpacity } from 'react-native';
 import Responsive from 'react-native-lightweight-responsive';
 import {Icon} from 'native-base'
 export default class MatchCards extends React.Component {
@@ -28,18 +25,10 @@ export default class MatchCards extends React.Component {
             player4:''
         };
     }
-    // login() {
-    //     // this.props.navigation.navigate('MainTabs')
-        // this.props.navigation.dispatch(StackActions.reset({
-        //     index: 0,
-        //     actions: [NavigationActions.navigate({ routeName: 'MainTabs' })],
-        // }))
-    // }
+
     componentDidMount(){
-        // console.log(this.props.data)
         let date=this.convertDate(this.props.data.matchDate)
         this.setState({convertedDate:date})
-        // console.log(this.props.showMulti)
         if(this.props.showMulti==true){
             if(this.props.data.one.player1==undefined){
                 this.setState({
@@ -56,23 +45,13 @@ export default class MatchCards extends React.Component {
             }
         }
         else{
-            // console.log(this.props.data.one)
             this.setState({
                 player1: this.props.data.one.fName,
                 player3: this.props.data.two.fName
             })
-            // console.log(this.props.showMulti)
-            // let fname = this.props.data.one.fName
-            // let sname = this.props.data.two.fName
-            // if( fname.includes('Winner of') && sname.includes('Winner of') ){
-            //     this.setState({
-            //         showWidget:false
-            //     })
-            // }
         }
-        
-        // this.getTimeFirstTime()
     }
+
     convertDate(date){
         var d= new Date(date)
         var month = '' + (d.getMonth() + 1)
@@ -84,50 +63,29 @@ export default class MatchCards extends React.Component {
         day = '0' + day;
         return [day, month, year].join('/');
     }
-    // getTimeFirstTime(){
-    //     const  testTime  = this.Time
-    //     const today = new Date();
-    //     const h = today.getHours();
-    //     let m = today.getMinutes();
-    //     const s = today.getSeconds();
-    //     m = (m < 10) ? ("0" + m) : m;
-    //     let time = h+':'+m
-    //     if(time<this.state.testTime){
-    //         setInterval(this.getTime(this),10000)
-    //     }
-    //     else{
-    //         console.log(' Match Started')
-    //     }
-    // }
+    
     showingAlert(){
         Alert.alert(
           'Time not correct !',
           'Match cannot be started yet.',
           [
             {},
-            {
-              // text: 'Cancel',
-              // onPress: () => console.log('Cancel Pressed'),
-              // style: 'cancel',
-            },
+            {},
             {text: 'OK',style:'cancel'},
           ],
           {cancelable: false},
         );
       }
     getTime(){
-        // const  testTime  = this.Time
         const today = new Date();
         const h = today.getHours();
         const s = today.getSeconds();
         let m = today.getMinutes();
         m = (m < 10) ? ("0" + m) : m;
         let time = h+':'+m
-        console.log(time)
         if(time>this.state.testTime){
-            console.log('Start Match Now')
+            
         }
-        //console.log(h+' : '+m+' : '+s)
     }
 
     checkTime(userData, checkMulti){
@@ -147,32 +105,19 @@ export default class MatchCards extends React.Component {
         if (day.length < 2) 
         day = '0' + day;
         const date = [day,month,year].join('/')
-        // console.log(today)
         const h = today.getHours();
         const s = today.getSeconds();
         let m = today.getMinutes();
         m = (m < 10) ? ("0" + m) : m;
-        let time = h+':'+m
-        
-        // if(time>=this.props.data.matchTime && data.matchDate <= date )
-        
-        if(time>=this.props.data.matchTime ){
-            //console.log(players)
+        let time = h+':'+m        
+        if(time>=this.props.data.matchTime  && data.matchDate <= date){
             this.props.navigation.navigate('ScoreCard',{userData, checkMulti, players})
         }
         else{
             this.showingAlert()
         }
     }
-    // player(player){
-    //     const show = this.props.showMulti
-    //     if(show){
-    //         this.setState({checkPlayer3:player})
-    //     }
-    //     else{
-    //         this.setState({checkPlayer2:player})
-    //     }
-    // }
+  
     render() {
         const data = this.props.data
         const show = this.props.showMulti
@@ -239,13 +184,6 @@ export default class MatchCards extends React.Component {
                                 value={this.state.checkPlayer1}  
                                 onValueChange ={(checkPlayer1)=>this.setState({checkPlayer1})}
                             />}
-                            
-
-                            {/* <Text style={styles.head1}>{data.one.fName}</Text>
-                            {this.state.showWidget &&  <Switch thumbColor={this.state.checkPlayer1? '#69C674':'#E9835D'} trackColor={{false:'#E9835D' , true:'#69C674' }}
-                                value={this.state.checkPlayer1}  
-                                onValueChange ={(checkPlayer1)=>this.setState({checkPlayer1})}
-                            />  } */}
                         </View>
 
 
@@ -256,10 +194,6 @@ export default class MatchCards extends React.Component {
                                 value={this.state.checkPlayer2}  
                                 onValueChange ={(checkPlayer2)=>this.setState({checkPlayer2})}
                             /> 
-                            {/* {this.state.showWidget &&  <Switch thumbColor={this.state.checkPlayer2? '#69C674':'#E9835D'} trackColor={{false:'#E9835D' , true:'#69C674' }}
-                                value={this.state.checkPlayer2}  
-                                onValueChange ={(checkPlayer2)=>this.setState({checkPlayer2})}
-                            />  } */}
                         </View>}
                     </View>
 
@@ -277,12 +211,6 @@ export default class MatchCards extends React.Component {
                                 value={this.state.checkPlayer3}  
                                 onValueChange ={(checkPlayer3)=>this.setState({checkPlayer3})}
                         /> }
-                        
-                            {/* <Text style={styles.head1}>{show? 'Third Player': data.two.fName}</Text> */}
-                            {/* {this.state.showWidget && <Switch thumbColor={show?this.state.checkPlayer3? '#69C674':'#E9835D':this.state.checkPlayer2? '#69C674':'#E9835D'} trackColor={{false:'#E9835D' , true:'#69C674' }}
-                                value={show?this.state.checkPlayer3:this.state.checkPlayer2}  
-                                onValueChange ={(checkPlayer2)=>this.player(checkPlayer2)}
-                            />  } */}
                         </View>
 
                        {this.state.player4.length>0 &&  <View style={styles.teamNames} >
@@ -290,11 +218,7 @@ export default class MatchCards extends React.Component {
                             <Switch thumbColor={this.state.checkPlayer4? '#69C674':'#E9835D'} trackColor={{false:'#E9835D' , true:'#69C674' }}
                                 value={this.state.checkPlayer4}  
                                 onValueChange ={(checkPlayer4)=>this.setState({checkPlayer4})}
-                            /> 
-                            {/* {this.state.showWidget && <Switch thumbColor={this.state.checkPlayer4? '#69C674':'#E9835D'} trackColor={{false:'#E9835D' , true:'#69C674' }}
-                                value={this.state.checkPlayer4}  
-                                onValueChange ={(checkPlayer4)=>this.setState({checkPlayer4})}
-                            />  } */}
+                            />
                         </View>}
                     </View>
                 </View>

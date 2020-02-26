@@ -1,22 +1,16 @@
 import React from 'react';
-import { ActivityIndicator, View, Text, Button, BackHandler, ImageBackground, Image, TextInput, Dimensions, StyleSheet, ScrollView, FlatList, Modal, TouchableOpacity } from 'react-native';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-// import { TouchableOpacity } from 'react-native-gesture-handler';
-import { NavigationActions, StackActions } from 'react-navigation';
-// import MatchCards from './MatchCards';
+import { ActivityIndicator, View, Text, TextInput, Dimensions, StyleSheet, ScrollView, FlatList, Modal, TouchableOpacity } from 'react-native';
 import axios from 'axios'
 import Responsive from 'react-native-lightweight-responsive';
 import {Icon} from 'native-base'
 
 
-// tournament details and schedule----------------------------------------------
 export default class RefereeRequest extends React.Component {
     static navigationOptions = {
         header: null
     }
     constructor(props) {
         super(props);
-        // this.BracketTypes=null
         this.BracketData=''
         this.DivisionData=''
         this.state = {
@@ -42,36 +36,12 @@ export default class RefereeRequest extends React.Component {
     }
   
     componentDidMount(){    
-        //this.backHandler = BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
         const tournamentInfo = this.props.navigation.getParam('item')
-        console.log(tournamentInfo)
-        // this.BracketTypes = bracketTypes
         let date=this.convertDate(tournamentInfo.tStartDate)
         this.setState({startDate:date})
 
         let endate=this.convertDate(tournamentInfo.tEndDate)
         this.setState({endDate:endate})
-    }
-    handleBackPress = () => {
-        console.log('Here')
-        // this.props.navigation.dispatch(StackActions.reset({
-        //     index: 0,
-        //     actions: [NavigationActions.navigate({ routeName: 'HomePageStack' })],
-        // }))
-        // this.props.navigation.pop()
-        //this.backHandler.remove()
-        // this.props.navigation.goBack('ManageEventsStack');
- 
-        // const { state, goBack } = this.props.navigation;
-        // const params = state.params
-        // goBack(params.go_back_key)
-    }
-
-
-
-    componentWillUnmount(){
-        //this.backHandler.remove()
-
     }
     convertDate(date){
         var d= new Date(date)
@@ -95,7 +65,6 @@ export default class RefereeRequest extends React.Component {
         axios.get(gettingUrl+tournamentId)
         .then((response)=>{
             newData = response.data
-            // console.log(newData[0].schedule)
             if (newData.length > 0) {
                 this.setState({
                     tourData: newData,
@@ -113,15 +82,11 @@ export default class RefereeRequest extends React.Component {
     }
 
 closeSelectedModal({item, location}){
-        // console.log('Here')
         this.setState({selectionModal:false, selectedValue:item, buttonDisabled:false, arrayLocation:location})
     }
 
     conformingRequest(user, tournament){
         const {address, phoneNumber, incomData, submitted, isSuccessFull, selected} = this.state
-        // console.log(user, tournament)
-        //console.log(this.DivisionData[this.state.arrayLocation])
-        // console.log(address, phoneNumber)
         if(address.length>0 && phoneNumber.length>0){
             const Obj ={
                 address:  address,
@@ -142,10 +107,7 @@ closeSelectedModal({item, location}){
                 isPaid: false,
                 tournamentAddress:tournament.address
             }
-
-            //console.log('Request Sent')
             this.setState({submitted:true, isSuccessFull:true})
-            //console.log(Obj)
             this.sendingData(Obj)
         }
         else{
@@ -163,20 +125,16 @@ closeSelectedModal({item, location}){
             body: JSON.stringify(obj)
         }
         try{
-            // console.log(obj)0
             let url ='https://pickletour.appspot.com/api/referee/register'
             const res = await fetch(url, config)
             const data = await res.json()
-            // console.log(data)
             if(data.message =='referee Registered'){
                 this.setState({finallyComplete:true})
 
                 setTimeout(()=>{
-                    //this.setState({modalVisible:false})
                     this.props.navigation.goBack()
                 },3000)
             }
-            //console.log(data)
         }catch(error){
 
         }
@@ -186,8 +144,6 @@ closeSelectedModal({item, location}){
         const user = this.props.navigation.getParam('user')
 
         const { address, phoneNumber, incomData, submitted, isSuccessFull, selected, finallyComplete } = this.state
-    
-        // console.log(this.BracketTypes)
         const tournamentInfo = this.props.navigation.getParam('item')
         const bracketTypes =  tournamentInfo.division.map(a => {
             if(a.bracketType=='Round Robin')
@@ -215,16 +171,6 @@ closeSelectedModal({item, location}){
         let result2= division.map(a=>a.bracketType);
         const bracketData =[...result2]
         this.BracketData =bracketData
-
-
-        // console.log(this.DivisionData)
-        //console.log(divisionData)
-        // console.log('Here')
-        // console.log(tournamentInfo.division)
-        //console.log(tournamentInfo)
-        // console.log(tournamentInfo.tournamentName)
-        //console.log('----------------------------------------------------------------------------------')
-        //console.log(this.props.navigation.getParam('item'))
         return (
             <View>
 
@@ -287,8 +233,6 @@ closeSelectedModal({item, location}){
 
                     animationType='none'
                     visible={this.state.selectionModal}
-                    style={{}}
-                    // style={{justifyContent: 'center', alignContent:'center', alignItems:'center', alignSelf:'center'}}
                    
                 >
                    <View style={{   backgroundColor:'white',
@@ -323,9 +267,7 @@ closeSelectedModal({item, location}){
                        </View>
 
                    </View>
-                </Modal>
-                {/* <ScrollView style={{ marginBottom: 10 }}> */}
-                    
+                </Modal>                   
 
                     <View style={{ padding: 10 }}>
                         <FlatList
@@ -389,8 +331,6 @@ closeSelectedModal({item, location}){
                                         </View>
                                     
                                     </View>
-
-                                    {/* <View style={{ height: 1, backgroundColor: '#E2E2E2', marginTop: 5, marginBottom: 5 }} /> */}
                                 </View>
                     
                             )}
@@ -403,12 +343,7 @@ closeSelectedModal({item, location}){
                             
                             )}
                         />
-                        {/* :<View style={{ paddingTop:"50%",flex: 1,justifyContent: 'center'}}>
-                        <ActivityIndicator size="large" color="#48A080" />
-                    </View>} */}
                     </View>
-                {/* </ScrollView> */}
-
             </View>
 
         );
@@ -417,7 +352,6 @@ closeSelectedModal({item, location}){
 const styles = StyleSheet.create({
     cardStyles: {
         alignSelf:'center',
-        //marginHorizontal:10,
         width: '100%',
         backgroundColor:'#DBFFF1',
         shadowColor: "#000",

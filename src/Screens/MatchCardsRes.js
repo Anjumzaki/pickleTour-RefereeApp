@@ -1,8 +1,5 @@
 import React from 'react';
-import { View, Text, Button, ImageBackground, Image, TextInput, Dimensions, StyleSheet, ScrollView,Switch } from 'react-native';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import { NavigationActions, StackActions } from 'react-navigation';
+import { View, Text, StyleSheet } from 'react-native';
 import Responsive from 'react-native-lightweight-responsive';
 import {Icon} from 'native-base'
 
@@ -30,24 +27,10 @@ export default class MatchCardsRes extends React.Component {
         day = '0' + day;
         return [day, month, year].join('/');
     }
-    // login() {
-    //     this.props.navigation.navigate('MainTabs')
-    //     this.props.navigation.dispatch(StackActions.reset({
-    //         index: 0,
-    //         actions: [NavigationActions.navigate({ routeName: 'MainTabs' })],
-    //     }))
-    // }
 
     render() {
         const data = this.props.data
         const show = this.props.showMulti
-        const { checkCourt, checkPlayer1, checkPlayer2, checkPlayer4, checkPlayer3 } =this.state
-        const enabled = checkCourt==true && checkPlayer1==true && checkPlayer2==true
-        const enabled2 = checkCourt==true && checkPlayer1==true && checkPlayer2==true && checkPlayer4==true && checkPlayer3==true
-        //console.log('----------------------------------------------------------------------------------------------------------')
-        // console.log(this.props.data)
-        // console.log('saeedi')
-        // console.log(this.props.navigation.state.params.item)
         return (
             <View style={styles.cardStyles}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
@@ -111,26 +94,16 @@ export default class MatchCardsRes extends React.Component {
                         <View style={styles.teamNames} >
                             <Text style={styles.head1}>{show? 'Third Player': data.two.fName}</Text>
                             <Icon type="Entypo" name="trophy"  style={{ fontSize:Responsive.font(17) ,color: '#DBE187', alignSelf:'center'}}/>
-
-                            {/* {this.state.showWidget && <Switch thumbColor={show?this.state.checkPlayer3? '#42974D':'#D14D4D':this.state.checkPlayer2? '#42974D':'#D14D4D'} trackColor={{false:'#D14D4D' , true:'#42974D' }}
-                                value={show?this.state.checkPlayer3:this.state.checkPlayer2}  
-                                onValueChange ={(checkPlayer2)=>this.player(checkPlayer2)}
-                            />  } */}
                         </View>
 
                        {show &&  <View style={styles.teamNames} >
                             <Text style={styles.head1}>Fourth Player</Text>
-                            {/* {this.state.showWidget && <Switch thumbColor={this.state.checkPlayer4? '#42974D':'#D14D4D'} trackColor={{false:'#D14D4D' , true:'#42974D' }}
-                                value={this.state.checkPlayer4}  
-                                onValueChange ={(checkPlayer4)=>this.setState({checkPlayer4})}
-                            />  } */}
                         </View>}
                     </View>
                 </View>
                 <View style={{ height: 1, marginBottom: 10, marginTop: 5 }} />
                 <View style={{flexDirection:'row'}}>
                     <View style={{width:'48%', flexDirection:'row', justifyContent:'flex-end'}}>
-                    {/* <Text style={{alignSelf:'center', marginRight:5,  fontFamily:'open-sans-bold',color:'#585858'}}>Winner</Text> */}
                         <Text style={{backgroundColor:'white', padding:5, borderWidth:1, borderColor:'#999999',  fontFamily:'open-sans-bold',color:'#585858'}}>13</Text>
                     </View>
                     <View style={{width:'4%'}}>

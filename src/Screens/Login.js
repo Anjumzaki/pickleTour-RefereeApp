@@ -1,15 +1,9 @@
 import React from 'react';
-import { View, Text, Button, ImageBackground, Image, TextInput, Dimensions, StyleSheet, ScrollView, ActivityIndicator, AsyncStorage } from 'react-native';
+import { View, Text, Image, TextInput, StyleSheet, ActivityIndicator, AsyncStorage, TouchableOpacity } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { TouchableOpacity, FlatList } from 'react-native-gesture-handler';
-import { NavigationActions, StackActions } from 'react-navigation';
 import firebase from 'firebase';
-import axios from 'axios'
 import { LinearGradient } from 'expo-linear-gradient';
 import Responsive from 'react-native-lightweight-responsive';
-
-
-
 
 export default class Login extends React.Component {
     static navigationOptions = {
@@ -31,32 +25,22 @@ export default class Login extends React.Component {
             userName:'',
             Password:''
         })
-        // this.props.navigation.dispatch(StackActions.reset({
-        //                     index: 0,
-        //                     actions: [NavigationActions.navigate({ routeName: 'Login' })],
-        //                 }))
     }
     async letsHandleLogin(){
         try{
-            // setTimeout(()=>{},5000)
             this.setState({isFetching:true})
             const {userName, Password}= this.state
             let user = await firebase.auth().signInWithEmailAndPassword(userName,Password)
-            //let dum = await firebase.auth().signOut()
-            //console.log(dum)
             let url = 'https://pickletour.appspot.com/api/user/get/'+ user.user.uid
             const res = await fetch(url)
             const data = await res.json()
-            console.log(data)
             const newUser ={
                 uid: data.uid,
                 firstName:data.firstName,
                 email: data.email,
                 password: data.password,
                 dateOfBirth: data.dateOfBirth,
-                gender:data.gender,
-                address:'abc',
-                phoneNumber:'123'        
+                gender:data.gender,       
             }
             this.storingUserData(newUser)
             
@@ -64,15 +48,10 @@ export default class Login extends React.Component {
             this.setState({isFetching:false,msg:'Incorrect credentials, please try again'})
         }
     }
-    // componentDidUpdate(){
-    //     this.setState({isFetching:true})
-    // }
 
     async storingUserData(user){
         try{
-            // const {userName, Password}= this.state
             await AsyncStorage.setItem('userProfileData', JSON.stringify(user))
-            //await firebase.auth().signInWithEmailAndPassword(name,password)
             setTimeout(()=>{
                 this.setState({isFetching:false})
             },3000)
@@ -81,94 +60,14 @@ export default class Login extends React.Component {
         }
     }
 
-    handleLogin = () => {
-        this.setState({isFetching:true})
-        // TODO: Firebase stuff...
-        const {userName, Password}= this.state
-        firebase.auth().signInWithEmailAndPassword(userName,Password)
-        .then((data)=>{
-            // console.log(data.user.uid)
-            this.setState({ userId:data.user.uid})
-            axios.get('https://pickletour.appspot.com/api/user/get/'+data.user.uid)
-            .then((data)=>{
-                const newUser ={
-                    uid: data.data.uid,
-                    firstName:data.data.firstName,
-                    email: data.data.email,
-                    password: data.data.password,
-                    dateOfBirth: data.data.dateOfBirth,
-                    gender:data.data.gender,
-                    address:data.data.address,
-                    phoneNumber:data.data.phoneNumber    
-                    
-                    
-                }
-
-
-                // console.log(data.data.gender)
-                AsyncStorage.setItem('userProfileData', JSON.stringify(newUser))
-                // console.log(AsyncStorage.getItem('userProfileData'))
-                // this.props.navigation.navigate('MainTabs')
-                this.setState({isFetching:false})
-                
-                // const saveUserId = async userId=>{
-                //     try{
-                //         await AsyncStorage.setItem('userId', this.state.userId)
-                //     }
-                //     catch(error){
-                //         console.log(error)
-                //     }
-                // }
-                // saveUserId()
-            })
-        // axios.get('https://pickletour.appspot.com/api/user/profile/'+user.user.uid).then(resp => {
-        //         console.log("agyaaaaaaa")
-        //         console.log(resp.data);
-        //         dispatch(uidsave(resp.data)
-        })
-        .catch(error=>{this.setState({isFetching:false, msg:'Incorrect credentials, please try again.'})})
-        
-      }
-    login() {
-        // console.log("login")
-        // axios
-        //     .post('https://blooming-ridge-94645.herokuapp.com/login',{
-        //         userName: this.state.userName,
-        //         password: this.state.Password
-        //     })
-        //     .then((response) => { 
-
-        //         console.log("resp1",response.data)
-        //         if(response.data === "match"){
-        //             this.props.navigation.navigate('MainTabs')
-        //             this.props.navigation.dispatch(StackActions.reset({
-        //                 index: 0,
-        //                 actions: [NavigationActions.navigate({ routeName: 'MainTabs' })],
-        //             }))
-        //         }else if(response.data === "wrong"){
-        //             this.setState({msg: "password is incorrect"})
-        //         }
-        //     }).catch((error) => { 
-        //     console.log("mongodb get register error",error)
-        //     this.setState({msg: "login info is incorrect"})
-        //     })
-        this.props.navigation.navigate('MainTabs')
-        this.props.navigation.dispatch(StackActions.reset({
-            index: 0,
-            actions: [NavigationActions.navigate({ routeName: 'MainTabs' })],
-        }))
-    }
-
     render() {
         const { userName, Password  } =this.state
         const enabled = userName.length>0 && Password.length>0
-        // console.log("state", this.state)
         return (
             <LinearGradient           
             colors={['#86D6B9','#48A080', ]}
             start={[0.5, 0]}
             end={[0.5, 1]}
-            // location={[0.25, 0.4]}
             style={{ flex: 1, justifyContent: 'center', alignItems: 'center',  }}>
                 <KeyboardAwareScrollView enableOnAndroid={true}>
                     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center',marginTop:200}}>
@@ -207,8 +106,6 @@ export default class Login extends React.Component {
                             <TouchableOpacity onPress={() =>
                                 this.letsHandleLogin()
                             } disabled={!enabled} style={{fontFamily: 'open-sans-bold',
-        
-                            //width: Dimensions.get('window').width - 105,
                             alignItems: 'center',
                             backgroundColor: enabled?'#48D5A0':'#BEBAC5',
                             paddingTop:5,
@@ -245,15 +142,8 @@ export default class Login extends React.Component {
                     <View style={{ alignItems: 'center' }}>
                         <TouchableOpacity style={{ flexDirection: 'row' }} onPress={() => this.props.navigation.navigate('SignUp')}>
                             <Text style={styles.reg1}>Don't have an account?</Text>
-                            {/* <TouchableOpacity onPress={() => this.props.navigation.navigate('SignUp')}>
-                                <Text style={styles.reg} >REGISTER </Text>
-                            </TouchableOpacity> */}
                         </TouchableOpacity>
                     </View>
-                    {/* <Button
-                            title="Go to Sign up"
-                            onPress={() => this.props.navigation.navigate('SignUp')}
-                        /> */}
                 </KeyboardAwareScrollView>
             </LinearGradient>
 

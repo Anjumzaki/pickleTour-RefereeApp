@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Image, Text, Button , AsyncStorage} from 'react-native';
-import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import { View, StyleSheet, Image, Text, AsyncStorage, TouchableOpacity} from 'react-native';
 import firebase from 'firebase';
 import { NavigationActions, StackActions } from 'react-navigation';
 import Responsive from 'react-native-lightweight-responsive';
@@ -16,9 +15,6 @@ export default class CustomSidebarMenu extends Component {
       modalVisible: false,
       parsedData:''
     }
-    //Array of the sidebar navigation option with icon and screen to navigate
-    //This screens can be any screen defined in Drawer Navigator in App.js
-    //You can find the Icons from here https://material.io/tools/icons/
     this.items = [
       {
         navOptionIconType: "MaterialIcons", 
@@ -65,10 +61,7 @@ export default class CustomSidebarMenu extends Component {
   async getUserData(){
     try{
       let user = await AsyncStorage.getItem('userProfileData')
-      // console.log('Here',user)
       this.data= JSON.parse(user)
-      // console.log(this.data)
-
     }catch(error){
       alert(error)
     }
@@ -82,25 +75,13 @@ export default class CustomSidebarMenu extends Component {
         index: 0,
         actions: [NavigationActions.navigate({ routeName: 'Login' })],
     }))
-      //this.props.navigation.navigate('Login',{loading:true})
     }).catch(function(error) {
-      // An error happened.
     });
   }
 
-  // async deleteItem(){
-  //   try{
-  //     // await AsyncStorage.removeItem('userId');
-  //     this.UserLogout()
-  //   }catch(error){
-
-  //   }
-  // }
   render() {
-    // console.log(this.state.parsedData.address)
     return (
       <View style={styles.sideMenuContainer}>
-        {/*Top Large Image */}
         <LinearGradient 
         colors={['#86D6B9','#48A080', ]}
         style={{ backgroundColor: '#48A080', width: '100%', margin: 0, padding: 20 }}>
@@ -113,7 +94,7 @@ export default class CustomSidebarMenu extends Component {
           <Text style={{fontSize:Responsive.font(13),color:'white',fontFamily: 'open-sans-bold'}}>{this.data.email}</Text>
         </LinearGradient>
        
-        {/*Divider between Top Image and Sidebar Option*/}
+        
         <View
           style={{
             width: '100%',
@@ -121,18 +102,12 @@ export default class CustomSidebarMenu extends Component {
             backgroundColor: '#e2e2e2',
           }}
         />
-        {/*Setting up Navigation Options from option array using loop*/}
+        
         <View style={{ width: '100%' }}>
           {this.items.map((item, key) => (
             <TouchableOpacity onPress={() => {
               global.currentScreenIndex = key;
-              this.props.navigation.navigate(item.screenToNavigate,this.data);
-            //   this.props.navigation.dispatch(StackActions.reset({
-            //     index: 0,
-            //     key:null,
-            //     actions: [NavigationActions.navigate({ routeName: item.screenToNavigate })],
-            // }))
-              
+              this.props.navigation.navigate(item.screenToNavigate,this.data);              
             }}
               key={key}>
               <View
