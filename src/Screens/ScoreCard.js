@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Alert,Modal,View, Text,BackHandler,ImageBackground,StatusBar , TouchableOpacity, Image} from 'react-native';
+import { Alert,Modal,View, Text,BackHandler,ImageBackground,StatusBar , TouchableOpacity, Image,Dimensions} from 'react-native';
 import { ScreenOrientation, } from 'expo';
 import { RadioGroup} from 'react-native-btr';
 import { CheckBox, ListItem, Icon } from 'native-base'
@@ -519,9 +519,9 @@ showingAlertConfirmStart(){
 
 
         {/* Modal Settings-`--`-------------------- */}
-        <ImageBackground style={{width: '100%', height: '100%', flexDirection:'column', flex:1,overflow: 'hidden',position:'absolute'}} source={require('../../assets/background.png')}>
-                  <View style={{width:'100%', height:'90%', flexDirection:'row'}}>
-                  <View style={{width:'50%', flex:1, flexDirection:'row' }}>
+        <ImageBackground style={{width: Dimensions.get('window').width, height: Dimensions.get('window').height, flexDirection:'column', flex:1,overflow: 'hidden',position:'absolute'}} source={require('../../assets/background.png')}>
+                  <View style={{width:Dimensions.get('window').width, height:Dimensions.get('window').height -50, flexDirection:'row'}}>
+                  <View style={{width:Dimensions.get('window').width/2, flex:1, flexDirection:'row' }}>
           <View style={{flex:0.7, flexDirection:'column'}}>
             {this.state.Team1Serving?<View style={{backgroundColor:'#91c549', width:Responsive.width(100), height:Responsive.height(30), alignSelf:'flex-end', borderColor:'#707070', borderWidth:1,marginTop:'1%'}}>
               <Text style={{fontFamily: 'open-sans-bold',color:'#515151', alignSelf:'center', fontSize:Responsive.font(20)}}>{'Serve '+this.state.Serve}</Text>
