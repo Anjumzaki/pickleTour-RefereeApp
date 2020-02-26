@@ -125,9 +125,7 @@ export default class MainScreen extends React.Component {
             console.log(error)
         })
     }
-    // componentDidMount(){
-    //     this.getUserData()
-    // }
+  
     async getUserData(){
         try{
             let user = await AsyncStorage.getItem('userProfileData')
@@ -135,163 +133,39 @@ export default class MainScreen extends React.Component {
             this.userData= parsed
             this.getUpcomingData()
             this.getOngoingData()
-            
             this.getCompletedData()
 
-            // this.testingData()
-            //this.getItem()
-            // console.log(parsed)
         }catch(error){
             console.log(error)
         }
     }
-
-    recall(screen){
-        // switch(screen){
-        //     case 'Third':
-        //         this.getUpcomingData(this.userData.uid)
-        //         break;
-        // }
-    }
     
-    async getItem(){
-        try{
-            this.userId =await AsyncStorage.getItem('userId')
-            // this.getAllData(this.userId)
-            this.getOneData(this.userId)
-            this.getTwoData(this.userId)
-            this.getThreeData(this.userId)
-            // console.log('User ID:  ',this.userId)
-        }catch (error){
-            console.log('error')
+
+    refreshOnButtonClickCompletedEvents(){
+        if(this.state.compData.length ==0){
+            this.setState({actScr:1},()=>this.getCompletedData())
+        }
+        else{
+            this.setState({actScr:1})
         }
     }
 
-    getOneData= (userId)=>{
-
-        // var prevData = []
-        // var con = this.state.counter
-        // if(this.state.dropChanged){
-        //     this.setState({
-        //         dataOneLoaded
-        //         // loading:true,
-        //         // dataFound:false,
-        //         // counter:0,
-        //         // dropChanged:false
-
-        //     })
-        //     con = 0
-        // }
-        // else{
-        //     prevData = this.state.tourData
-        // }
-
-        var newData = [];
-       //var gettingUrl = 'https://pickletour.appspot.com/api/get/completed/Events/'+this.userId
-        var gettingUrl = 'http://pickletour.com/api/get/league/page/0'
-        
-        axios.get(gettingUrl)
-        .then((response)=>{
-            newData = response.data
-            // console.log(newData)
-            var allData = [...newData]
-            // var con = this.state.counter
-            if (newData.length > 0) {
-                this.setState({
-                    compData: allData,
-                    // loading: false,
-                    dataOneLoaded:true,
-                    // counter: con + 1
-                })
-            }
-            else {
-                this.setState({
-                    // tourData: allData,
-                    // loading: false,
-                    dataOneLoaded:false,
-                })
-            }
-        }).catch((error)=>{
-            console.log(error)
-        })
-    }
-
-
-    getTwoData= (userId)=>{
-       
-
-        var newData = [];
-       
-        var gettingUrl = 'http://pickletour.com/api/get/tournament/page/0'
-        
-        axios.get(gettingUrl)
-        .then((response)=>{
-            newData = response.data
-            // console.log(newData)
-            var allData = [...newData]
-            // var con = this.state.counter
-            if (newData.length > 0) {
-                this.setState({
-                    onData: allData,
-                    // loading: false,
-                    dataTwoLoaded:true,
-                    // counter: con + 1
-                })
-            }
-            else {
-                this.setState({
-                    // tourData: allData,
-                    // loading: false,
-                    dataTwoLoaded:false,
-                })
-            }
-        }).catch((error)=>{
-            console.log(error)
-        })
-    }
-    getThreeData= (userId)=>{
-       
-
-        var newData = [];
-       
-        var gettingUrl = 'http://pickletour.com/api/get/recreational/page/0'
-        
-        axios.get(gettingUrl)
-        .then((response)=>{
-            newData = response.data
-            // console.log(newData)
-            var allData = [...newData]
-            // var con = this.state.counter
-            if (newData.length > 0) {
-                this.setState({
-                    upData: allData,
-                    // loading: false,
-                    dataThreeLoaded:true,
-                    // counter: con + 1
-                })
-            }
-            else {
-                this.setState({
-                    // tourData: allData,
-                    // loading: false,
-                    dataThreeLoaded:false,
-                })
-            }
-        }).catch((error)=>{
-            console.log(error)
-        })
-    }
-
-    refreshOnButtonClickCompletedEvents(){
-        this.setState({actScr:1},()=>this.getCompletedData())
-    }
-
     refreshOnButtonClickOngoingEvents(){
-        this.setState({actScr:2},()=>this.getOngoingData())
+        if(this.state.onData.length ==0){
+            this.setState({actScr:2},()=>this.getOngoingData())
+        }
+        else{
+            this.setState({actScr:2})
+        }
     }
 
     refreshOnButtonClickUpcomingEvents(){
-        this.setState({actScr:3},()=>this.getUpcomingData())
+        if(this.state.upData.length ==0){
+            this.setState({actScr:3},()=>this.getUpcomingData())
+        }
+        else{
+            this.setState({actScr:3})
+        }
     }
     render() {
         // console.log("state", this.state)

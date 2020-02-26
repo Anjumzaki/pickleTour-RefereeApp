@@ -152,10 +152,21 @@ export default class MainScreen extends React.Component {
 
 
     refreshOnButtonClickMyEvents(){
-        this.setState({actScr:1},()=>this.getMyEvents())
+        if(this.state.eventsData.length==0)
+        {
+            this.setState({actScr:1},()=>this.getMyEvents())
+        }
+        else{
+            this.setState({actScr:1})
+        }
     }
     refreshOnButtonClickReqEvents(){
-        this.setState({actScr:2},()=>this.getRequestedEvents())
+        if(this.state.reqData.length ==0){
+            this.setState({actScr:2},()=>this.getRequestedEvents())
+        }
+        else{
+            this.setState({actScr:2})
+        }
     }
 
     

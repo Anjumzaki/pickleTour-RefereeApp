@@ -10,9 +10,9 @@ import {Icon} from 'native-base'
 
 
 // tournament details and schedule----------------------------------------------
-export default class EventDetails extends React.Component {
+export default class EventDetailsTwo extends React.Component {
     static navigationOptions = {
-        header: null
+        header: null,
     }
     constructor(props) {
         super(props);

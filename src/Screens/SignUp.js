@@ -283,6 +283,7 @@ export default class SignUp extends React.Component {
                                     },
                                     dateText: {
                                         fontSize: Responsive.font(14),
+                                        fontFamily: 'open-sans-bold',
                                         color: 'black'
                                     },
                                     dateInput: {
@@ -299,6 +300,7 @@ export default class SignUp extends React.Component {
                                     },
                                     placeholderText: {
                                         fontSize: Responsive.font(14),
+                                        fontFamily: 'open-sans-bold',
                                         color: 'gray'
                                     }
                                 }}
@@ -332,7 +334,7 @@ export default class SignUp extends React.Component {
                         <View style={styles.SectionStyle}>
                         
                 <TouchableOpacity style={styles.DateForms1} onPress={()=>this.setState({selectionModal:true})}>
-                        {this.state.gender.length>0 ? <Text style={{fontSize: Responsive.font(14),color: 'black',}}>{this.state.gender}</Text>: <Text style={{fontSize: Responsive.font(14),color: 'grey',}}>Select Gender</Text>}
+                        {this.state.gender.length>0 ? <Text style={{fontSize: Responsive.font(14),color: 'black',fontFamily: 'open-sans-bold',}}>{this.state.gender}</Text>: <Text style={{fontSize: Responsive.font(14),color: 'grey',fontFamily: 'open-sans-bold',}}>Select Gender</Text>}
                 </TouchableOpacity>
                     </View>
 

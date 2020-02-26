@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Alert,Modal,View, Text,StyleSheet,SafeAreaView , BackHandler,ImageBackground,StatusBar , TouchableOpacity, Image} from 'react-native';
+import { Alert,Modal,View, Text,StyleSheet,SafeAreaView , BackHandler,StatusBar , TouchableOpacity, Image} from 'react-native';
 import { ScreenOrientation, } from 'expo';
 import { RadioGroup} from 'react-native-btr';
 import { CheckBox, ListItem, Icon } from 'native-base'
@@ -562,7 +562,7 @@ showingAlertConfirmStart(){
                 <TouchableOpacity onPress={()=>this.resettingGame('yes')}style={{ height:'50%',paddingHorizontal:20,marginTop:10,backgroundColor:'#91c549', justifyContent:'center',borderRadius:12}}>
                 <Text style={{fontFamily: 'open-sans-bold',alignSelf:'center', color:'#515151',fontSize:Responsive.font(15)}}>Reset</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={()=>this.props.navigation.navigate('ManageEventsStack')} style={{ height:'50%',paddingHorizontal:20,marginTop:10,backgroundColor:'#91c549', justifyContent:'center',borderRadius:12}}>
+                <TouchableOpacity onPress={()=>this.props.navigation.goBack(null)} style={{ height:'50%',paddingHorizontal:20,marginTop:10,backgroundColor:'#91c549', justifyContent:'center',borderRadius:12}}>
                 <Text style={{fontFamily: 'open-sans-bold',alignSelf:'center', color:'#515151',fontSize:Responsive.font(15)}}>Exit</Text>
                 </TouchableOpacity>
             </View>
@@ -572,9 +572,9 @@ showingAlertConfirmStart(){
 
 
 
-
+        <Image style={{width: '100%', height: '100%', flexDirection:'column', flex:1,overflow: 'hidden',position:'absolute'}} source={require('../../assets/background.png')}/>
         {/* Modal Settings-`--`-------------------- */}
-        <ImageBackground style={{width: undefined, height: undefined, flexDirection:'column', flex:1}} source={require('../../assets/background.png')}>
+        <View style={{width: '100%', height: '100%', flexDirection:'column', flex:1,}} >
                   <View style={{width:'100%', height:'90%', flexDirection:'row'}}>
                   <View style={{width:'50%', flex:1, flexDirection:'row' }}>
           <View style={{flex:0.7, flexDirection:'column'}}>
@@ -697,7 +697,7 @@ showingAlertConfirmStart(){
                   </View>
           
           
-        </ImageBackground>
+        </View>
       </View>
 //       <View style={{flex:1, justifyContent: 'center', flexDirection:'row', }}>
         
