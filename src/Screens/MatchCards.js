@@ -6,7 +6,6 @@ export default class MatchCards extends React.Component {
 
     constructor(props) {
         super(props);
-        this.Time='12:28'
         this.state = {
             actScr: '1',
             test:false,
@@ -110,7 +109,9 @@ export default class MatchCards extends React.Component {
         let m = today.getMinutes();
         m = (m < 10) ? ("0" + m) : m;
         let time = h+':'+m        
-        if(time>=this.props.data.matchTime  && data.matchDate <= date){
+        // if(time>=this.props.data.matchTime  && this.props.data.matchDate <= today)
+        if(time>=this.props.data.matchTime )
+        {
             this.props.navigation.navigate('ScoreCard',{userData, checkMulti, players})
         }
         else{
