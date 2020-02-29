@@ -144,19 +144,39 @@ class ScoreCard extends Component {
   }
 
   checkingScore(whichTeam){
+    const { TeamFormation, Player1Name, Player3Name } =this.state
+    let msg=''
     if(whichTeam=='ByOne'){
       
       if(this.state.checked==true){
         if(this.state.ScoreTeam2==this.TargetSelected && this.state.ScoreTeam2-this.state.ScoreTeam1>=2){
-          this.showingAlert('Team two is the Winner.')  
+          if(TeamFormation=='Singles'){
+            msg = Player3Name+' is the Winner'
+            this.showingAlert(msg)
+          } 
+          else{
+            this.showingAlert('Team B is the Winner.') 
+          }
         }
         else if(this.state.ScoreTeam2>this.TargetSelected && this.state.ScoreTeam2-this.state.ScoreTeam1>=2){
-          this.showingAlert('Team two is the Winner.')  
+          if(TeamFormation=='Singles'){
+            msg = Player3Name+' is the Winner'
+            this.showingAlert(msg)
+          } 
+          else{
+            this.showingAlert('Team B is the Winner.') 
+          } 
         }
       }
       else{
         if(this.state.ScoreTeam2==this.TargetSelected){
-          this.showingAlert('Team two is the Winner.') 
+          if(TeamFormation=='Singles'){
+            msg = Player3Name+' is the Winner'
+          this.showingAlert(msg)
+          } 
+          else{
+            this.showingAlert('Team B is the Winner.') 
+          }
         }
       }
         
@@ -164,15 +184,34 @@ class ScoreCard extends Component {
   else if(whichTeam=='ByTwo'){
     if(this.state.checked==true){
       if(this.state.ScoreTeam1==this.TargetSelected && this.state.ScoreTeam1-this.state.ScoreTeam2>=2){
-        this.showingAlert('Team one is the Winner.') 
+        if(TeamFormation=='Singles'){
+          msg = Player1Name+' is the Winner'
+          this.showingAlert(msg)
+        } 
+        else{
+          this.showingAlert('Team A is the Winner.') 
+        }
       }
       else if(this.state.ScoreTeam1>this.TargetSelected && this.state.ScoreTeam1-this.state.ScoreTeam2>=2){
-        this.showingAlert('Team one is the Winner.') 
+        if(TeamFormation=='Singles'){
+          msg = Player1Name+' is the Winner'
+          this.showingAlert(msg)
+        } 
+        else{
+          this.showingAlert('Team A is the Winner.') 
+        }
       }
     }
     else{
       if(this.state.ScoreTeam1==this.TargetSelected){
-        this.showingAlert('Team one is the Winner.') 
+        if(TeamFormation=='Singles'){
+
+          msg = Player1Name+' is the Winner'
+          this.showingAlert(msg)
+        } 
+        else{
+          this.showingAlert('Team A is the Winner.') 
+        }
       }
     }
   }
@@ -519,11 +558,11 @@ showingAlertConfirmStart(){
 
 
         {/* Modal Settings-`--`-------------------- */}
-        <ImageBackground style={{width: Dimensions.get('window').width, height: Dimensions.get('window').height, flexDirection:'column', flex:1,overflow: 'hidden',position:'absolute'}} source={require('../../assets/background.png')}>
-                  <View style={{width:Dimensions.get('window').width, height:Dimensions.get('window').height -50, flexDirection:'row'}}>
+        <ImageBackground style={{width: Dimensions.get('window').width, height: Dimensions.get('window').height, flexDirection:'column', flex:1,overflow: 'hidden',position:'absolute'}} resizeMode='stretch' source={require('../../assets/background.png')}>
+                  <View style={{width:Dimensions.get('window').width, height:Dimensions.get('window').height -35, flexDirection:'row'}}>
                   <View style={{width:Dimensions.get('window').width/2, flex:1, flexDirection:'row' }}>
           <View style={{flex:0.7, flexDirection:'column'}}>
-            {this.state.Team1Serving?<View style={{backgroundColor:'#91c549', width:Responsive.width(100), height:Responsive.height(30), alignSelf:'flex-end', borderColor:'#707070', borderWidth:1,marginTop:'1%'}}>
+            {this.state.Team1Serving?<View style={{backgroundColor:'#91c549', width:Responsive.width(100), height:Responsive.height(30), alignSelf:'flex-end', borderColor:'#707070', borderWidth:1,marginTop:Dimensions.get('window').height/25}}>
               <Text style={{fontFamily: 'open-sans-bold',color:'#515151', alignSelf:'center', fontSize:Responsive.font(20)}}>{'Serve '+this.state.Serve}</Text>
             </View>:<View style={{ height:Responsive.height(30)}}></View>}
             {/* Player 2 Name and Ball */}
@@ -564,7 +603,7 @@ showingAlertConfirmStart(){
           </View> 
         {/* ------------------------------ */}
           <View style={{ flex:0.3}}>
-            <View style={{height:Responsive.height(40),width:Responsive.width(50),backgroundColor:this.state.Team1Serving?'#91c549':'white', alignSelf:'center', justifyContent:'center', borderWidth:1,borderColor:'#707070'}}>
+            <View style={{height:Responsive.height(40),width:Responsive.width(50),backgroundColor:this.state.Team1Serving?'#91c549':'white', alignSelf:'center', justifyContent:'center', borderWidth:1,borderColor:'#707070', marginTop:Dimensions.get('window').height/40}}>
               <Text style={{fontFamily: 'open-sans-bold',color:'#515151', alignSelf:'center', fontSize:Responsive.font(16)}}>{this.state.ScoreTeam1}</Text>
             </View>
           </View>
@@ -576,7 +615,7 @@ showingAlertConfirmStart(){
             
         <View style={{width:'50%',flex:1, flexDirection:'row'}}>
           <View style={{ flex:0.3}}>
-            <View style={{height:Responsive.height(40),width:Responsive.width(50), backgroundColor:this.state.Team2Serving?'#91c549':'white', alignSelf:'center', justifyContent:'center', borderWidth:1, borderColor:'#707070'}}>
+            <View style={{height:Responsive.height(40),width:Responsive.width(50), backgroundColor:this.state.Team2Serving?'#91c549':'white', alignSelf:'center', justifyContent:'center', borderWidth:1, borderColor:'#707070', marginTop:Dimensions.get('window').height/40}}>
               <Text style={{fontFamily: 'open-sans-bold',color:'#515151', alignSelf:'center', fontSize:Responsive.font(16)}}>{this.state.ScoreTeam2}</Text>
             </View>
           </View> 

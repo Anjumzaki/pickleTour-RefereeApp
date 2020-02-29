@@ -42,8 +42,8 @@ export default class HomePage extends Component {
   componentDidMount(){
       this.getUserData()
       this.getTourData()
-      this.getLeaguesData()
-      this.getRecreationalData()
+      // this.getLeaguesData()
+      // this.getRecreationalData()
       this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this.keyboardDidHide)
   }
 
@@ -350,7 +350,7 @@ searchFilterFunctionLocation = text =>{
     return (
       <View style={{flex:1}}>
         
-        <View style={styles.wrapTopSty}>
+        {/* <View style={styles.wrapTopSty}>
                     <TouchableOpacity onPress={() => this.setState({ actScr: 1 })} style={this.state.actScr == 1 ? styles.topBarStyAct : styles.topBarSty}>
                         <Text style={this.state.actScr==1?styles.selectedtopBarText:styles.topBarText}>Tournaments</Text>
                     </TouchableOpacity>
@@ -360,7 +360,7 @@ searchFilterFunctionLocation = text =>{
                     <TouchableOpacity onPress={() => this.setState({ actScr: 3  })} style={this.state.actScr == 3 ? styles.topBarStyAct : styles.topBarSty}>
                         <Text style={this.state.actScr==3?styles.selectedtopBarText:styles.topBarText}>Recreational</Text>
                     </TouchableOpacity>
-        </View>
+        </View> */}
         <View style={styles.SectionStyle}>
             <TextInput
             placeholder="Search by name or location"

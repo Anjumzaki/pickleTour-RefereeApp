@@ -88,14 +88,26 @@ export default class EventDetailsTwo extends React.Component {
                 newData = response.data[0].schedule
                 newData.forEach(element => {
                     element.map(item=>{
-                        dummyData.push(item)
+                        if(item.refereeId == this.data.uid){
+                            dummyData.push(item)
+                        }      
                     })
                 });
-                this.setState({
-                    tourData: dummyData,
-                    dataLoaded:true,
-                    loading:false
-                })
+                if(dummyData.length>0){
+                    this.setState({
+                        tourData: dummyData,
+                        dataLoaded:true,
+                        loading:false
+                    })
+                }
+                else{
+                    this.setState({
+                        dataLoaded:false,
+                        loading:false,
+                        showMessage:true
+                        
+                    })
+                }
             }
             else {
                 this.setState({
@@ -135,7 +147,7 @@ export default class EventDetailsTwo extends React.Component {
 
                                         <View style={{flexDirection:'row', paddingTop:10, paddingLeft:10}}>
                                             <Icon type="Entypo" name="location-pin"  style={{ alignSelf:'center',fontSize:Responsive.font(14) ,color: '#585858'}}/>
-                                            <Text style={{fontSize:Responsive.font(11), color:'#585858', fontFamily:'open-sans-bold', fontWeight:'600', paddingLeft:5}}>{tournamentInfo.address}</Text>
+                                            <Text style={{fontSize:Responsive.font(11), color:'#585858', fontFamily:'open-sans-bold', fontWeight:'600', paddingLeft:5}}>{tournamentInfo.tournamentAddress}</Text>
                                         </View>
 
                                         

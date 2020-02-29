@@ -65,8 +65,8 @@ export default class MatchCards extends React.Component {
     
     showingAlert(){
         Alert.alert(
-          'Time not correct !',
-          'Match cannot be started yet.',
+          'Match not started !',
+          'Cannot start before the time of match.',
           [
             {},
             {},

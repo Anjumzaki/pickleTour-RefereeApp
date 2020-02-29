@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Image, TextInput, StyleSheet, ActivityIndicator, AsyncStorage, TouchableOpacity } from 'react-native';
+import { View, Text, Image, TextInput, StyleSheet, ActivityIndicator, AsyncStorage, TouchableOpacity, Dimensions } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import firebase from 'firebase';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -45,7 +45,21 @@ export default class Login extends React.Component {
             this.storingUserData(newUser)
             
         }catch(error){
-            this.setState({isFetching:false,msg:'Incorrect credentials, please try again'})
+            if(error.message.includes('There is no user record')){
+                this.setState({isFetching:false,msg:'User not found.'})
+            }
+            else if(error.message.includes('The password is invalid or')){
+                this.setState({isFetching:false,msg:'Incorrect email or password.'})
+            }
+            else if(error.message.includes('A network error')) {
+                
+                this.setState({isFetching:false,msg:'An unknown network error has occurred.'})
+            }
+            else{
+                this.setState({isFetching:false,msg:'The email address is badly formatted.'})
+            }
+           
+            
         }
     }
 
@@ -70,7 +84,7 @@ export default class Login extends React.Component {
             end={[0.5, 1]}
             style={{ flex: 1, justifyContent: 'center', alignItems: 'center',  }}>
                 <KeyboardAwareScrollView enableOnAndroid={true}>
-                    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center',marginTop:200}}>
+                    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center',marginTop: Dimensions.get('window').height/3.5}}>
                         <View style={styles.SectionStyle}>
                            <Image resizeMode='contain' style={{ height:'100%',marginBottom:100, width: '100%'}} source={require('../../assets/NLogo.png')}/>
                         </View>
@@ -128,18 +142,18 @@ export default class Login extends React.Component {
                             </TouchableOpacity>
                         
                         }
-                          <View style={{marginTop:10}}>
+                          <View style={{marginTop:Dimensions.get('window').height/20}}>
                             <Text style={{color:'white', fontFamily:'open-sans-bold', fontSize:Responsive.font(16), alignSelf:'center', textAlign:'center'}}>
                                 {this.state.msg}
                             </Text>
                         </View>
-                        <View style={{marginTop:20}}>
+                        {/* <View style={{marginTop:20}}>
                             <Text style={styles.forgButton}>Forgot Password?</Text>
-                        </View>
+                        </View> */}
                       
                     </View>
                     <View style={{ height: 1, backgroundColor: '#E2E2E2', marginTop: 30, marginBottom: 30, opacity:0.6, width:'80%', alignSelf:'center' }} />
-                    <View style={{ alignItems: 'center' }}>
+                    <View style={{ alignItems: 'center', marginTop:Dimensions.get('window').height/20 }}>
                         <TouchableOpacity style={{ flexDirection: 'row' }} onPress={() => this.props.navigation.navigate('SignUp')}>
                             <Text style={styles.reg1}>Don't have an account?</Text>
                         </TouchableOpacity>

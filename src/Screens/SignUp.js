@@ -263,7 +263,7 @@ export default class SignUp extends React.Component {
                         <Text style={styles.regButton1}>Confirm</Text>
                     </TouchableOpacity>
                    }
-                    <View style={{justifyContent:'center', alignItems:'center', alignSelf:'center', marginTop:10, width:'95%'}}>
+                    <View style={{justifyContent:'center', alignItems:'center', alignSelf:'center', marginTop:Dimensions.get('window').height/35, width:'95%'}}>
                     <Text style={{color:'white', fontFamily:'open-sans-bold', fontSize:Responsive.font(16),alignSelf:'center', textAlign:'center'}}>
                         {this.state.msg}
                         

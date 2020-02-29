@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "PickleTour-Referee",
-    "slug": "PickleReferee",
+    "name": "PickleTour",
+    "slug": "PickleTour",
     "privacy": "public",
     "sdkVersion": "36.0.0",
     "platforms": [
@@ -11,7 +11,7 @@
     ],
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/logo_2.png",
+    "icon": "./assets/pticonf-01.png",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "cover",

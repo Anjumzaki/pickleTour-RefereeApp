@@ -96,7 +96,7 @@ export default class EventSummary extends React.Component {
 
                                         <View style={{flexDirection:'row', paddingTop:10, paddingLeft:10}}>
                                             <Icon type="Entypo" name="location-pin"  style={{ alignSelf:'center',fontSize:Responsive.font(14) ,color: '#585858'}}/>
-                                            <Text style={{fontSize:Responsive.font(11), color:'#585858', fontFamily:'open-sans-bold', fontWeight:'600', paddingLeft:5}}>{tournamentInfo.address}</Text>
+                                            <Text style={{fontSize:Responsive.font(11), color:'#585858', fontFamily:'open-sans-bold', fontWeight:'600', paddingLeft:5}}>{tournamentInfo.tournamentAddress}</Text>
                                         </View>
                                         <View style={{borderWidth:0.5,borderColor:'#CAECDF', marginTop:10, marginRight:10, marginLeft:10}}></View>
                                         <View style={{ flexDirection: 'row', paddingTop: 10 , paddingLeft:10}}>
