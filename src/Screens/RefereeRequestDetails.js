@@ -49,11 +49,8 @@ export default class RefereeRequestDetails extends React.Component {
     }
     convertDate(date){
         var d= new Date(date)
-        // let len=d.toString()
-        // console.log(len)
         var month = '' + (d.getMonth() + 1)
         var day = '' + d.getDate()
-        console.log(d)
         var year = d.getFullYear()
         if (month.length < 2) 
         month = '0' + month;
@@ -64,37 +61,7 @@ export default class RefereeRequestDetails extends React.Component {
 
    
     render() {
-        const { state, navigate } = this.props.navigation;
-        const user = this.props.navigation.getParam('user')
-
-        const { address, phoneNumber, incomData, submitted, isSuccessFull, selected, finallyComplete } = this.state
         const tournamentInfo = this.props.navigation.getParam('item')
-        // const bracketTypes =  tournamentInfo.division.map(a => {
-        //     if(a.bracketType=='Round Robin')
-        //         return '(R.R.)'
-        //     else if(a.bracketType =='Flex Ladder')
-        //         return '(F.L.)'
-        //     else if(a.bracketType == 'Box League')
-        //         return '(B.L.)'
-        //     else if(a.bracketType == 'Single Elimination')
-        //         return '(S.E.)'
-        //     else if(a.bracketType =='Double Elimination')
-        //         return '(D.E.)'
-        //     else if(a.bracketType =='Knock Out')
-        //         return'(K.O.)'
-        //     else if(a.bracketType =='Groups')
-        //         return 'Groups'
-                
-        //    }
-        // )
-        
-        // const division = tournamentInfo.division
-        // let result = division.map(a => a.nameOfDivision);
-        // const divisionData=[...result]
-        // this.DivisionData= divisionData
-        // let result2= division.map(a=>a.bracketType);
-        // const bracketData =[...result2]
-        // this.BracketData =bracketData
         return (
             <View>
                
