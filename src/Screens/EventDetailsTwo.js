@@ -8,7 +8,8 @@ import {Icon} from 'native-base'
 
 export default class EventDetailsTwo extends React.Component {
     static navigationOptions = {
-        header: null,
+        headerTitle:
+            <Text style={{ alignSelf:'center', color: 'white',fontFamily:'open-sans-bold',fontSize:Responsive.font(20)  }}>Event Details</Text>
     }
     constructor(props) {
         super(props);

@@ -1,13 +1,13 @@
 import React from 'react';
-import { View, Text, Dimensions, StyleSheet, ActivityIndicator, AsyncStorage, FlatList } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { View, Text, Dimensions, StyleSheet, ActivityIndicator, AsyncStorage, FlatList, TouchableOpacity } from 'react-native';
 import Responsive from 'react-native-lightweight-responsive';
 import EventCards from './EventCards'
 import MultiTypeEventsCards from './MultiTypeEventsCards'
 import axios from 'axios'
 export default class MainScreen extends React.Component {
     static navigationOptions = {
-        header: null
+        headerTitle:
+            <Text style={{ alignSelf:'center', color: 'white',fontFamily:'open-sans-bold',fontSize:Responsive.font(20)  }}>Dashboard</Text>
     }
     constructor(props) {
         super(props);

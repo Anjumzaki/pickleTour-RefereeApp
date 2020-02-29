@@ -1,15 +1,18 @@
 import React from 'react';
-import {  View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
+import { ActivityIndicator, View, Text, TextInput, Dimensions, StyleSheet, ScrollView, FlatList, Modal, TouchableOpacity } from 'react-native';
+import axios from 'axios'
 import Responsive from 'react-native-lightweight-responsive';
 import {Icon} from 'native-base'
 
-export default class InvitationDetails extends React.Component {
+
+export default class RefereeRequestDetails extends React.Component {
     static navigationOptions = {
         headerTitle:
-            <Text style={{ alignSelf:'center', color: 'white',fontFamily:'open-sans-bold',fontSize:Responsive.font(20)  }}>Invitation Details</Text>
+            <Text style={{ alignSelf:'center', color: 'white',fontFamily:'open-sans-bold',fontSize:Responsive.font(20)  }}>Requested as Referee</Text>
     }
     constructor(props) {
         super(props);
+        this.BracketData=''
         this.DivisionData=''
         this.state = {
             actScr: '1',
@@ -29,23 +32,28 @@ export default class InvitationDetails extends React.Component {
             submitted:false,
             arrayLocation:0,
             finallyComplete:false,
+            disabledButton:true
 
         };
     }
   
     componentDidMount(){    
+       
         const tournamentInfo = this.props.navigation.getParam('item')
-        let date=this.convertDate(tournamentInfo.tStartDate)
+        console.log(tournamentInfo)
+        let date=this.convertDate(tournamentInfo.tournamentStartDate)
         this.setState({startDate:date})
 
         let endate=this.convertDate(tournamentInfo.tEndDate)
         this.setState({endDate:endate})
     }
-
     convertDate(date){
         var d= new Date(date)
+        // let len=d.toString()
+        // console.log(len)
         var month = '' + (d.getMonth() + 1)
         var day = '' + d.getDate()
+        console.log(d)
         var year = d.getFullYear()
         if (month.length < 2) 
         month = '0' + month;
@@ -55,38 +63,42 @@ export default class InvitationDetails extends React.Component {
     }
 
    
-
-
-
-    async sendingData(obj){
-        const config = {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(obj)
-        }
-        try{
-            let url ='https://pickletour.appspot.com/api/referee/register'
-            const res = await fetch(url, config)
-            const data = await res.json()
-            if(data.message =='referee Registered'){
-                this.setState({finallyComplete:true})
-
-                setTimeout(()=>{
-                    this.props.navigation.goBack()
-                },3000)
-            }
-        }catch(error){
-
-        }
-    }
     render() {
+        const { state, navigate } = this.props.navigation;
+        const user = this.props.navigation.getParam('user')
+
+        const { address, phoneNumber, incomData, submitted, isSuccessFull, selected, finallyComplete } = this.state
         const tournamentInfo = this.props.navigation.getParam('item')
+        // const bracketTypes =  tournamentInfo.division.map(a => {
+        //     if(a.bracketType=='Round Robin')
+        //         return '(R.R.)'
+        //     else if(a.bracketType =='Flex Ladder')
+        //         return '(F.L.)'
+        //     else if(a.bracketType == 'Box League')
+        //         return '(B.L.)'
+        //     else if(a.bracketType == 'Single Elimination')
+        //         return '(S.E.)'
+        //     else if(a.bracketType =='Double Elimination')
+        //         return '(D.E.)'
+        //     else if(a.bracketType =='Knock Out')
+        //         return'(K.O.)'
+        //     else if(a.bracketType =='Groups')
+        //         return 'Groups'
+                
+        //    }
+        // )
         
+        // const division = tournamentInfo.division
+        // let result = division.map(a => a.nameOfDivision);
+        // const divisionData=[...result]
+        // this.DivisionData= divisionData
+        // let result2= division.map(a=>a.bracketType);
+        // const bracketData =[...result2]
+        // this.BracketData =bracketData
         return (
             <View>
+               
+
                     <View style={{ padding: 10 }}>
                         <FlatList
                             
@@ -110,7 +122,7 @@ export default class InvitationDetails extends React.Component {
 
                                         <View style={{flexDirection:'row', paddingTop:10, paddingLeft:10}}>
                                             <Icon type="Entypo" name="location-pin"  style={{ alignSelf:'center',fontSize:Responsive.font(14) ,color: '#585858'}}/>
-                                            <Text style={{fontSize:Responsive.font(11), width:'95%' ,color:'#585858', fontFamily:'open-sans-bold', fontWeight:'600', paddingLeft:5}}>{tournamentInfo.address}</Text>
+                                            <Text style={{fontSize:Responsive.font(11), width:'95%' ,color:'#585858', fontFamily:'open-sans-bold', fontWeight:'600', paddingLeft:5}}>{tournamentInfo.tournamentAddress}</Text>
                                         </View>
                                         <View style={{borderWidth:0.5,borderColor:'#CAECDF', marginTop:10, marginRight:10, marginLeft:10}}></View>
                                         <View style={{ flexDirection: 'row', paddingTop: 10 , paddingLeft:10}}>
@@ -123,28 +135,22 @@ export default class InvitationDetails extends React.Component {
                                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingTop: 10, paddingLeft:10 }}>
                                             <View style={{ flexDirection: 'row', width: '100%' }} >
                                                 <Text style={styles.head}>Organizer : </Text>
-                                                <Text style={styles.detail}>{tournamentInfo.OrganizerName}</Text>
-                                            </View>
-                                        </View>
-
-                                        
-                                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingTop: 10, paddingLeft:10 }}>
-                                            <View style={{ flexDirection: 'row', width: '100%' }} >
-                                                <Text style={styles.head}>Division : </Text>
-                                                <Text style={styles.detail}>{tournamentInfo.divisionName}</Text>
+                                                <Text style={styles.detail}>{tournamentInfo.organizerName}</Text>
                                             </View>
                                         </View>
 
                                         <View style={{ flexDirection: 'row', justifyContent: 'center', paddingTop:30, paddingBottom:23 }}>
-                                            <View style={{alignItems:'center', justifyContent:'center', }}>
-                                                <TouchableOpacity onPress={()=>this.setState({modalVisible:true})}  style={[styles.mySBtn,{backgroundColor:'#48A080'}]}>
-                                                    <Text style={styles.myStext}>Accept</Text>
+                                            <View style={{ flexDirection: 'row', alignItems:'center'  }} >
+                                                <Text style={styles.head}>Division : </Text>
+                                                <TouchableOpacity disabled={this.state.disabledButton} onPress={()=>this.setState({selectionModal:true})} style={{flexDirection:'row', backgroundColor:'white',paddingLeft:5,justifyContent:'center', paddingVertical:2, paddingRight:10, borderColor:'#585858', borderWidth:0.5 }}>
+                                                    <Text style={{paddingLeft:5, color:'#474747', fontFamily:'open-sans-bold', fontSize:Responsive.font(11)}}>{tournamentInfo.bracketType}</Text>
+                                                    {/* <Icon type="Entypo" name="chevron-small-down"  style={{ paddingLeft:10,alignSelf:'center',fontSize:Responsive.font(14) ,color: '#585858'}}/> */}
                                                 </TouchableOpacity>
                                             </View>
 
                                             <View style={{alignItems:'center', justifyContent:'center', }}>
-                                                <TouchableOpacity onPress={()=>this.setState({modalVisible:true})}  style={[styles.mySBtn,{backgroundColor:'#924741'}]}>
-                                                    <Text style={styles.myStext}>Decline</Text>
+                                                <TouchableOpacity onPress={()=>this.setState({modalVisible:true})}  style={[styles.mySBtn,{backgroundColor: this.state.buttonDisabled?'#96D1BB':'#48A080'}]} disabled={this.state.disabledButton}>
+                                                    <Text style={styles.myStext}>Requested</Text>
                                                 </TouchableOpacity>
                                             </View>
                                         </View>

@@ -7,7 +7,8 @@ import {Icon} from 'native-base'
 
 export default class RefereeRequest extends React.Component {
     static navigationOptions = {
-        header: null
+        headerTitle:
+            <Text style={{ alignSelf:'center', color: 'white',fontFamily:'open-sans-bold',fontSize:Responsive.font(20)  }}>Request as Referee</Text>
     }
     constructor(props) {
         super(props);

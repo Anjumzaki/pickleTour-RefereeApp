@@ -154,7 +154,7 @@ export default class Login extends React.Component {
                     </View>
                     <View style={{ height: 1, backgroundColor: '#E2E2E2', marginTop: 30, marginBottom: 30, opacity:0.6, width:'80%', alignSelf:'center' }} />
                     <View style={{ alignItems: 'center', marginTop:Dimensions.get('window').height/20 }}>
-                        <TouchableOpacity style={{ flexDirection: 'row' }} onPress={() => this.props.navigation.navigate('SignUp')}>
+                        <TouchableOpacity style={{ flexDirection: 'row' }} onPress={() => this.props.navigation.navigate('SignUpScreen')}>
                             <Text style={styles.reg1}>Don't have an account?</Text>
                         </TouchableOpacity>
                     </View>

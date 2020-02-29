@@ -20,19 +20,19 @@ export default class CustomSidebarMenu extends Component {
         navOptionIconType: "MaterialIcons", 
         navOptionIconName:"dashboard",
         navOptionName: 'Dashboard',
-        screenToNavigate: 'MainScreen',
+        screenToNavigate: 'Dashboard',
        },
       {
         navOptionIconType: "MaterialIcons", 
         navOptionIconName:"find-in-page",
         navOptionName: 'Find Events',
-        screenToNavigate: 'HomePageStack',
+        screenToNavigate: 'FindEvents',
       },
       {
         navOptionIconType: "MaterialIcons", 
         navOptionIconName:"settings",
         navOptionName: 'Manage Events',
-        screenToNavigate: 'ManageEvents',
+        screenToNavigate: 'ManageEventsScreen',
       },
 
       // {
@@ -73,7 +73,7 @@ export default class CustomSidebarMenu extends Component {
       AsyncStorage.removeItem('userProfileData')
       this.props.navigation.dispatch(StackActions.reset({
         index: 0,
-        actions: [NavigationActions.navigate({ routeName: 'Login' })],
+        actions: [NavigationActions.navigate({ routeName: 'Auth' })],
     }))
     }).catch(function(error) {
     });

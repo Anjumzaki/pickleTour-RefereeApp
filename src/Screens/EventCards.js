@@ -1,6 +1,5 @@
 import React from 'react';
-import { View, Text,StyleSheet} from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { View, Text,StyleSheet, TouchableOpacity} from 'react-native';
 import { Icon } from 'native-base'
 import Responsive from 'react-native-lightweight-responsive';
 export default class EventCards extends React.Component {
@@ -68,7 +67,7 @@ export default class EventCards extends React.Component {
 
 
                     <View style={{flex:1, justifyContent:'center',}}>
-                    <TouchableOpacity style={styles.mySBtn} onPress={()=>this.props.navigation.navigate('EventSummary',{data})}>
+                    <TouchableOpacity style={styles.mySBtn} onPress={()=>this.props.navigation.navigate('EventSummaryScreen',{data})}>
                                   
                                   <Text style={styles.myStext}>Summary</Text>
                   </TouchableOpacity>

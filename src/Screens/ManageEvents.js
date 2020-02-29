@@ -1,6 +1,5 @@
 import React from 'react';
-import { ActivityIndicator,FlatList,AsyncStorage, View, Text,  Dimensions, StyleSheet } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { ActivityIndicator,FlatList,AsyncStorage, View, Text,  Dimensions, StyleSheet,TouchableOpacity } from 'react-native';
 import EventCardsMa1 from './EventCardsMa1'
 import EventCardsMa2 from './EventCardsMa2'
 import Responsive from 'react-native-lightweight-responsive';
@@ -10,8 +9,8 @@ import axios from 'axios';
 
 export default class MainScreen extends React.Component {
     static navigationOptions = {
-        header: null,
-        
+        headerTitle:
+            <Text style={{ alignSelf:'center', color: 'white',fontFamily:'open-sans-bold',fontSize:Responsive.font(20)  }}>Manage Events</Text>
     }
     constructor(props) {
         super(props);
@@ -167,7 +166,7 @@ export default class MainScreen extends React.Component {
                                 refreshing={this.state.dataOneFetching}
                                 onRefresh={()=>this.getMyEvents()}
                                 renderItem={({item})=>(
-                                    <TouchableOpacity onPress={() => { this.props.navigation.navigate('EventDetails',{item}) }}>
+                                    <TouchableOpacity onPress={() => { this.props.navigation.navigate('EventDetailsScreen',{item}) }}>
                                     <EventCardsMa1 data={item}/>
                                 </TouchableOpacity>
                                 )}
@@ -189,7 +188,9 @@ export default class MainScreen extends React.Component {
                                 keyExtractor={item => item._id}
                                 renderItem={({item})=>{
                                     if(item.isAccepted == false){
-                                            return <EventCardsMa2  data={item}/>
+                                            return  <TouchableOpacity onPress={() => { this.props.navigation.navigate('RefereeRequestDetailsScreen',{item}) }}>
+                                            <EventCardsMa2 data={item}/>
+                                        </TouchableOpacity>
                                     }
 
                                 }}
@@ -204,7 +205,7 @@ export default class MainScreen extends React.Component {
                                 data ={this.state.inviData}
                                 refreshing={this.state.dataThreeFetching}
                                 renderItem={({item})=>(
-                                    <TouchableOpacity onPress={() => { this.props.navigation.navigate('InvitationDetails',{item}) }}>
+                                    <TouchableOpacity onPress={() => { this.props.navigation.navigate('InvitationDetailsScreen',{item}) }}>
                                         <EventCardsMa3 data={item}/>
                                     </TouchableOpacity>
                                 )}

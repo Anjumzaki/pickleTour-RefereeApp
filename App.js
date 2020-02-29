@@ -1,9 +1,10 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import AppContainer from './src/AppContainer';
+// import AppContainer from './src/AppContainer';
 import * as Font from 'expo-font';
 import firebase from 'firebase';
 import { firebaseConfig } from './src/Configurations/config';
+import AppContainer from './src/AppNavigator';
 
 
 firebase.initializeApp(firebaseConfig)

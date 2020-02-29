@@ -7,7 +7,8 @@ import Responsive from 'react-native-lightweight-responsive';
 
 export default class EventSummary extends React.Component {
     static navigationOptions = {
-        header: null
+        headerTitle:
+            <Text style={{ alignSelf:'center', color: 'white',fontFamily:'open-sans-bold',fontSize:Responsive.font(20)  }}>Event Summary</Text>
     }
     constructor(props) {
         super(props);

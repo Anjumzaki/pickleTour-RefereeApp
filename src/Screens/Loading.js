@@ -23,13 +23,13 @@ class LoadingScreen extends Component {
         if(this.data.length>0){
           this.props.navigation.dispatch(StackActions.reset({
             index: 0,
-            actions: [NavigationActions.navigate({ routeName: 'MainTabs' })],
+            actions: [NavigationActions.navigate({ routeName: 'Drawer' })],
         }))
         }
         else{
           this.props.navigation.dispatch(StackActions.reset({
             index: 0,
-            actions: [NavigationActions.navigate({ routeName: 'Login' })],
+            actions: [NavigationActions.navigate({ routeName: 'Auth' })],
         }))
         }
   
@@ -41,17 +41,11 @@ class LoadingScreen extends Component {
     firebase.auth().onAuthStateChanged(user =>{
       if(user){
         setTimeout(()=>{
-            this.props.navigation.dispatch(StackActions.reset({
-              index: 0,
-              actions: [NavigationActions.navigate({ routeName: 'MainTabs' })],
-          }))
+          this.props.navigation.navigate("Drawer");
         },3000)
       }  
       else{
-         this.props.navigation.dispatch(StackActions.reset({
-                          index: 0,
-                          actions: [NavigationActions.navigate({ routeName: 'Login' })],
-                      }))
+        this.props.navigation.navigate("Auth");
       }
     })
   }

@@ -69,7 +69,7 @@ export default class MultiTypeEventsCards extends React.Component {
 
 
                     <View style={{flex:1, justifyContent:'center'}}>
-                    <TouchableOpacity style={styles.mySBtn} onPress={()=>this.props.navigation.navigate('EventDetailsT',{item})}>
+                    <TouchableOpacity style={styles.mySBtn} onPress={()=>this.props.navigation.navigate('EventDetailsScreen',{item})}>
                                   
                                   <Text style={styles.myStext}>Manage</Text>
                   </TouchableOpacity>

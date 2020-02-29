@@ -112,7 +112,7 @@ export default class MatchCards extends React.Component {
         // if(time>=this.props.data.matchTime  && this.props.data.matchDate <= today)
         if(time>=this.props.data.matchTime )
         {
-            this.props.navigation.navigate('ScoreCard',{userData, checkMulti, players})
+            this.props.navigation.navigate('ScoreCardScreen',{userData, checkMulti, players})
         }
         else{
             this.showingAlert()

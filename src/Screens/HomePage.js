@@ -5,6 +5,10 @@ import ToBeRequestedEvents from './ToBeRequestedEvents';
 import axios from 'axios';
 
 export default class HomePage extends Component {
+  static navigationOptions = {
+    headerTitle:
+        <Text style={{ alignSelf:'center', color: 'white',fontFamily:'open-sans-bold',fontSize:Responsive.font(20)  }}>Find Events</Text>
+}
   constructor(props) {
     super(props);
     this.state = {
