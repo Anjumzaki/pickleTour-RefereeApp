@@ -1,9 +1,10 @@
 import React from 'react';
-import { ActivityIndicator, View, Text, StyleSheet, FlatList, AsyncStorage } from 'react-native';
+import { ActivityIndicator, View, Text, StyleSheet, FlatList, AsyncStorage, Dimensions } from 'react-native';
 import MatchCards from './MatchCards';
 import axios from 'axios'
 import Responsive from 'react-native-lightweight-responsive';
 import {Icon} from 'native-base'
+import moment from 'moment';
 
 export default class EventDetails extends React.Component {
     static navigationOptions = {
@@ -179,14 +180,14 @@ export default class EventDetails extends React.Component {
 
                                     <View style={{ height: 1, backgroundColor: '#E2E2E2', marginTop: 0, marginBottom: 15 }} />
                                 </View>
-                        <View style={{paddingBottom:1000}}>
+                        <View style={{paddingBottom:Dimensions.get('window').height}}>
                         <FlatList
                             
                             data ={this.state.tourData}
                             extraData={this.props}
                             keyExtractor={item => item._id}
                             ListFooterComponent={
-                                <View style={{marginTop:40}}></View>
+                                <View style={{marginBottom:Dimensions.get('window').height>=700?70:150}}></View>
                             }
                             ListEmptyComponent={()=>
                                 {

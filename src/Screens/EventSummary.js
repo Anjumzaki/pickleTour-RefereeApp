@@ -127,13 +127,13 @@ export default class EventSummary extends React.Component {
                                     <View style={{ height: 1, backgroundColor: '#E2E2E2', marginTop: 0, marginBottom: 15 }} />
                                 </View>
                     </View>
-                    <View style={{paddingBottom:1000}}>
+                    <View style={{paddingBottom:Dimensions.get('window').height}}>
                     <FlatList
                             
                             data ={this.state.tourData}
                             extraData={this.props}
                             ListFooterComponent={
-                                <View style={{marginTop:40}}></View>
+                                <View style={{marginBottom:Dimensions.get('window').height>=700?70:150}}></View>
                             }
                             keyExtractor={item => item._id}
                             showsVerticalScrollIndicator={false}

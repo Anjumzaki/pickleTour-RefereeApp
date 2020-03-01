@@ -109,8 +109,7 @@ export default class MatchCards extends React.Component {
         let m = today.getMinutes();
         m = (m < 10) ? ("0" + m) : m;
         let time = h+':'+m        
-        // if(time>=this.props.data.matchTime  && this.props.data.matchDate <= today)
-        if(time>=this.props.data.matchTime )
+        if(time>=this.props.data.matchTime ) // && this.props.data.matchDate <= today
         {
             this.props.navigation.navigate('ScoreCardScreen',{userData, checkMulti, players})
         }

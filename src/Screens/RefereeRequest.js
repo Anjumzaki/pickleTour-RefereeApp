@@ -143,8 +143,8 @@ closeSelectedModal({item, location}){
     render() {
         const { state, navigate } = this.props.navigation;
         const user = this.props.navigation.getParam('user')
-
         const { address, phoneNumber, incomData, submitted, isSuccessFull, selected, finallyComplete } = this.state
+        const enabled = address.length>0 && phoneNumber.length>0
         const tournamentInfo = this.props.navigation.getParam('item')
         const bracketTypes =  tournamentInfo.division.map(a => {
             if(a.bracketType=='Round Robin')
@@ -194,31 +194,59 @@ closeSelectedModal({item, location}){
                                     </View>
                                 :
                                 
-                                <View style={{flex:1, alignContent:'center', alignItems:'center',justifyContent:'center', backgroundColor: '#86d6b9' }}>
-                                    <TextInput style={{backgroundColor:'white',borderRadius:10,paddingLeft:10, paddingVertical:5, borderColor:'#48A080',borderWidth:1,width:'90%', fontFamily:'open-sans-bold', marginBottom:20, fontSize:Responsive.font(20)}} editable={false} placeholder="Name" value={user.firstName} placeholderTextColor={'gray'}/>
-                                <TextInput style={{backgroundColor:'white',borderRadius:10,paddingLeft:10, paddingVertical:5, borderColor:'#48A080',borderWidth:1,width:'90%', fontFamily:'open-sans-bold', marginBottom:20, fontSize:Responsive.font(20)}} editable={false} placeholder="Email Address" value={user.email} placeholderTextColor={'gray'}/>
-                                <TextInput style={{backgroundColor:'white',borderRadius:10,paddingLeft:10, paddingVertical:5, borderColor:'#48A080',borderWidth:1,width:'90%', fontFamily:'open-sans-bold', marginBottom:20, fontSize:Responsive.font(20)}} placeholder="Phone Number"  value={phoneNumber} keyboardType="phone-pad" onChangeText={phoneNumber => this.setState({ phoneNumber })} placeholderTextColor={'gray'}/>
-                                <TextInput style={{backgroundColor:'white',borderRadius:10,paddingLeft:10, paddingVertical:5, borderColor:'#48A080',borderWidth:1,width:'90%', fontFamily:'open-sans-bold', marginBottom:20, fontSize:Responsive.font(20)}} placeholder="Address"  value={address}  keyboardType="default" onChangeText={address => this.setState({ address })} placeholderTextColor={'gray'}/>
+                                <View style={{flex:1, alignContent:'center', alignItems:'center',justifyContent:'center', backgroundColor: '#86d6b9', }}>
+                                <Text style={{marginTop:Responsive.height(50), marginBottom:Responsive.height(20),fontFamily:'open-sans-bold',color:'white', textShadowOffset:{width:1, height:1},textShadowColor:'black',textShadowRadius:2,fontSize:Responsive.font(35)}}>Register as Referee</Text>
+                                <View style={{width:'95%',alignSelf:'center', justifyContent:'center'}}>
+                                <TextInput style={styles.form} editable={false} placeholder="Name" value={user.firstName} placeholderTextColor={'gray'}/>
+                                <TextInput style={styles.form} editable={false} placeholder="Email Address" value={user.email} placeholderTextColor={'gray'}/>
+                                <TextInput style={styles.form} placeholder="Phone Number"  value={phoneNumber} keyboardType="phone-pad" onChangeText={phoneNumber => this.setState({ phoneNumber })} placeholderTextColor={'gray'}/>
+                                <TextInput style={styles.form} placeholder="Address"  value={address}  keyboardType="default" onChangeText={address => this.setState({ address })} placeholderTextColor={'gray'}/>
                                 
-                                {incomData ? <Text style={{color:'red', fontSize:Responsive.font(16), fontFamily:'open-sans-bold'}}> Please complete form !!</Text>:<Text></Text>}
-                                <TouchableOpacity disabled={submitted} onPress={()=>this.conformingRequest(user, tournamentInfo)} style={{fontFamily: 'open-sans-simple',
-                                                                                                width: Dimensions.get('window').width - 105,
+                                </View>
+                                {/* {incomData ? <Text style={{color:'red', fontSize:Responsive.font(16), fontFamily:'open-sans-bold'}}> Please complete form !!</Text>:<Text></Text>} */}
+                                <TouchableOpacity disabled={!enabled} onPress={()=>this.conformingRequest(user, tournamentInfo)} style={{
+                                                                                                fontFamily: 'open-sans-bold',
                                                                                                 alignItems: 'center',
-                                                                                                backgroundColor: submitted?'#BEBAC5':'#48A080',
-                                                                                                padding: 10,
+                                                                                                backgroundColor: enabled?'#48D5A0':'#BEBAC5',
+                                                                                                paddingTop:5,
+                                                                                                paddingBottom:5,
                                                                                                 borderRadius: 100,
-                                                                                                marginTop: 60,}}>
-                                    <Text style={{color:'white',fontFamily:'open-sans-simple',fontSize:Responsive.font(22)}}>Confirm</Text>
+                                                                                                marginTop: 20,
+                                                                                                paddingLeft:50,
+                                                                                                paddingRight:50,
+                                                                                                shadowColor: "#000",
+                                                                                                shadowOffset: {
+                                                                                                    width: 0,
+                                                                                                    height: 2,
+                                                                                                },
+                                                                                                shadowOpacity: 0.23,
+                                                                                                shadowRadius: 2.62,
+                                                                                        
+                                                                                                elevation: 4,
+                                                                                                }}>
+                                    <Text style={{fontSize:Responsive.font(16),fontFamily: 'open-sans-bold',color: 'white',}}>Confirm</Text>
                                 </TouchableOpacity>
                                 
-                                <TouchableOpacity  disabled={submitted} onPress={()=>this.setState({modalVisible:false})} style={{fontFamily: 'open-sans-simple',
-                                                                                                            width: Dimensions.get('window').width - 105,
+                                <TouchableOpacity  disabled={submitted} onPress={()=>this.setState({modalVisible:false})} style={{
+                                                                                                            fontFamily: 'open-sans-bold',
                                                                                                             alignItems: 'center',
-                                                                                                            backgroundColor: submitted?'#BEBAC5':'#48A080',
-                                                                                                            padding: 10,
+                                                                                                            backgroundColor: '#48D5A0',
+                                                                                                            paddingTop:5,
+                                                                                                            paddingBottom:5,
                                                                                                             borderRadius: 100,
-                                                                                                            marginTop: 20,}}>
-                                    <Text style={{color:'white',fontFamily:'open-sans-simple',fontSize:Responsive.font(22)}}>Close</Text>
+                                                                                                            marginTop: 20,
+                                                                                                            paddingLeft:60,
+                                                                                                            paddingRight:60,
+                                                                                                            shadowColor: "#000",
+                                                                                                            shadowOffset: {
+                                                                                                                width: 0,
+                                                                                                                height: 2,
+                                                                                                            },
+                                                                                                            shadowOpacity: 0.23,
+                                                                                                            shadowRadius: 2.62,
+                                                                                                    
+                                                                                                            elevation: 4,}}>
+                                    <Text style={{fontSize:Responsive.font(16),fontFamily: 'open-sans-bold',color: 'white',}}>Close</Text>
                                     </TouchableOpacity>
                                 </View>
                                 
@@ -404,6 +432,30 @@ const styles = StyleSheet.create({
         color:'white',
         justifyContent:'center',
         alignSelf:'center'
+    },
+    form:{
+        fontSize: Responsive.font(14),
+        padding: 8,
+        paddingLeft:20,
+        width: '95%',
+        alignSelf:'center',
+        borderWidth: 1,
+        borderColor: '#48A080',
+        borderRadius:50,
+        backgroundColor:'white',
+        height: 50,
+        fontFamily: 'open-sans-bold',
+        color: 'black',
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        marginBottom:10,
+        shadowOpacity: 0.23,
+        shadowRadius: 2.62,
+
+        elevation: 4,
     }
 
 

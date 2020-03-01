@@ -84,14 +84,14 @@ export default class CustomSidebarMenu extends Component {
       <View style={styles.sideMenuContainer}>
         <LinearGradient 
         colors={['#86D6B9','#48A080', ]}
-        style={{ backgroundColor: '#48A080', width: '100%', margin: 0, padding: 20 }}>
+        style={{ backgroundColor: '#48A080', width: '100%', margin: 0, paddingTop: 40, paddingBottom:40, paddingLeft:20, paddingRight:20 }}>
         
           <Image
             source={require('../assets/User_Icon.png')}
             style={{ width: 50, height: 50,borderRadius:100,marginTop:20 }}
           />
           <Text style={{fontSize:Responsive.font(23),color:'white',fontFamily: 'open-sans-bold'}}>{this.data.firstName}</Text>
-          <Text style={{fontSize:Responsive.font(13),color:'white',fontFamily: 'open-sans-bold'}}>{this.data.email}</Text>
+          <Text style={{fontSize:Responsive.font(15),color:'white',fontFamily: 'open-sans-bold'}}>{this.data.email}</Text>
         </LinearGradient>
        
         

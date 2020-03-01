@@ -48,7 +48,6 @@ class NavigationDrawerStructure extends Component {
       headerStyle: { backgroundColor: '#48A080' },
       headerTintColor: 'white',
       headerRight: (
-        // <NavigationDrawerStructure navigationProps={navigation} />
         <Text></Text>
       ),
       headerTitleStyle: { alignSelf: 'center' , textAlign:"center", flex:0.8 },
@@ -150,7 +149,7 @@ class NavigationDrawerStructure extends Component {
   },
   {
     contentComponent: CustomSidebarMenu,
-    drawerWidth: Dimensions.get('window').width / 1.6,
+    drawerWidth: Dimensions.get('window').width / 1.4,
     drawerPosition: "left",
     edgeWidth: Platform.OS === 'ios' ? undefined :  Dimensions.get("window").width-15,
   })
