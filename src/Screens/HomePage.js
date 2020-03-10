@@ -4,6 +4,7 @@ import Responsive from 'react-native-lightweight-responsive';
 import ToBeRequestedEvents from './ToBeRequestedEvents';
 import axios from 'axios';
 
+
 export default class HomePage extends Component {
   static navigationOptions = {
     headerTitle:
@@ -40,10 +41,18 @@ export default class HomePage extends Component {
         leagueExtraDataLoading:false,
         leagueExtraDataFound:false,
         checkedExtraRecreationalData:false,
-        actScr:1
+        actScr:1,
+        todayDate:null,
+        todayTime:null
     };
   }
   componentDidMount(){
+      const today = new Date();
+      const h = today.getHours();
+      let m = today.getMinutes();
+      m = (m < 10) ? ("0" + m) : m;
+      let time = h+':'+m      
+      this.setState({todayDate:today, todayTime:time})
       this.getUserData()
       this.getTourData()
       // this.getLeaguesData()
@@ -53,23 +62,38 @@ export default class HomePage extends Component {
 
   keyboardDidHide=()=>{
     Keyboard.dismiss()
-    this.setState({isSearching:false})
+    this.setState({isSearching:false,})
   }
   getTourData(){
     this.setState({isTourLoading:true})
     var con =  this.state.tourOffset
     var myEvents=[]
+    var dummyData=[]
     var prevEvents = this.state.tourData
     var gettingUrl = 'http://pickletour.com/api/get/tournament/page/'
     axios.get(gettingUrl + con)
     .then((response)=>{
         myEvents = response.data
         if(myEvents.length>0){
-            this.setState({
-                tourData:myEvents,
-                tourDataSearch:myEvents,
-                isTourLoading:false,              
+            myEvents.map(item=>{
+              var msDiff = new Date(item.regEndDate).getTime() - new Date().getTime()
+              if(msDiff >=0){
+                dummyData.push(item)
+              }
             })
+            if(dummyData.length>0){
+               this.setState({
+                tourData:dummyData,
+                tourDataSearch:dummyData,
+                isTourLoading:false,              
+               })
+            }
+            else{
+              this.setState({
+                isTourLoading:false
+             })
+            }
+           
         }
         else{
             this.setState({
@@ -387,15 +411,19 @@ searchFilterFunctionLocation = text =>{
           onEndReachedThreshold={0.01}
           showsVerticalScrollIndicator={false}
           onEndReached={this.handleMoreTourData}
-          renderItem ={({item})=>(
-              <TouchableOpacity onPress={() => { this.props.navigation.navigate('RefereeRequestScreen',{item:item, user:this.data}) }}>
-                  <ToBeRequestedEvents key={item._id} data={item} user={this.data} />
-              </TouchableOpacity>
-          )}
-          ListFooterComponent=
-          {!this.state.isSearching && (this.state.tourExtraDataLoading ? <ActivityIndicator size="large" color="#48A080" style={{paddingBottom:10}} /> : this.state.tourExtraDataFound ? null : this.state.checkedExtraTourData && <Text style={{ justifyContent: 'center', textAlign: 'center', paddingBottom:10 }}>No Remaining Data</Text>) }
+          renderItem ={({item})=>
+          (
+            <TouchableOpacity onPress={() => { this.props.navigation.navigate('RefereeRequestScreen',{item:item, user:this.data}) }}>
+              <ToBeRequestedEvents key={item._id} data={item} user={this.data} />
+            </TouchableOpacity>
+          )
+          
+        }
+          // ListFooterComponent=
+          // {!this.state.isSearching && (this.state.tourExtraDataLoading ? <ActivityIndicator size="large" color="#48A080" style={{paddingBottom:10}} /> : this.state.tourExtraDataFound ? null : this.state.checkedExtraTourData && <Text style={{ justifyContent: 'center', textAlign: 'center', paddingBottom:10 }}>No Remaining Data</Text>) }
           keyExtractor={(item, index) => index.toString()}
           ListEmptyComponent={() => (
+            !this.state.isTourLoading&&
             <View
               style={{
                 flex: 1,
@@ -404,7 +432,7 @@ searchFilterFunctionLocation = text =>{
                 marginTop: 50
               }}
             >
-              <Text style={{ color: 'black' }}>No events Found</Text>
+              <Text style={{fontFamily:'open-sans-bold',alignSelf:'center',fontSize:Responsive.font(20)}}>Events not found !</Text>
             </View>
           )}
         />
@@ -423,8 +451,8 @@ searchFilterFunctionLocation = text =>{
           onEndReachedThreshold={0.5}
           showsVerticalScrollIndicator={false}
           onEndReached={this.handleMoreLeaguesData}
-          ListFooterComponent=
-          {!this.state.isSearching && (this.state.leagueExtraDataLoading ? <ActivityIndicator size="large" color="#48A080" style={{paddingBottom:10}}/> : this.state.leagueExtraDataFound ? null : this.state.checkedExtraLeaguesData && <Text style={{ justifyContent: 'center', textAlign: 'center', paddingBottom:10 }}>No Remaining Data</Text>)}
+          // ListFooterComponent=
+          // {!this.state.isSearching && (this.state.leagueExtraDataLoading ? <ActivityIndicator size="large" color="#48A080" style={{paddingBottom:10}}/> : this.state.leagueExtraDataFound ? null : this.state.checkedExtraLeaguesData && <Text style={{ justifyContent: 'center', textAlign: 'center', paddingBottom:10 }}>No Remaining Data</Text>)}
           renderItem ={({item})=>(
               <TouchableOpacity onPress={() => { this.props.navigation.navigate('RefereeRequestScreen',{item:item, user:this.data}) }}>
                   <ToBeRequestedEvents key={item._id} data={item} user={this.data} />

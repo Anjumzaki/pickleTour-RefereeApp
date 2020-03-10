@@ -40,7 +40,6 @@ export default class RefereeRequestDetails extends React.Component {
     componentDidMount(){    
        
         const tournamentInfo = this.props.navigation.getParam('item')
-        console.log(tournamentInfo)
         let date=this.convertDate(tournamentInfo.tournamentStartDate)
         this.setState({startDate:date})
 
@@ -110,7 +109,7 @@ export default class RefereeRequestDetails extends React.Component {
                                             <View style={{ flexDirection: 'row', alignItems:'center'  }} >
                                                 <Text style={styles.head}>Division : </Text>
                                                 <TouchableOpacity disabled={this.state.disabledButton} onPress={()=>this.setState({selectionModal:true})} style={{flexDirection:'row', backgroundColor:'white',paddingLeft:5,justifyContent:'center', paddingVertical:2, paddingRight:10, borderColor:'#585858', borderWidth:0.5 }}>
-                                                    <Text style={{paddingLeft:5, color:'#474747', fontFamily:'open-sans-bold', fontSize:Responsive.font(11)}}>{tournamentInfo.bracketType}</Text>
+                                                    <Text style={{paddingLeft:5, color:'#474747', fontFamily:'open-sans-bold', fontSize:Responsive.font(11)}}>{tournamentInfo.bracketType=='Knock Out'?'Single Elimination':tournamentInfo.bracketType}</Text>
                                                     {/* <Icon type="Entypo" name="chevron-small-down"  style={{ paddingLeft:10,alignSelf:'center',fontSize:Responsive.font(14) ,color: '#585858'}}/> */}
                                                 </TouchableOpacity>
                                             </View>

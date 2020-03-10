@@ -4,8 +4,7 @@ import axios from 'axios'
 import Responsive from 'react-native-lightweight-responsive';
 import {Icon} from 'native-base'
 
-
-export default class RefereeRequest extends React.Component {
+export default class  RefereeRequest extends React.Component {
     static navigationOptions = {
         headerTitle:
             <Text style={{ alignSelf:'center', color: 'white',fontFamily:'open-sans-bold',fontSize:Responsive.font(20)  }}>Request as Referee</Text>
@@ -44,6 +43,7 @@ export default class RefereeRequest extends React.Component {
         let endate=this.convertDate(tournamentInfo.tEndDate)
         this.setState({endDate:endate})
     }
+   
     convertDate(date){
         var d= new Date(date)
         var month = '' + (d.getMonth() + 1)
@@ -158,7 +158,7 @@ closeSelectedModal({item, location}){
             else if(a.bracketType =='Double Elimination')
                 return '(D.E.)'
             else if(a.bracketType =='Knock Out')
-                return'(K.O.)'
+                return'(S.E.)'
             else if(a.bracketType =='Groups')
                 return 'Groups'
                 
@@ -460,3 +460,4 @@ const styles = StyleSheet.create({
 
 
 });
+

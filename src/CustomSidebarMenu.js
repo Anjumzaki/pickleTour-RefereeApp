@@ -32,7 +32,7 @@ export default class CustomSidebarMenu extends Component {
         navOptionIconType: "MaterialIcons", 
         navOptionIconName:"settings",
         navOptionName: 'Manage Events',
-        screenToNavigate: 'ManageEventsScreen',
+        screenToNavigate: 'ManageEvents',
       },
 
       // {
