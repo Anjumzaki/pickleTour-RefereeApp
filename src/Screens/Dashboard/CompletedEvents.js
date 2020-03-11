@@ -30,7 +30,25 @@ class CompletedEventsScreen extends React.Component {
             showThreeMessage:false
         };
     }
+//     sendPushNotifications = () =>{
+//         let response = fetch('https://exp.host/--/api/v2/push/send',{
+//             method:'POST',
+//             headers:{
+//                 Accept:'application/json',
+//                 'Content-Type':'application/json'
+//             },
+//             body:JSON.stringify({
+//                 to:'ExponentPushToken[PaqkdbClpiSykGH5CuXDv5]',
+//                 sound:'default',
+//                 title:'Demo',
+//                 body:'Notification'
+
+//             }
+// )            
+//         })
+//     }
     componentDidMount(){
+        // this.sendPushNotifications()
         this.getUserData()
         const {navigation}=this.props
         this.focusListener = navigation.addListener('didFocus',()=>{

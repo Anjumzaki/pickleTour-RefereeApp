@@ -3,10 +3,34 @@ import { AsyncStorage, StyleSheet,ActivityIndicator, Image } from 'react-native'
 import firebase from 'firebase';
 import { NavigationActions, StackActions } from 'react-navigation';
 import { LinearGradient } from 'expo-linear-gradient';
-
-
+import { Notifications } from 'expo'
+import * as Permissions from 'expo-permissions';
+ 
 
 class LoadingScreen extends Component {
+  createChannel(){
+    // Notifications.createChannelAndroidAsync('chat-messages', {
+    //   name: 'pickletour messages',
+    //   sound: true,
+    // });
+  }
+  registerForPushNotificationsAsync = async ()=>{
+    const { status:existingStatus } = await Permissions.getAsync(
+      Permissions.NOTIFICATIONS
+    );
+    let finalStatus =  existingStatus
+    if(existingStatus!='granted'){
+      const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS)
+      finalStatus = status
+    }
+    if(finalStatus !=='granted'){
+      return
+    }
+    let token = await Notifications.getExpoPushTokenAsync();
+    console.log(token)
+
+  }
+
   constructor(props) {
     super(props);
     this.data=''
@@ -49,7 +73,10 @@ class LoadingScreen extends Component {
       }
     })
   }
-  componentDidMount(){
+  async componentDidMount(){
+    this.createChannel()
+    this.currentUser = await firebase.auth().currentUser
+    await this.registerForPushNotificationsAsync()
     setTimeout(() => {
       this.NavigateScreen()
     }, 1000);    
