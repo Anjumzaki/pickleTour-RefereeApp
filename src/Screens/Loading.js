@@ -1,12 +1,16 @@
 import React, { Component } from 'react';
-import { AsyncStorage, StyleSheet,ActivityIndicator, Image } from 'react-native';
+import { AsyncStorage, StyleSheet,ActivityIndicator, Image, Platform, Alert } from 'react-native';
 import firebase from 'firebase';
 import { NavigationActions, StackActions } from 'react-navigation';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Notifications } from 'expo'
 import * as Permissions from 'expo-permissions';
- 
 
+
+
+
+ 
+let token=''
 class LoadingScreen extends Component {
   createChannel(){
     // Notifications.createChannelAndroidAsync('chat-messages', {
@@ -26,10 +30,40 @@ class LoadingScreen extends Component {
     if(finalStatus !=='granted'){
       return
     }
-    let token = await Notifications.getExpoPushTokenAsync();
-    console.log(token)
+    token = await Notifications.getExpoPushTokenAsync();
+    this.showingAlert(token)
+    if(Platform.OS==='android'){
+      Notifications.createChannelAndroidAsync('chat-messages',{
+        name:'Chat messages',
+        sound:true,
+        vibrate:true,
+        priority: 'max'
+      })
+    }
+    Notifications.addListener(notification=>{
+      const {origin} =notification
+      const {data} = notification
+      if(origin==='selected'){
+        if(data.screen.length>0){
+          this.props.navigation.navigate(data.screen);
+      }
+        else{
+          console.log('no data found')
+        }
+      }
+      else{
+        console.log('Not selected')
+      }
+    })
+  
 
   }
+  showingAlert(ExpoToken){
+    Alert.alert(
+        '',
+        ExpoToken,[],{cancelable:true}
+    )
+}
 
   constructor(props) {
     super(props);
@@ -74,7 +108,7 @@ class LoadingScreen extends Component {
     })
   }
   async componentDidMount(){
-    this.createChannel()
+    // this.createChannel()
     this.currentUser = await firebase.auth().currentUser
     await this.registerForPushNotificationsAsync()
     setTimeout(() => {

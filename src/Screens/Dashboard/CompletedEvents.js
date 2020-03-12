@@ -1,9 +1,12 @@
 import React from 'react';
-import { View, Text, Dimensions, StyleSheet, ActivityIndicator, AsyncStorage, FlatList, TouchableOpacity } from 'react-native';
+import { View, Text, Dimensions, StyleSheet, ActivityIndicator, AsyncStorage, FlatList, TouchableOpacity, Alert } from 'react-native';
 import Responsive from 'react-native-lightweight-responsive';
 import EventCards from '../EventCards'
 import axios from 'axios'
 import { withNavigation } from 'react-navigation'
+import { Notifications } from 'expo'
+import * as Permissions from 'expo-permissions';
+import { ThemeConsumer } from 'react-native-elements';
 
 class CompletedEventsScreen extends React.Component {
     constructor(props) {
@@ -47,8 +50,28 @@ class CompletedEventsScreen extends React.Component {
 // )            
 //         })
 //     }
-    componentDidMount(){
-        // this.sendPushNotifications()
+
+    // registerForPushNotificationsAsync = async ()=>{
+    //     const { status:existingStatus } = await Permissions.getAsync(
+    //     Permissions.NOTIFICATIONS
+    //     );
+    //     let finalStatus =  existingStatus
+    //     if(existingStatus!='granted'){
+    //     const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS)
+    //     finalStatus = status
+    //     }
+    //     if(finalStatus !=='granted'){
+    //     return
+    //     }
+    //     let token = await Notifications.getExpoPushTokenAsync();
+    //     this.showingAlert(token)
+
+    // }
+
+   
+    async componentDidMount(){
+       
+        // await this.registerForPushNotificationsAsync()
         this.getUserData()
         const {navigation}=this.props
         this.focusListener = navigation.addListener('didFocus',()=>{
